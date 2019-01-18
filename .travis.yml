@@ -1,0 +1,12 @@
+language: node_js
+node_js: node
+cache:
+  directories:
+  - node_modules
+deploy:
+  provider: heroku
+  api_key:
+    secure: DqOWHRYb6OKGvuX10M4qxyDhEpFdFS0ZEvXpjFcQmzPQnhHOXbbB/wBS6fAn5p/KbCz8EvWVjeaFja0oDdD3hCB92fh59vAErSgXdj7e9PqyiQ4eu2C36a3Zz15CKgfDrnFlRsciQUlZp/U9oSele82lPXQ/W3L99WetuDK3Uwca01g/CKpb5OUuA5dQm2AD3rft+Kw3fhR/kiVPbKSExL04ztBX+f/avrmmFAlU2BTGkgO/MNSFajl6yPTOlCboVILFJIL6AKCmb0tSxaOdMv5+sczNLVMR3pb/YPRAk8RXdldv6jw3Hk+TN6FNxDBHuIq5PLZKLR8UiUe0591Qp+wfIr44lN1C3rBZbFUSZWOA1wHnzM1tYc2cCC5+xgeDPbiU73VliuF1lHAR2tICxIK5EebHuLeMu71Os/tqcNGgLA/S2oZqtz/6DA0kxs39ewyGodwpLNOmnNRq85g0muapQyWW5mkMLIsluIBKXygxOUJjhMk4zGLPkhSvvZ8zMz7ZwhkqxEMohophBSqJvZpQ0g1WMm+hmyVF7WNDAIgga8mHAzHtme9ZSmSoChbx/gNOXWDecEgcvBCwokFFRVpXX2j5+bLmWRrZWogh+/cQBCei1BZz9N6ONwnri9E+gwyWW6DQjxCRXAUa3YS+FKsmXUMi2dNAcB9G9k+TZYs=
+  app: warm-thicket-79199
+  on:
+    repo: PeasOfMind/item-adoption-client
