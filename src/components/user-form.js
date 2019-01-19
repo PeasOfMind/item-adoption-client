@@ -1,6 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-export default function UserForm(props){
+import {changeFormType} from '../actions';
+
+export function UserForm(props){
     let formId, formTitle, submitText, switchFormText, switchFormValue;
     let confirmPassword = "";
     if (props.formType === "Signup"){
@@ -18,14 +21,19 @@ export default function UserForm(props){
     } else if (props.formType === "Login"){
         formId = "login-form";
         formTitle = "Login to continue";
-        submitText = "Login";
+        submitText = "Login to Account";
         switchFormText = "New to Item Adoption?";
         switchFormValue = "Sign Up";
     }
     //TODO: else generate error.
+
+    const handleSubmit = event => {
+        event.preventDefault();
+    }
+
     return(
         <section className="form-container">
-            <form id={formId}>
+            <form id={formId} onSubmit={handleSubmit}>
                 <h3>{formTitle}</h3>
                 <label>
                     Username
@@ -38,8 +46,14 @@ export default function UserForm(props){
                 {confirmPassword}
                 <input type="submit" id="js-submit-signup" value={submitText}></input>
                 {switchFormText}
-                <input type="button" value={switchFormValue}></input>
+                <input type="button" value={switchFormValue} onClick={() => props.dispatch(changeFormType())}></input>
             </form>
         </section>
     )
 }
+
+const mapStateToProps = state => ({
+    formType: state.formType
+})
+
+export default connect(mapStateToProps)(UserForm);
