@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import {changeFormType} from '../actions';
 
+import './nav.css'
+
 export function Nav(props){
     const navLinks = props.navLinks.map((link, index) => (
         <li key={index} className="nav-link" aria-label={link} onClick={() =>
@@ -13,9 +15,11 @@ export function Nav(props){
     ));
 
     return (
-        <ul className="nav-container">
-            {navLinks}
-        </ul>
+        <nav>
+            <ul className="nav-container">
+                {navLinks}
+            </ul>
+        </nav>
     );
 }
 

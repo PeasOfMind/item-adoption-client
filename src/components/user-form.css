@@ -1,0 +1,7 @@
+input, button {
+    border: 1px solid darkgrey;
+}
+
+button {
+    margin: 0.2em 0;
+}

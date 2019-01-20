@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 
 import {changeFormType} from '../actions';
 
+import './user-form.css';
+
 export function UserForm(props){
     let formId, formTitle, submitText, switchFormText, switchFormValue;
     let confirmPassword = "";

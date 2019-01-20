@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import './active-listings.css';
+
 export function ActiveListings(props){
     let listings;
     if (props.itemListings.length === 0){

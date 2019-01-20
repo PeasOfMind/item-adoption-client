@@ -1,16 +1,19 @@
 import React from 'react';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Nav from './nav';
 import LandingPage from './landing-page';
 import Dashboard from './dashboard';
 
-export default function MainPage(props){
+import './main-page.css';
+
+export function MainPage(props){
     return(
         <Router>
             <div className="app">
             <Nav />
-            <header className="landing-header">
+            <header className={props.headingType}>
                 <h1>Item Adoption</h1>
             </header>
             <Switch>
@@ -22,3 +25,9 @@ export default function MainPage(props){
         </Router>
     )
 }
+
+const mapStateToProps = state => ({
+    headingType: state.headingType
+})
+
+export default connect(mapStateToProps)(MainPage);

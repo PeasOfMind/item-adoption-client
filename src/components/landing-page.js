@@ -1,6 +1,8 @@
 import React from 'react';
 import UserForm from './user-form';
 
+import './landing-page.css';
+
 export default function LandingPage(props){
     //TODO set the facts (multiple) to be swipeable
     return(

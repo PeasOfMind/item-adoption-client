@@ -3,6 +3,7 @@ import {CHANGE_FORM_TYPE} from '../actions';
 const dummyState = {
     navLinks: ['Login', 'Signup'],
     formType: 'Signup',
+    headingType: 'landing-header',
     itemListings: [
         {
             title: `TV - 32" with stand and mounting equipment`,

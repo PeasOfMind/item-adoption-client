@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import './wishlist.css';
+
 export function WishList(props){
     let wishListItems;
     if (props.wishListArray.length === 0){
