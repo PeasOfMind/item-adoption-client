@@ -1,9 +1,10 @@
-import {CHANGE_FORM_TYPE} from '../actions';
+import {CHANGE_FORM_TYPE, CHANGE_PAGE} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
     formType: 'Signup',
     headingType: 'landing-header',
+    currentPage: 'landing',
     itemListings: [
         {
             title: `TV - 32" with stand and mounting equipment`,
@@ -21,7 +22,7 @@ const dummyState = {
     wishListArray: ['iPhone 8 or up', 'Macbook charger', 'Sandals in size 5 womens']
 }
 
-export default (state=dummyState, action) => {
+export const appReducer = (state=dummyState, action) => {
     if (action.type === CHANGE_FORM_TYPE) {
         if (!action.formType){
             if (state.formType === 'Login'){
@@ -34,6 +35,19 @@ export default (state=dummyState, action) => {
             formType: action.formType
         })
     }
+    if (action.type === CHANGE_PAGE) {
+        if (action.currentPage === 'dashboard'){
+            action.navLinks = ['Logout'];
+            action.headingType = 'dashboard-header';
+        } else if (action.currentPage === 'landing'){
+            action.navLinks = ['Login', 'Signup'];
+            action.headingType = 'landing-header';
+        }
+        return Object.assign({}, state, {
+            currentPage: action.currentPage,
+            navLinks: action.navLinks
+        })
+    }
 
     return state;
-}
+};

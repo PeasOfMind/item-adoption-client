@@ -24,7 +24,7 @@ export function WishList(props){
 }
 
 const mapStateToProps = state => ({
-    wishListArray: state.wishListArray
+    wishListArray: state.app.wishListArray
 })
 
 export default connect(mapStateToProps)(WishList);

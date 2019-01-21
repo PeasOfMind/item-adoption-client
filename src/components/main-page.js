@@ -27,7 +27,7 @@ export function MainPage(props){
 }
 
 const mapStateToProps = state => ({
-    headingType: state.headingType
+    headingType: state.app.headingType
 })
 
 export default connect(mapStateToProps)(MainPage);

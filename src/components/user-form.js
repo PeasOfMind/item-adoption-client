@@ -1,13 +1,18 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
+import {reduxForm, Field} from 'redux-form';
 import { connect } from 'react-redux';
 
-import {changeFormType} from '../actions';
+import {changeFormType, changePage} from '../actions';
+import Input from './input';
+import {required, nonEmpty, matches} from '../validators';
 
 import './user-form.css';
 
 export function UserForm(props){
     let formId, formTitle, submitText, switchFormText, switchFormValue;
     let confirmPassword = "";
+    const matchesPassword = matches('password');
     if (props.formType === "Signup"){
         formId = "signup-form";
         formTitle = "Sign up to start";
@@ -15,10 +20,13 @@ export function UserForm(props){
         switchFormText = "Already have an account?";
         switchFormValue = "Login";
         confirmPassword = (
-            <label>
-                Confirm Password
-                <input type="password" id="confirm-password" />
-            </label>
+                <Field 
+                    name="confirm-password"
+                    type="password"
+                    component={Input}
+                    label="Confirm Password"
+                    validate={[required, nonEmpty, matchesPassword]}
+                />
         );
     } else if (props.formType === "Login"){
         formId = "login-form";
@@ -30,23 +38,39 @@ export function UserForm(props){
     //TODO: else generate error.
 
     const handleSubmit = event => {
-        event.preventDefault();
+        // event.preventDefault();
+        props.dispatch(changePage("dashboard"));
+    }
+
+    const {invalid, submitting} = props;
+
+    if(props.currentPage === "dashboard"){
+        return <Redirect to="/dashboard" />
     }
 
     return(
         <section className="form-container">
             <form id={formId} onSubmit={handleSubmit}>
                 <h3>{formTitle}</h3>
-                <label>
-                    Username
-                    <input type="text" id="username" />
-                </label>
-                <label>
-                    Password
-                    <input type="password" id="password" />
-                </label>
+                <Field
+                    name="username"
+                    label="Username"
+                    type="text"
+                    component={Input}
+                    validate={[required, nonEmpty]}
+                />
+                <Field
+                    name="password"
+                    type="password"
+                    component={Input}
+                    label="Password"
+                    validate={[required, nonEmpty]}
+                />
                 {confirmPassword}
-                <input type="submit" id="js-submit-signup" value={submitText}></input>
+                <button
+                    type="submit"
+                    disabled={invalid || submitting}
+                    >{submitText}</button>
                 {switchFormText}
                 <input type="button" value={switchFormValue} onClick={() => props.dispatch(changeFormType())}></input>
             </form>
@@ -55,7 +79,10 @@ export function UserForm(props){
 }
 
 const mapStateToProps = state => ({
-    formType: state.formType
+    formType: state.app.formType,
+    currentPage: state.app.currentPage
 })
 
-export default connect(mapStateToProps)(UserForm);
+const connectedUserForm = connect(mapStateToProps)(UserForm);
+
+export default reduxForm({form: 'user'})(connectedUserForm);

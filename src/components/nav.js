@@ -1,18 +1,34 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {Link} from 'react-router-dom';
 
-import {changeFormType} from '../actions';
+import {changeFormType, changePage} from '../actions';
 
 import './nav.css'
 
 export function Nav(props){
-    const navLinks = props.navLinks.map((link, index) => (
-        <li key={index} className="nav-link" aria-label={link} onClick={() =>
-        props.dispatch(changeFormType(link)
-        )}>
+
+    const handleOnClick = link => {
+        if (link === "Logout") {
+            props.dispatch(changePage("landing"))
+        } else props.dispatch(changeFormType(link));
+    }
+
+    const navLinks = props.navLinks.map((link, index) => {
+        if (link === "Logout") {
+            return (
+            <li key={index} className="nav-link" aria-label={link} tabIndex="0" onClick={() => handleOnClick(link)}>
+            <Link to="/">
+                {link}
+            </Link>
+                </li>
+            )
+        }
+        return (
+        <li key={index} className="nav-link" aria-label={link} tabIndex="0" onClick={() => handleOnClick(link)}>
             {link}
         </li>
-    ));
+    )});
 
     return (
         <nav>
@@ -24,7 +40,8 @@ export function Nav(props){
 }
 
 const mapStateToProps = state => ({
-    navLinks: state.navLinks
+    navLinks: state.app.navLinks,
+    currentPage: state.app.currentPage
 })
 
 export default connect(mapStateToProps)(Nav);

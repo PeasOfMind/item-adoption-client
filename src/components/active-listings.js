@@ -30,7 +30,7 @@ export function ActiveListings(props){
 }
 
 const mapStateToProps = state => ({
-    itemListings: state.itemListings
+    itemListings: state.app.itemListings
 })
 
 export default connect(mapStateToProps)(ActiveListings);
