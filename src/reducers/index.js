@@ -1,4 +1,4 @@
-import {CHANGE_FORM_TYPE, CHANGE_PAGE} from '../actions';
+import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -11,12 +11,14 @@ const dummyState = {
             description: `Sony branded smart tv. Comes with screws for mounting into the wall and free chromecast.`,
             price: `100`,
             expiresIn: `10 days`,
+            editing: false
         },
         {
             title: `Blendtec Blender`,
             description: `Great blender only 2 years old. Still has 6 years left on warranty.`,
             price: `50`,
             expiresIn: `5 days`,
+            editing: false
         },
     ],
     wishListArray: ['iPhone 8 or up', 'Macbook charger', 'Sandals in size 5 womens']
@@ -47,6 +49,17 @@ export const appReducer = (state=dummyState, action) => {
             currentPage: action.currentPage,
             navLinks: action.navLinks
         })
+    }
+
+    if (action.type === TOGGLE_EDIT_LISTING) {
+        let itemListings = state.itemListings.map((listing, index) => {
+            if (index !== action.listingIndex) return listing;
+            return Object.assign({}, listing, {
+                editing: !listing.editing
+            });
+        });
+
+        return Object.assign({}, state, {itemListings});
     }
 
     return state;

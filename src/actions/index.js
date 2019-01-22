@@ -9,3 +9,9 @@ export const changePage = currentPage =>  ({
     type: CHANGE_PAGE,
     currentPage
 })
+
+export const TOGGLE_EDIT_LISTING = 'TOGGLE_EDIT_LISTING';
+export const toggleEditListing = listingIndex => ({
+    type: TOGGLE_EDIT_LISTING,
+    listingIndex
+})

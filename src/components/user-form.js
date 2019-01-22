@@ -35,7 +35,6 @@ export function UserForm(props){
         switchFormText = "New to Item Adoption?";
         switchFormValue = "Sign Up";
     }
-    //TODO: else generate error.
 
     const handleSubmit = event => {
         // event.preventDefault();
