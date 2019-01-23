@@ -15,3 +15,18 @@ export const toggleEditListing = listingIndex => ({
     type: TOGGLE_EDIT_LISTING,
     listingIndex
 })
+
+export const UPDATE_LISTING = 'UPDATE_LISTING';
+export const updateListing = (title, description, price, listingIndex) => ({
+    type: UPDATE_LISTING,
+    title,
+    description,
+    price,
+    listingIndex
+})
+
+export const RENEW_LISTING = 'RENEW_LISTING';
+export const renewListing = listingIndex => ({
+    type: RENEW_LISTING,
+    listingIndex
+})

@@ -1,4 +1,4 @@
-import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING} from '../actions';
+import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING, UPDATE_LISTING, RENEW_LISTING} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -9,15 +9,15 @@ const dummyState = {
         {
             title: `TV - 32" with stand and mounting equipment`,
             description: `Sony branded smart tv. Comes with screws for mounting into the wall and free chromecast.`,
-            price: `100`,
-            expiresIn: `10 days`,
+            price: 100,
+            expiresIn: 10,
             editing: false
         },
         {
             title: `Blendtec Blender`,
             description: `Great blender only 2 years old. Still has 6 years left on warranty.`,
-            price: `50`,
-            expiresIn: `5 days`,
+            price: 50,
+            expiresIn: 5,
             editing: false
         },
     ],
@@ -56,6 +56,31 @@ export const appReducer = (state=dummyState, action) => {
             if (index !== action.listingIndex) return listing;
             return Object.assign({}, listing, {
                 editing: !listing.editing
+            });
+        });
+
+        return Object.assign({}, state, {itemListings});
+    }
+
+    if (action.type === UPDATE_LISTING) {
+        let itemListings = state.itemListings.map((listing, index) => {
+            if (index !== action.listingIndex) return listing;
+            return Object.assign({}, listing, {
+                title: action.title,
+                description: action.description,
+                price: action.price,
+                editing: false
+            });
+        });
+
+        return Object.assign({}, state, {itemListings});
+    }
+
+    if (action.type === RENEW_LISTING) {
+        let itemListings = state.itemListings.map((listing, index) => {
+            if (index !== action.listingIndex) return listing;
+            return Object.assign({}, listing, {
+                expiresIn: 14
             });
         });
 

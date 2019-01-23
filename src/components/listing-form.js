@@ -3,12 +3,13 @@ import {reduxForm, Field, change} from 'redux-form'
 import { connect } from 'react-redux';
 
 import Input from './input';
-import { toggleEditListing } from '../actions';
+import { toggleEditListing, updateListing } from '../actions';
 import {required, nonEmpty} from '../validators';
 
 export class ListingForm extends React.Component {
     constructor(props) {
         super(props);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount(){
@@ -17,7 +18,12 @@ export class ListingForm extends React.Component {
         })
     }
 
-    handleOnClick(){
+    onSubmit(values){
+        this.props.dispatch(updateListing(values.title, values.description, values.price, this.props.index));
+    }
+
+    handleClick(){
+        console.log('Clicked');
         this.props.dispatch(toggleEditListing());
     }
 
@@ -39,13 +45,18 @@ export class ListingForm extends React.Component {
 
         return (
             <article className="form-container item-ad">
-                <form className="item-form">
+                <form className="item-form" onSubmit={this.props.handleSubmit(values => 
+                this.onSubmit(values)
+                )}>
                 {allFields}
                 <button 
                     type="submit"
                     disabled={invalid || submitting}
                     >Submit Edits</button>
-                <button onClick={this.handleOnClick}>Cancel</button>
+                <button 
+                    type="reset"
+                    onClick={this.handleClick}
+                    >Cancel</button>
                 </form>
             </article>
     
