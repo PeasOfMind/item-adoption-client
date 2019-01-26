@@ -14,34 +14,45 @@ export class ListingForm extends React.Component {
 
     componentDidMount(){
         ['title', 'description', 'price'].forEach(field => {
-            this.props.dispatch(change('edit-listing', field, this.props.itemListings[this.props.index][field]));
+            this.props.dispatch(change(`edit-listing-${this.props.index}`, `${field}-${this.props.index}`, this.props.itemListings[this.props.index][field]));
         })
     }
 
     onSubmit(values){
-        this.props.dispatch(updateListing(values.title, values.description, values.price, this.props.index));
+        const index = this.props.index;
+        const updatedValues = ['title', 'description', 'price'].map(field => {
+            if (field === 'price') return parseInt(values[`${field}-${index}`], 10);
+            return values[`${field}-${index}`];
+        });
+        this.props.dispatch(updateListing(...updatedValues, index));
     }
 
     handleClick(){
-        console.log('Clicked');
-        this.props.dispatch(toggleEditListing());
+        this.props.dispatch(toggleEditListing(this.props.index));
     }
 
     render() {
+        const {pristine, submitting, index} = this.props;
         const allFields = ['Title', 'Description', 'Price'].map((field, key) => {
+            let fieldType = "text";
+            let validators = [required, nonEmpty];
+            const fieldName = `${field.toLowerCase()}-${index}`;
+            if (field === 'Price'){
+                fieldType = "number";
+                //removes the nonEmpty validator
+                validators.pop()
+            }
             return(
                 <Field
-                name={field.toLowerCase()}
-                type="text"
+                name={fieldName}
+                type={fieldType}
                 component={Input}
                 key={key}
                 label={field}
-                validate={[required, nonEmpty]}
+                validate={validators}
                 />
             )
         })
-
-        const {invalid, submitting} = this.props;
 
         return (
             <article className="form-container item-ad">
@@ -49,9 +60,10 @@ export class ListingForm extends React.Component {
                 this.onSubmit(values)
                 )}>
                 {allFields}
+                <p>If item is free, enter a price of 0 (zero)</p>
                 <button 
                     type="submit"
-                    disabled={invalid || submitting}
+                    disabled={pristine || submitting}
                     >Submit Edits</button>
                 <button 
                     type="reset"
@@ -64,7 +76,7 @@ export class ListingForm extends React.Component {
     }
 }
 
-ListingForm = reduxForm({form: 'edit-listing'})(ListingForm);
+ListingForm = reduxForm()(ListingForm);
 
 const mapStateToProps = state => ({
     itemListings: state.app.itemListings

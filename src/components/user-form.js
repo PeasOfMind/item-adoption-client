@@ -3,22 +3,20 @@ import {Redirect} from 'react-router-dom';
 import {reduxForm, Field} from 'redux-form';
 import { connect } from 'react-redux';
 
-import {changeFormType, changePage} from '../actions';
+import {changePage} from '../actions';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
 import './user-form.css';
 
 export function UserForm(props){
-    let formId, formTitle, submitText, switchFormText, switchFormValue;
+    let formId, formTitle, submitText;
     let confirmPassword = "";
     const matchesPassword = matches('password');
     if (props.formType === "Signup"){
         formId = "signup-form";
         formTitle = "Sign up to start";
         submitText = "Sign Up for Account";
-        switchFormText = "Already have an account?";
-        switchFormValue = "Login";
         confirmPassword = (
                 <Field 
                     name="confirm-password"
@@ -32,16 +30,14 @@ export function UserForm(props){
         formId = "login-form";
         formTitle = "Login to continue";
         submitText = "Login to Account";
-        switchFormText = "New to Item Adoption?";
-        switchFormValue = "Sign Up";
     }
 
-    const handleSubmit = event => {
-        // event.preventDefault();
+    const onSubmit = () => {
+        console.log('submitting...')
         props.dispatch(changePage("dashboard"));
     }
 
-    const {invalid, submitting} = props;
+    const {pristine, submitting, handleSubmit} = props;
 
     if(props.currentPage === "dashboard"){
         return <Redirect to="/dashboard" />
@@ -49,7 +45,7 @@ export function UserForm(props){
 
     return(
         <section className="form-container">
-            <form id={formId} onSubmit={handleSubmit}>
+            <form id={formId} onSubmit={handleSubmit(onSubmit)}>
                 <h3>{formTitle}</h3>
                 <Field
                     name="username"
@@ -68,10 +64,8 @@ export function UserForm(props){
                 {confirmPassword}
                 <button
                     type="submit"
-                    disabled={invalid || submitting}
+                    disabled={pristine || submitting}
                     >{submitText}</button>
-                {switchFormText}
-                <input type="button" value={switchFormValue} onClick={() => props.dispatch(changeFormType())}></input>
             </form>
         </section>
     )
