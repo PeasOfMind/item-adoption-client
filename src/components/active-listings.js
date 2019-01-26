@@ -1,7 +1,8 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import {toggleEditListing, renewListing, changeAddListingStatus, deleteListing} from '../actions';
+import {toggleEditListing, renewListing, changeAddListingStatus, deleteListing, changePage} from '../actions';
 import ListingForm from './listing-form';
 import AddListingForm from './add-listing-form';
 
@@ -24,6 +25,14 @@ export function ActiveListings(props){
 
     const handleAdd = () => {
         props.dispatch(changeAddListingStatus());
+    }
+
+    const viewOtherListings = () => {
+        props.dispatch(changePage("otherListings"));
+    }
+
+    if(props.currentPage === "otherlistings"){
+        return <Redirect to="/otherlistings"/>
     }
 
     if (props.itemListings.length === 0){
@@ -60,7 +69,7 @@ export function ActiveListings(props){
             <h2>Active Listings</h2>
             {listings}
             {addListingText}
-            <button>Check out wishlists in your area</button>
+            <button onClick={viewOtherListings}>Check out wishlists in your area</button>
         </section>
     )
 }

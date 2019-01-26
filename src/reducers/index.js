@@ -32,12 +32,15 @@ const dummyState = {
         {
             title: `Ikea Billy Bookcase`,
             description: `White bookcase, like new condition`,
-            price: 70
+            price: 70,
+            owner: 'user1'
+
         },
         {
             title: `Step-Ladder`,
             description: `3 step stepladder`,
-            price: 0
+            price: 0,
+            owner: 'someOtherUser'
         }
     ],
     otherWishLists: [
@@ -60,12 +63,12 @@ export const appReducer = (state=dummyState, action) => {
         })
     }
     if (action.type === CHANGE_PAGE) {
-        if (action.currentPage === 'dashboard'){
-            action.navLinks = ['Logout'];
-            action.headingType = 'dashboard-header';
-        } else if (action.currentPage === 'landing'){
+        if (action.currentPage === 'landing'){
             action.navLinks = ['Login', 'Signup'];
             action.headingType = 'landing-header';
+        } else {
+            action.navLinks = ['Logout'];
+            action.headingType = 'dashboard-header';
         }
         return Object.assign({}, state, {
             currentPage: action.currentPage,
