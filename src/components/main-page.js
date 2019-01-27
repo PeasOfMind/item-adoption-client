@@ -6,6 +6,8 @@ import Nav from './nav';
 import LandingPage from './landing-page';
 import Dashboard from './dashboard';
 import OtherListings from './other-listings';
+import OtherWishlists from './other-wishlists';
+import Login from './login';
 
 import './main-page.css';
 
@@ -21,6 +23,8 @@ export function MainPage(props){
                 <Route exact path="/" component={LandingPage}/>
                 <Route path="/dashboard" component={Dashboard}/>
                 <Route path="/otherlistings" component={OtherListings}/>
+                <Route path="/otherwishlists" component={OtherWishlists}/>
+                <Route path="/login" component={Login}/>
             </Switch>
             <footer>Created by PeasofMind</footer>
             </div>

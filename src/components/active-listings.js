@@ -27,12 +27,12 @@ export function ActiveListings(props){
         props.dispatch(changeAddListingStatus());
     }
 
-    const viewOtherListings = () => {
-        props.dispatch(changePage("otherListings"));
+    const viewOtherWishlists = () => {
+        props.dispatch(changePage("otherwishlists"));
     }
 
-    if(props.currentPage === "otherlistings"){
-        return <Redirect to="/otherlistings"/>
+    if(props.currentPage === "otherwishlists"){
+        return <Redirect to="/otherwishlists"/>
     }
 
     if (props.itemListings.length === 0){
@@ -69,14 +69,15 @@ export function ActiveListings(props){
             <h2>Active Listings</h2>
             {listings}
             {addListingText}
-            <button onClick={viewOtherListings}>Check out wishlists in your area</button>
+            <button onClick={viewOtherWishlists}>See what other people are looking for in your area</button>
         </section>
     )
 }
 
 const mapStateToProps = state => ({
     itemListings: state.app.itemListings,
-    addingListing: state.app.addingListing
+    addingListing: state.app.addingListing,
+    currentPage: state.app.currentPage
 })
 
 export default connect(mapStateToProps)(ActiveListings);

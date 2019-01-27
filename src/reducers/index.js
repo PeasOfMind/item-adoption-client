@@ -44,8 +44,14 @@ const dummyState = {
         }
     ],
     otherWishLists: [
-        {user1: ['Blender', 'Couch', 'Acoustic Guitar']},
-        {someOtherUser: ['Floor lamp', 'Coffee Table']}
+        {   
+            username: 'user1',
+            wishlist: ['Blender', 'Couch', 'Acoustic Guitar']
+        },
+        {
+            username: 'someOtherUser',
+            wishlist: ['Floor lamp', 'Coffee Table']
+        }
     ]
 }
 
@@ -63,7 +69,7 @@ export const appReducer = (state=dummyState, action) => {
         })
     }
     if (action.type === CHANGE_PAGE) {
-        if (action.currentPage === 'landing'){
+        if (action.currentPage === 'landing' || action.currentPage === 'login'){
             action.navLinks = ['Login', 'Signup'];
             action.headingType = 'landing-header';
         } else {

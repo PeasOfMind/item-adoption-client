@@ -1,7 +1,8 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import {deleteFromWishlist, toggleEditWishlist, changeWishlistStatus} from '../actions';
+import {deleteFromWishlist, toggleEditWishlist, changeWishlistStatus, changePage} from '../actions';
 import WishlistForm from './wishlist-form';
 
 import './wishlist.css';
@@ -18,6 +19,14 @@ export function WishList(props){
     
     const handleChange = () => {
         props.dispatch(changeWishlistStatus());
+    }
+
+    const viewOtherListings = () => {
+        props.dispatch(changePage("otherlistings"));
+    }
+
+    if(props.currentPage === "otherlistings"){
+        return <Redirect to="/otherlistings"/>
     }
 
     let wishListItems, addWishlistText;
@@ -56,14 +65,15 @@ export function WishList(props){
         <h2>Wishlist</h2>
         <ul className="item-wish-list">{wishListItems}</ul>
         {addWishlistText}
-        <button>Look for active listings in your area</button>
+        <button onClick={viewOtherListings}>See what other people are selling in your area</button>
         </section>
     )
 }
 
 const mapStateToProps = state => ({
     addingWishlistItem: state.app.addingWishlistItem,
-    wishListArray: state.app.wishListArray
+    wishListArray: state.app.wishListArray,
+    currentPage: state.app.currentPage
 })
 
 export default connect(mapStateToProps)(WishList);
