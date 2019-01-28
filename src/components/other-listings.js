@@ -3,6 +3,7 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import {changePage} from '../actions';
+import './other-listings.css';
 
 export function OtherListings(props){
 
@@ -31,6 +32,7 @@ export function OtherListings(props){
     })
     return (
         <section className="listings-in-area">
+            <h2>Listings In Your Area</h2>
             {listingsText}
             <button onClick={handleChangePage}>Back to Dashboard</button>
         </section>

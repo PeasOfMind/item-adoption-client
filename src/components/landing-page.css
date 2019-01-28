@@ -13,7 +13,22 @@ p {
     line-height: 1.2;
 }
 
-.app-description {
+button {
+    border: none;
+}
+
+.facts-container {
+    background-color: black;
+    color: white;
+    padding-bottom: 0.8em;
+}
+
+/* .app-description {
     background-color: darkgrey;
     color: white;
+} */
+
+.direct-to-signup {
+    display: flex;
+    justify-content: center;
 }

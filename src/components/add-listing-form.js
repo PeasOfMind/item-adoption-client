@@ -24,8 +24,6 @@ export function AddListingForm(props){
         let validators = [required, nonEmpty];
         if (field === 'Price'){
             fieldType = "number";
-            //removes the nonEmpty validator
-            validators.pop();
         }
         return(
             <Field
