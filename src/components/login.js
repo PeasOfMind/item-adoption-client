@@ -2,10 +2,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {changeFormType} from '../actions';
-import { UserForm } from './user-form';
+import UserForm from './user-form';
 
 export function Login(props){
-    
+    console.log(props);
     let switchFormText, switchFormValue;
     if (props.formType === "Signup"){
         switchFormText = "Already have an account?";

@@ -38,6 +38,7 @@ export function UserForm(props){
     }
 
     const {pristine, submitting, handleSubmit} = props;
+    console.log(props)
 
     if(props.currentPage === "dashboard"){
         return <Redirect to="/dashboard" />
@@ -45,7 +46,7 @@ export function UserForm(props){
 
     return(
         <section className="form-container">
-            <form id={formId} onSubmit={handleSubmit(onSubmit())}>
+            <form id={formId} onSubmit={handleSubmit(onSubmit)}>
                 <h3>{formTitle}</h3>
                 <Field
                     name="username"

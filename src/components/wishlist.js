@@ -36,6 +36,7 @@ export function WishList(props){
         wishListItems = props.wishListArray.map((item, index) => {
             if (item.editing) {
                 const formId = `edit-wishlist-${index}`;
+                //When adding backend, change the formId to reference the wishlist ID from the database
                 return (
                     <li className="wish-item" key={index} >
                         <WishlistForm index={index} form={formId} />
