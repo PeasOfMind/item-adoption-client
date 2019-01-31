@@ -5,3 +5,54 @@ input, button {
 button {
     margin: 0.2em 0;
 }
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-form-title {
+    text-align: center;
+}
+
+.form-input {
+    padding-bottom: 0.5em;
+}
+
+.form-input > input{
+    flex-grow: 1;
+    width: 100%;
+    font-size: 1em;
+    padding: 0.5em 0.3em;
+    border: none;
+    background: #dfe2e2;
+    border-radius: 3px;
+}
+
+.form-input > input:focus{
+    background: white;
+}
+
+.form-input > label{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2em 0;
+}
+
+.user-form > button {
+    font-size: 1em;
+    padding: 1em;
+    background-color: #3c415e;
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+.user-form > button:hover {
+    background-color: #1cb3c8;
+}
+
+.form-error {
+    display: inline-block;
+    color: red;
+}

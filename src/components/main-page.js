@@ -17,7 +17,7 @@ export function MainPage(props){
             <div className="app">
             <Nav />
             <header className={props.headingType}>
-                <h1>Item Adoption</h1>
+                <h1>item adoption</h1>
             </header>
             <Switch>
                 <Route exact path="/" component={LandingPage}/>

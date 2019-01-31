@@ -3,7 +3,7 @@ nav {
     top: 0;
     left: 0;
     right: 0;
-    background-color: black;
+    background-color: #3c415e;
     z-index: 1;
 }
 
@@ -20,6 +20,11 @@ nav {
     padding-bottom: 0.7em;
 }
 
-.nav-link:hover, .nav-link:focus  {
-    background-color: darkgrey;
+.nav-link > a {
+    color: #dfe2e2;
+    text-decoration: none;
+}
+
+.nav-link > a:hover, .nav-link > a:focus  {
+    color: #1cb3c8;
 }

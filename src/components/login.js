@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import {changeFormType} from '../actions';
 import UserForm from './user-form';
+import './login.css';
 
 export function Login(props){
     console.log(props);
@@ -16,11 +17,11 @@ export function Login(props){
     }
 
     return(
-        <main>
+        <main className="login-container">
             <UserForm />
             <section className="switch-forms">
             {switchFormText}
-            <button type="button" onClick={() => props.dispatch(changeFormType())}>{switchFormValue}</button>
+            <button className="switch-form-button" type="button" onClick={() => props.dispatch(changeFormType())}>{switchFormValue}</button>
             </section>
         </main>
     )

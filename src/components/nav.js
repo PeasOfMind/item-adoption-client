@@ -11,22 +11,26 @@ export function Nav(props){
     const handleOnClick = link => {
         if (link === "Logout") {
             props.dispatch(changePage("landing"))
-        } else props.dispatch(changeFormType(link));
+        } else {
+            props.dispatch(changeFormType(link));
+        }
     }
 
     const navLinks = props.navLinks.map((link, index) => {
         if (link === "Logout") {
             return (
-            <li key={index} className="nav-link" aria-label={link} tabIndex="0" onClick={() => handleOnClick(link)}>
-            <Link to="/">
-                {link}
-            </Link>
-                </li>
+            <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
+                <Link to="/">
+                    {link}
+                </Link>
+            </li>
             )
         }
         return (
-        <li key={index} className="nav-link" aria-label={link} tabIndex="0" onClick={() => handleOnClick(link)}>
-            {link}
+        <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
+            <Link to="/login">
+                {link}
+            </Link>
         </li>
     )});
 

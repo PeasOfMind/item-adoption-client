@@ -19,16 +19,30 @@ button {
 
 .facts-container {
     background-color: black;
-    color: white;
+    color: #dfe2e2;
     padding-bottom: 0.8em;
+    text-align: center;
 }
 
-/* .app-description {
-    background-color: darkgrey;
-    color: white;
-} */
+.app-description {
+    text-align: center;
+    color: #3c415e;
+}
 
 .direct-to-signup {
     display: flex;
     justify-content: center;
+}
+
+#button-to-signup {
+    border: none;
+    border-radius: 5px;
+    background-color: #3c415e;
+    color: white;
+    font-size: 1em;
+    padding: 0.8em 1em;
+}
+
+#button-to-signup:hover, #button-to-signup:focus {
+    background-color: #738598;
 }

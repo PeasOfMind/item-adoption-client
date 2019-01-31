@@ -46,8 +46,8 @@ export function UserForm(props){
 
     return(
         <section className="form-container">
-            <form id={formId} onSubmit={handleSubmit(onSubmit)}>
-                <h3>{formTitle}</h3>
+            <form id={formId} onSubmit={handleSubmit(onSubmit)} className="user-form">
+                <h3 className="user-form-title">{formTitle}</h3>
                 <Field
                     name="username"
                     label="Username"
