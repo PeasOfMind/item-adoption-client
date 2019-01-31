@@ -6,6 +6,8 @@ import Input from './input';
 import { toggleEditListing, updateListing } from '../actions';
 import {required, nonEmpty} from '../validators';
 
+import './listing-form.css';
+
 export class ListingForm extends React.Component {
     constructor(props) {
         super(props);

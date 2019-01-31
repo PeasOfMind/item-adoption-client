@@ -5,6 +5,8 @@ import {reduxForm, Field, change} from 'redux-form';
 import {updateWishlistItem, toggleEditWishlist, addWishlistItem} from '../actions';
 import {required, nonEmpty} from '../validators';
 
+import './wishlist-form.css'
+
 export class WishlistForm extends React.Component {
     constructor(props){
         super(props);

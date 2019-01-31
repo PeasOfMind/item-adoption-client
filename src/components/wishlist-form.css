@@ -1,0 +1,13 @@
+.wishlist-form {
+    font-size: 0.9em;
+}
+
+.wishlist-form > button, .cancel-add {
+    border: none;
+    background-color: #3c415e;
+    border-radius: 3px;
+    color: #dfe2e2;
+    margin-left: 0.3em;
+    font-size: 0.9em;
+    padding: 0.3em 0.5em;
+}

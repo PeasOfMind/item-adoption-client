@@ -1,7 +1,25 @@
+.listings-in-area {
+    background: #738598;
+    color: white;
+}
+
+.listings-in-area > button, .other-listing > button {
+    border: none;
+    font-size: 0.8em;
+    padding: 0.3em 0.5em;
+    border-radius: 3px;
+}
+
 .other-listing {
-    background: darkgrey;
+    /* background: darkgrey; */
     color: white;
     margin: 1em 0;
     padding: 0.5em;
-    border-radius: 5px;
+    border-radius: 3px;
+    border: 2px solid #3c415e;
+}
+
+.other-listing > p {
+    font-size: 0.9em;
+    margin-bottom: 0.3em;
 }

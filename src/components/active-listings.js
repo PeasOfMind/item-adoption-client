@@ -63,14 +63,14 @@ export function ActiveListings(props){
 
     if (props.addingListing){
         addListingText = <AddListingForm />
-    } else addListingText = <button onClick={handleAdd}>Add a listing</button>
+    } else addListingText = <button onClick={handleAdd}>Add a Listing</button>
 
     return(
         <section className="active-listings">
             <h2>Active Listings</h2>
             {listings}
             {addListingText}
-            <button onClick={viewOtherWishlists}>See what other people are looking for in your area</button>
+            <button onClick={viewOtherWishlists}>See What Others Are Looking For</button>
         </section>
     )
 }

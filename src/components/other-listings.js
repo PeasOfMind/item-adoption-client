@@ -26,7 +26,7 @@ export function OtherListings(props){
                 <p>Description: {item.description}</p>
                 <p>Price: {price}</p>
                 <p>Owned By: {item.owner}</p>
-                <button>Contact Owner About This Item</button>
+                {/* <button>Contact Owner About This Item</button> */}
             </article>
         )
     })

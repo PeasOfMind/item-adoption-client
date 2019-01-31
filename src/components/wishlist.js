@@ -45,9 +45,9 @@ export function WishList(props){
             }
             return (
                 <li className="wish-item" key={index} index={index}>
-                    {item.name}
-                    <button className="edit-wish-item" onClick={() => handleEdit(index)}>Edit</button>
-                    <button className="delete-wish-item" onClick={() => handleDelete(index)}>Delete</button>
+                <button className="edit-wish-item" onClick={() => handleEdit(index)}>Edit</button>
+                <button className="delete-wish-item" onClick={() => handleDelete(index)}>Delete</button>
+                {item.name}
                 </li>
             )
         });
@@ -57,7 +57,7 @@ export function WishList(props){
         addWishlistText = (
             <section>
                 <WishlistForm form="add-wishlist-item"/>
-                <button type="button" onClick={handleChange}>Cancel</button>
+                <button type="button" className="cancel-add" onClick={handleChange}>Cancel</button>
             </section>);
     } else addWishlistText=<button type="button" onClick={handleChange}>Add to wishlist</button>;
 
@@ -66,7 +66,7 @@ export function WishList(props){
         <h2>Wishlist</h2>
         <ul className="item-wish-list">{wishListItems}</ul>
         {addWishlistText}
-        <button onClick={viewOtherListings}>See what other people are selling in your area</button>
+        <button onClick={viewOtherListings}>See What Others Are Selling</button>
         </section>
     )
 }

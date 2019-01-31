@@ -22,13 +22,13 @@ export function OtherWishlists(props){
             <article className="other-wishlist" key={index}>
                 <h3>{userInfo.username}</h3>
                 <ul>{wishlist}</ul>
-                <button>Let this user know you have something they may be interested in</button>
+                {/* <button>Let this user know you have something they may be interested in</button> */}
             </article>
         )
     })
 
     return (
-        <section>
+        <section className="wishlists-in-area">
             <h2>What Other Users Are Looking For</h2>
             {wishlistsText}
             <button onClick={handleChangePage}>Back to Dashboard</button>

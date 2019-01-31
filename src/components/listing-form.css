@@ -1,0 +1,13 @@
+.item-form {
+    font-size: 0.9em;
+}
+.item-form > button {
+    border: none;
+    background-color: #3c415e;
+    border-radius: 3px;
+    color: #dfe2e2;
+    margin-right: 0.2em;
+    font-size: 0.9em;
+    padding: 0.3em 0.5em;
+}
+

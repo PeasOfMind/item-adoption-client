@@ -1,3 +1,25 @@
 .wish-item {
     margin: 0.3em 0;
+    font-size: 0.9em;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.wish-item > button {
+    border: none;
+    background-color: white;
+    text-decoration: underline;
+    font-size: 0.9em;
+    align-self: flex-end;
+}
+
+.wish-list > button {
+    border: none;
+    background-color: #3c415e;
+    border-radius: 3px;
+    color: #dfe2e2;
+    margin-right: 0.2em;
+    font-size: 0.8em;
+    padding: 0.3em 0.5em;
 }

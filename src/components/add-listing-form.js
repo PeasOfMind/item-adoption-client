@@ -5,6 +5,8 @@ import Input from './input';
 import { addListing, changeAddListingStatus } from '../actions';
 import {required, nonEmpty} from '../validators';
 
+import './add-listing-form.css'
+
 export function AddListingForm(props){
 
     const onSubmit = values => {

@@ -6,10 +6,9 @@ h3 {
 p {
     line-height: 1.2;
 }
-
 .active-listings {
-    background: darkgrey;
-    color: white
+    background: #738598;
+    color: white;
 }
 
 .item-ad {
@@ -17,5 +16,20 @@ p {
     color: black;
     margin: 1em 0;
     padding: 0.5em;
-    border-radius: 5px;
+    border-radius: 3px;
+}
+
+.item-ad > p {
+    font-size: 0.9em;
+    margin-bottom: 0.3em;
+}
+
+.item-ad > button, .active-listings > button {
+    border: none;
+    background-color: #3c415e;
+    border-radius: 3px;
+    color: #dfe2e2;
+    margin-right: 0.2em;
+    font-size: 0.8em;
+    padding: 0.3em 0.5em;
 }

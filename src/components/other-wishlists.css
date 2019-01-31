@@ -1,7 +1,20 @@
+.wishlists-in-area {
+    background: #738598;
+    color: white;
+}
+
+.wishlists-in-area > button, .other-wishlist > button {
+    border: none;
+    font-size: 0.8em;
+    padding: 0.3em 0.5em;
+    border-radius: 3px;
+}
+
 .other-wishlist {
-    background: darkgrey;
     color: white;
     margin: 1em 0;
     padding: 0.5em;
-    border-radius: 5px;
+    border-radius: 3px;
+    border: 2px solid #3c415e;
+    line-height: 1.2em;
 }
