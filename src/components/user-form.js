@@ -3,7 +3,7 @@ import {Redirect} from 'react-router-dom';
 import {reduxForm, Field} from 'redux-form';
 import { connect } from 'react-redux';
 
-import {changePage} from '../actions';
+import {fetchLogin} from '../actions';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
@@ -32,9 +32,12 @@ export function UserForm(props){
         submitText = "Login to Account";
     }
 
-    const onSubmit = () => {
+    const onSubmit = values => {
         console.log('submitting...')
-        props.dispatch(changePage("dashboard"));
+        props.dispatch(fetchLogin({
+            username: values.username,
+            password: values.password
+        }));
     }
 
     const {pristine, submitting, handleSubmit} = props;
