@@ -1,34 +1,37 @@
+import {SubmissionError} from 'redux-form';
+
 import {API_BASE_URL} from '../config';
+import {normalizeResponseErrors} from './utils';
 
 const user = {
     username: null,
     authToken: null
 }
 
-export const fetchLogin = loginInfo => dispatch => {
-    fetch(`${API_BASE_URL}/users`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-            "Content-Type": "application/json; charset=utf-8"
-        },
-        body: JSON.stringify(loginInfo)
-    })
-    .then(response => {
-        if (!response.ok) {
-            return Promise.reject(response.statusText);
-        }
-        return response.json();
-    })
-    .then(userInfo => {
-        user.authToken = userInfo.authToken;
-        user.username = userInfo.username;
-        dispatch(changePage("dashboard"));
-    })
-    .catch(err => {
-        dispatch(fetchLoginError(err));
-    })
-}
+// export const fetchLogin = loginInfo => dispatch => {
+//     fetch(`${API_BASE_URL}/users`, {
+//         method: "POST",
+//         mode: "cors",
+//         headers: {
+//             "Content-Type": "application/json; charset=utf-8"
+//         },
+//         body: JSON.stringify(loginInfo)
+//     })
+//     .then(response => {
+//         if (!response.ok) {
+//             return Promise.reject(response.statusText);
+//         }
+//         return response.json();
+//     })
+//     .then(userInfo => {
+//         user.authToken = userInfo.authToken;
+//         user.username = userInfo.username;
+//         dispatch(changePage("dashboard"));
+//     })
+//     .catch(err => {
+//         dispatch(fetchLoginError(err));
+//     })
+// }
 
 export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
 export const changeFormType = formType => ({

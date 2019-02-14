@@ -1,9 +1,9 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {reduxForm, Field} from 'redux-form';
+import {reduxForm, Field, focus} from 'redux-form';
 import { connect } from 'react-redux';
 
-import {fetchLogin} from '../actions';
+import {registerUser} from '../actions/users';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
@@ -34,10 +34,15 @@ export function UserForm(props){
 
     const onSubmit = values => {
         console.log('submitting...')
-        props.dispatch(fetchLogin({
-            username: values.username,
-            password: values.password
-        }));
+        const {username, password} = values;
+        const user = {username, password};
+        if(props.formType === "Signup"){
+            props.dispatch(registerUser(user))
+            .then(() => console.log('user is registered!'));
+        }
+        // else if(props.formType === "Login"){
+        //     props.dispatch(fetchLogin(user));
+        // }
     }
 
     const {pristine, submitting, handleSubmit} = props;
@@ -82,4 +87,7 @@ const mapStateToProps = state => ({
 
 const connectedUserForm = connect(mapStateToProps)(UserForm);
 
-export default reduxForm({form: 'user'})(connectedUserForm);
+export default reduxForm({
+    form: 'user',
+    onSubmitFail: (errors, dispatch) => dispatch(focus('user', Object.keys(errors)[0]))
+})(connectedUserForm);
