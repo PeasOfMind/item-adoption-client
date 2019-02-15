@@ -2,7 +2,7 @@ import React from 'react';
 import {reduxForm, Field} from 'redux-form';
 
 import Input from './input';
-import { addListing, changeAddListingStatus } from '../actions';
+import { postListing, changeAddListingStatus } from '../actions';
 import {required, nonEmpty} from '../validators';
 
 import './add-listing-form.css'
@@ -10,8 +10,10 @@ import './add-listing-form.css'
 export function AddListingForm(props){
 
     const onSubmit = values => {
-        values.price = parseInt(values.price, 10);
-        props.dispatch(addListing(values.title, values.description, values.price ));
+        let {title, description, price, zipcode} = values;
+        price = parseInt(price, 10);
+        zipcode = parseInt(zipcode, 10);
+        props.dispatch(postListing({title, description, price, zipcode}));
     }
 
     const handleClick = () => {
@@ -21,10 +23,10 @@ export function AddListingForm(props){
     const {handleSubmit, pristine, submitting} = props;
 
 
-    const allFields = ['Title', 'Description', 'Price'].map((field, key) => {
+    const allFields = ['Title', 'Description', 'Price', 'Zipcode'].map((field, key) => {
         let fieldType = "text";
         let validators = [required, nonEmpty];
-        if (field === 'Price'){
+        if (field === 'Price' || field === 'Zipcode'){
             fieldType = "number";
         }
         return(
@@ -47,7 +49,7 @@ export function AddListingForm(props){
                 <button 
                     type="submit"
                     disabled={pristine || submitting}
-                    >Submit New Listing</button>
+                    >Submit A New Listing</button>
                 <button 
                     type="reset"
                     onClick={handleClick}

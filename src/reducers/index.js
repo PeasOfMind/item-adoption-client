@@ -1,4 +1,4 @@
-import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING, UPDATE_LISTING, RENEW_LISTING, ADD_LISTING, CHANGE_ADD_LISTING_STATUS, DELETE_FROM_WISHLIST, TOGGLE_EDIT_WISHLIST, DELETE_LISTING, UPDATE_WISHLIST_ITEM, ADD_WISHLIST_ITEM, CHANGE_WISHLIST_STATUS, FETCH_LISTINGS_SUCCESS, FETCH_LISTINGS_ERROR, FETCH_WISHLIST_SUCCESS, FETCH_WISHLIST_ERROR} from '../actions';
+import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING, UPDATE_LISTING, RENEW_LISTING, ADD_LISTING, CHANGE_ADD_LISTING_STATUS, DELETE_FROM_WISHLIST, TOGGLE_EDIT_WISHLIST, DELETE_LISTING, UPDATE_WISHLIST_ITEM, ADD_WISHLIST_ITEM, CHANGE_WISHLIST_STATUS, FETCH_LISTINGS_SUCCESS, FETCH_LISTINGS_ERROR, FETCH_WISHLIST_SUCCESS, FETCH_WISHLIST_ERROR, POST_LISTING_SUCCESS, POST_LISTING_ERROR} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -7,13 +7,10 @@ const dummyState = {
     currentPage: 'landing',
     itemListings: [],
     listingsError: null,
+    postListingError: null,
     addingListing: false,
     addingWishlistItem: false,
-    wishlist: [
-        {name: 'iPhone 8 or up', editing: false}, 
-        {name: 'Macbook charger', editing: false}, 
-        {name: 'Sandals in size 5 womens', editing: false}
-    ],
+    wishlist: [],
     wishlistError: null,
     otherListingsInArea: [
         {
@@ -57,7 +54,6 @@ export const appReducer = (state=dummyState, action) => {
     }
 
     else if (action.type === FETCH_WISHLIST_SUCCESS){
-        console.log('the action.wishlist is:', action.wishlist)
         return Object.assign({}, state, {
             wishlist: action.wishlist,
             wishlistError: null
@@ -67,6 +63,19 @@ export const appReducer = (state=dummyState, action) => {
     else if (action.type === FETCH_WISHLIST_ERROR){
         return Object.assign({}, state, {
             wishlistError: action.error
+        })
+    }
+
+    else if (action.type === POST_LISTING_SUCCESS){
+        return Object.assign({}, state, {
+            addingListing: false,
+            itemListings: [...state.itemListings, action.listing]
+        })
+    }
+
+    else if (action.type === POST_LISTING_ERROR){
+        return Object.assign({}, state, {
+            postListingError: action.error
         })
     }
 
