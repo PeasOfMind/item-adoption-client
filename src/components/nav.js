@@ -8,6 +8,11 @@ import './nav.css'
 
 export function Nav(props){
 
+    let linkArray;
+    if (props.loggedIn) {
+        linkArray = ["Logout"];
+    } else linkArray = ["Login", "Signup"];
+
     const handleOnClick = link => {
         if (link === "Logout") {
             props.dispatch(changePage("landing"))
@@ -16,7 +21,7 @@ export function Nav(props){
         }
     }
 
-    const navLinks = props.navLinks.map((link, index) => {
+    const navLinks = linkArray.map((link, index) => {
         if (link === "Logout") {
             return (
             <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
@@ -45,7 +50,7 @@ export function Nav(props){
 
 const mapStateToProps = state => ({
     navLinks: state.app.navLinks,
-    currentPage: state.app.currentPage
+    loggedIn: state.auth.currentUser !== null
 })
 
 export default connect(mapStateToProps)(Nav);

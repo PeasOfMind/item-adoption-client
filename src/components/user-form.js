@@ -4,6 +4,7 @@ import {reduxForm, Field, focus} from 'redux-form';
 import { connect } from 'react-redux';
 
 import {registerUser} from '../actions/users';
+import {login} from '../actions/auth';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
@@ -40,15 +41,15 @@ export function UserForm(props){
             props.dispatch(registerUser(user))
             .then(() => console.log('user is registered!'));
         }
-        // else if(props.formType === "Login"){
-        //     props.dispatch(fetchLogin(user));
-        // }
+        else if(props.formType === "Login"){
+            props.dispatch(login(user));
+        }
     }
 
     const {pristine, submitting, handleSubmit} = props;
     console.log(props)
 
-    if(props.currentPage === "dashboard"){
+    if(props.loggedIn){
         return <Redirect to="/dashboard" />
     }
 
@@ -82,7 +83,7 @@ export function UserForm(props){
 
 const mapStateToProps = state => ({
     formType: state.app.formType,
-    currentPage: state.app.currentPage
+    loggedIn: state.auth.currentUser !== null
 })
 
 const connectedUserForm = connect(mapStateToProps)(UserForm);

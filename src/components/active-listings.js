@@ -67,7 +67,7 @@ export function ActiveListings(props){
 
     return(
         <section className="active-listings">
-            <h2>Active Listings</h2>
+            <h2>Active Listings for {props.username}</h2>
             {listings}
             {addListingText}
             <button onClick={viewOtherWishlists}>See What Others Are Looking For</button>
@@ -76,6 +76,7 @@ export function ActiveListings(props){
 }
 
 const mapStateToProps = state => ({
+    username: state.auth.currentUser,
     itemListings: state.app.itemListings,
     addingListing: state.app.addingListing,
     currentPage: state.app.currentPage
