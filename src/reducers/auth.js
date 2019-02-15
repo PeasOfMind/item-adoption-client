@@ -2,7 +2,8 @@ import {
     AUTH_REQUEST, 
     SET_AUTH_TOKEN,
     AUTH_SUCCESS,
-    AUTH_ERROR
+    AUTH_ERROR,
+    CLEAR_AUTH
 } from '../actions/auth';
 
 const initialState = {
@@ -17,6 +18,12 @@ export default function authReducer(state = initialState, action){
         return Object.assign({}, state, {
             authToken: action.authToken
         });
+    }
+    else if (action.type === CLEAR_AUTH) {
+        return Object.assign({}, state, {
+            authToken: null,
+            currentUser: null
+        })
     }
     else if (action.type === AUTH_REQUEST) {
         return Object.assign({}, state, {

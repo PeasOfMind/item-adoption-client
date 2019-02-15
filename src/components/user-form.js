@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import {registerUser} from '../actions/users';
 import {login} from '../actions/auth';
+import {fetchListings, fetchWishlist} from '../actions';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
@@ -50,6 +51,8 @@ export function UserForm(props){
     console.log(props)
 
     if(props.loggedIn){
+        props.dispatch(fetchListings());
+        props.dispatch(fetchWishlist());
         return <Redirect to="/dashboard" />
     }
 

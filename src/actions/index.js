@@ -1,37 +1,83 @@
-import {SubmissionError} from 'redux-form';
-
 import {API_BASE_URL} from '../config';
 import {normalizeResponseErrors} from './utils';
 
-const user = {
-    username: null,
-    authToken: null
+export const FETCH_LISTINGS_SUCCESS = 'FETCH_LISTINGS_SUCCESS';
+export const fetchListingsSuccess = listings => ({
+    type: FETCH_LISTINGS_SUCCESS,
+    listings
+});
+
+export const FETCH_LISTINGS_ERROR = 'FETCH_LISTINGS_ERROR';
+export const fetchListingsError = error => ({
+    type: FETCH_LISTINGS_ERROR,
+    listingsError: error
+});
+
+export const fetchListings = () => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchListingsSuccess(resJson.listings));
+    })
+    .catch(err => {
+        dispatch(fetchListingsError(err));
+    });
 }
 
-// export const fetchLogin = loginInfo => dispatch => {
-//     fetch(`${API_BASE_URL}/users`, {
-//         method: "POST",
-//         mode: "cors",
-//         headers: {
-//             "Content-Type": "application/json; charset=utf-8"
-//         },
-//         body: JSON.stringify(loginInfo)
-//     })
-//     .then(response => {
-//         if (!response.ok) {
-//             return Promise.reject(response.statusText);
-//         }
-//         return response.json();
-//     })
-//     .then(userInfo => {
-//         user.authToken = userInfo.authToken;
-//         user.username = userInfo.username;
-//         dispatch(changePage("dashboard"));
-//     })
-//     .catch(err => {
-//         dispatch(fetchLoginError(err));
-//     })
-// }
+export const FETCH_WISHLIST_SUCCESS = 'FETCH_WISHLIST_SUCCESS';
+export const fetchWishlistSuccess = wishlist => ({
+    type: FETCH_WISHLIST_SUCCESS,
+    wishlist
+});
+
+export const FETCH_WISHLIST_ERROR = 'FETCH_WISHLIST_ERROR';
+export const fetchWishlistError = error => ({
+    type: FETCH_WISHLIST_ERROR,
+    wishlistError: error
+});
+
+export const fetchWishlist = () => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchWishlistSuccess(resJson.wishlist));
+    })
+    .catch(err => {
+        dispatch(fetchWishlistError(err));
+    });
+}
+
+export const postListing = () => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist`, {
+        method: 'GET',
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchWishlistSuccess(resJson.wishlist));
+    })
+    .catch(err => {
+        dispatch(fetchWishlistError(err));
+    });
+}
 
 export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
 export const changeFormType = formType => ({
@@ -45,26 +91,6 @@ export const changePage = currentPage =>  ({
     currentPage
 })
 
-// export const fetchListings = () => dispatch => {
-//     fetch(`${API_BASE_URL}/lists/listings`, {
-//         headers: {
-//             'Authorization': `Bearer ${user.authToken}`
-//         }
-//     })
-//     .then(response => {
-//         if(!response.ok){
-//             return Promise.reject(res.statusText);
-//         }
-//         return res.json();
-//     })
-//     .then(listings => {
-//         dispatch(fetchListingsSuccess(listings));
-//     })
-//     .catch(err => {
-//         dispatch(fetchListingsError(err));
-//     });
-
-// }
 
 export const TOGGLE_EDIT_LISTING = 'TOGGLE_EDIT_LISTING';
 export const toggleEditListing = listingIndex => ({

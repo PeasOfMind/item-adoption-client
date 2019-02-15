@@ -36,7 +36,7 @@ export function ActiveListings(props){
     }
 
     if (props.itemListings.length === 0){
-        listings = <p>You don't have any active listings. Do you want to get rid of any items?</p>
+        listings = <p>You don't have any active listings. Do you want to put up any items for adoption?</p>
     } else {
         listings = props.itemListings.map((item, index) => {
             let renewButton = '';

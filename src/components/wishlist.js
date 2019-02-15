@@ -30,10 +30,10 @@ export function WishList(props){
     }
 
     let wishListItems, addWishlistText;
-    if (props.wishListArray.length === 0){
+    if (props.wishlist.length === 0){
         wishListItems = <p>You don't have any items on your wishlist. Do you want to add something?</p>
     } else {
-        wishListItems = props.wishListArray.map((item, index) => {
+        wishListItems = props.wishlist.map((item, index) => {
             if (item.editing) {
                 const formId = `edit-wishlist-${index}`;
                 //When adding backend, change the formId to reference the wishlist ID from the database
@@ -47,7 +47,7 @@ export function WishList(props){
                 <li className="wish-item" key={index} index={index}>
                 <button className="edit-wish-item" onClick={() => handleEdit(index)}>Edit</button>
                 <button className="delete-wish-item" onClick={() => handleDelete(index)}>Delete</button>
-                {item.name}
+                {item.title}
                 </li>
             )
         });
@@ -73,7 +73,7 @@ export function WishList(props){
 
 const mapStateToProps = state => ({
     addingWishlistItem: state.app.addingWishlistItem,
-    wishListArray: state.app.wishListArray,
+    wishlist: state.app.wishlist,
     currentPage: state.app.currentPage
 })
 

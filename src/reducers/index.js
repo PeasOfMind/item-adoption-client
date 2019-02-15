@@ -1,33 +1,20 @@
-import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING, UPDATE_LISTING, RENEW_LISTING, ADD_LISTING, CHANGE_ADD_LISTING_STATUS, DELETE_FROM_WISHLIST, TOGGLE_EDIT_WISHLIST, DELETE_LISTING, UPDATE_WISHLIST_ITEM, ADD_WISHLIST_ITEM, CHANGE_WISHLIST_STATUS} from '../actions';
+import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING, UPDATE_LISTING, RENEW_LISTING, ADD_LISTING, CHANGE_ADD_LISTING_STATUS, DELETE_FROM_WISHLIST, TOGGLE_EDIT_WISHLIST, DELETE_LISTING, UPDATE_WISHLIST_ITEM, ADD_WISHLIST_ITEM, CHANGE_WISHLIST_STATUS, FETCH_LISTINGS_SUCCESS, FETCH_LISTINGS_ERROR, FETCH_WISHLIST_SUCCESS, FETCH_WISHLIST_ERROR} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
     formType: 'Signup',
     headingType: 'landing-header',
     currentPage: 'landing',
-    itemListings: [
-        {
-            title: `TV - 32" with stand and mounting equipment`,
-            description: `Sony branded smart tv. Comes with screws for mounting into the wall and free chromecast.`,
-            price: 100,
-            expiresIn: 10,
-            editing: false
-        },
-        {
-            title: `Blendtec Blender`,
-            description: `Great blender only 2 years old. Still has 6 years left on warranty.`,
-            price: 50,
-            expiresIn: 5,
-            editing: false
-        },
-    ],
+    itemListings: [],
+    listingsError: null,
     addingListing: false,
     addingWishlistItem: false,
-    wishListArray: [
+    wishlist: [
         {name: 'iPhone 8 or up', editing: false}, 
         {name: 'Macbook charger', editing: false}, 
         {name: 'Sandals in size 5 womens', editing: false}
     ],
+    wishlistError: null,
     otherListingsInArea: [
         {
             title: `Ikea Billy Bookcase`,
@@ -56,7 +43,34 @@ const dummyState = {
 }
 
 export const appReducer = (state=dummyState, action) => {
-    if (action.type === CHANGE_FORM_TYPE) {
+    if (action.type === FETCH_LISTINGS_SUCCESS){
+        return Object.assign({}, state, {
+            itemListings: action.listings,
+            listingsError: null
+        })
+    }
+
+    else if (action.type === FETCH_LISTINGS_ERROR){
+        return Object.assign({}, state, {
+            listingsError: action.error
+        })
+    }
+
+    else if (action.type === FETCH_WISHLIST_SUCCESS){
+        console.log('the action.wishlist is:', action.wishlist)
+        return Object.assign({}, state, {
+            wishlist: action.wishlist,
+            wishlistError: null
+        })
+    }
+
+    else if (action.type === FETCH_WISHLIST_ERROR){
+        return Object.assign({}, state, {
+            wishlistError: action.error
+        })
+    }
+
+    else if (action.type === CHANGE_FORM_TYPE) {
         if (!action.formType){
             if (state.formType === 'Login'){
                 action.formType = 'Signup';
@@ -68,7 +82,7 @@ export const appReducer = (state=dummyState, action) => {
             formType: action.formType
         })
     }
-    if (action.type === CHANGE_PAGE) {
+    else if (action.type === CHANGE_PAGE) {
         if (action.currentPage === 'landing' || action.currentPage === 'login'){
             action.navLinks = ['Login', 'Signup'];
             action.headingType = 'landing-header';
@@ -83,7 +97,7 @@ export const appReducer = (state=dummyState, action) => {
         })
     }
 
-    if (action.type === TOGGLE_EDIT_LISTING) {
+    else if (action.type === TOGGLE_EDIT_LISTING) {
         let itemListings = state.itemListings.map((listing, index) => {
             if (index !== action.listingIndex) return listing;
             return Object.assign({}, listing, {
@@ -93,7 +107,7 @@ export const appReducer = (state=dummyState, action) => {
         return Object.assign({}, state, {itemListings});
     }
 
-    if (action.type === UPDATE_LISTING) {
+    else if (action.type === UPDATE_LISTING) {
         let itemListings = state.itemListings.map((listing, index) => {
             if (index !== action.listingIndex) return listing;
             return Object.assign({}, listing, {
@@ -107,13 +121,13 @@ export const appReducer = (state=dummyState, action) => {
         return Object.assign({}, state, {itemListings});
     }
 
-    if (action.type === DELETE_LISTING){
+    else if (action.type === DELETE_LISTING){
         const itemListings = state.itemListings.slice();
         itemListings.splice(action.listingIndex, 1);
         return Object.assign({}, state, {itemListings});
     }
 
-    if (action.type === RENEW_LISTING) {
+    else if (action.type === RENEW_LISTING) {
         let itemListings = state.itemListings.map((listing, index) => {
             if (index !== action.listingIndex) return listing;
             return Object.assign({}, listing, {
@@ -124,13 +138,13 @@ export const appReducer = (state=dummyState, action) => {
         return Object.assign({}, state, {itemListings});
     }
 
-    if (action.type === CHANGE_ADD_LISTING_STATUS){
+    else if (action.type === CHANGE_ADD_LISTING_STATUS){
         return Object.assign({}, state, {
             addingListing: !state.addingListing
         });
     }
 
-    if (action.type === ADD_LISTING){
+    else if (action.type === ADD_LISTING){
         return Object.assign({}, state, {
             addingListing: false,
             itemListings: [...state.itemListings, {
@@ -143,13 +157,13 @@ export const appReducer = (state=dummyState, action) => {
         });
     }
 
-    if (action.type === DELETE_FROM_WISHLIST){
+    else if (action.type === DELETE_FROM_WISHLIST){
         const wishListArray = state.wishListArray.slice();
         wishListArray.splice(action.itemIndex, 1);
         return Object.assign({}, state, {wishListArray});
     }
 
-    if (action.type === TOGGLE_EDIT_WISHLIST){
+    else if (action.type === TOGGLE_EDIT_WISHLIST){
         let wishListArray = state.wishListArray.map((item, index) => {
             if (index !== action.itemIndex) return item;
             return Object.assign({}, item, {
@@ -159,7 +173,7 @@ export const appReducer = (state=dummyState, action) => {
         return Object.assign({}, state, {wishListArray});
     }
 
-    if (action.type === UPDATE_WISHLIST_ITEM){
+    else if (action.type === UPDATE_WISHLIST_ITEM){
         let wishListArray = state.wishListArray.map((item, index) => {
             if (index !== action.itemIndex) return item;
             return Object.assign({}, item, {
@@ -170,13 +184,13 @@ export const appReducer = (state=dummyState, action) => {
         return Object.assign({}, state, {wishListArray});
     }
 
-    if (action.type === CHANGE_WISHLIST_STATUS){
+    else if (action.type === CHANGE_WISHLIST_STATUS){
         return Object.assign({}, state, {
             addingWishlistItem: !state.addingWishlistItem
         });
     }
 
-    if (action.type === ADD_WISHLIST_ITEM){
+    else if (action.type === ADD_WISHLIST_ITEM){
         return Object.assign({}, state, {
             addingWishlistItem: false,
             wishListArray: [...state.wishListArray,{
