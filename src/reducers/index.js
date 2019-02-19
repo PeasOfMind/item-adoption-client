@@ -1,4 +1,25 @@
-import {CHANGE_FORM_TYPE, CHANGE_PAGE, TOGGLE_EDIT_LISTING, UPDATE_LISTING, RENEW_LISTING, ADD_LISTING, CHANGE_ADD_LISTING_STATUS, DELETE_FROM_WISHLIST, TOGGLE_EDIT_WISHLIST, DELETE_LISTING, UPDATE_WISHLIST_ITEM, ADD_WISHLIST_ITEM, CHANGE_WISHLIST_STATUS, FETCH_LISTINGS_SUCCESS, FETCH_LISTINGS_ERROR, FETCH_WISHLIST_SUCCESS, FETCH_WISHLIST_ERROR, POST_LISTING_SUCCESS, POST_LISTING_ERROR} from '../actions';
+import {
+    CHANGE_FORM_TYPE, 
+    CHANGE_PAGE, 
+    TOGGLE_EDIT_LISTING, 
+    UPDATE_LISTING, 
+    RENEW_LISTING, 
+    ADD_LISTING, 
+    CHANGE_ADD_LISTING_STATUS, 
+    DELETE_FROM_WISHLIST, 
+    TOGGLE_EDIT_WISHLIST, 
+    UPDATE_WISHLIST_ITEM, 
+    ADD_WISHLIST_ITEM, 
+    CHANGE_WISHLIST_STATUS, 
+    FETCH_LISTINGS_SUCCESS, 
+    FETCH_LISTINGS_ERROR, 
+    FETCH_WISHLIST_SUCCESS, 
+    FETCH_WISHLIST_ERROR, 
+    POST_LISTING_SUCCESS, 
+    POST_LISTING_ERROR, 
+    DELETE_LISTING_ERROR,
+    POST_WISHITEM_ERROR,
+    POST_WISHITEM_SUCCESS} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -8,8 +29,9 @@ const dummyState = {
     itemListings: [],
     listingsError: null,
     postListingError: null,
+    deleteListingError: null,
     addingListing: false,
-    addingWishlistItem: false,
+    addingWishItem: false,
     wishlist: [],
     wishlistError: null,
     otherListingsInArea: [
@@ -74,9 +96,22 @@ export const appReducer = (state=dummyState, action) => {
     }
 
     else if (action.type === POST_LISTING_ERROR){
+        return Object.assign({}, state, {postListingError: action.error});
+    }
+
+    else if (action.type === POST_WISHITEM_SUCCESS){
         return Object.assign({}, state, {
-            postListingError: action.error
+            addingWishItem: false,
+            wishlist: [...state.wishlist, action.wishItem]
         })
+    }
+
+    else if (action.type === POST_WISHITEM_ERROR){
+        return Object.assign({}, state, {postWishItemError: action.error});
+    }
+
+    else if (action.type === DELETE_LISTING_ERROR){
+        return Object.assign({}, state, {deleteListingError: action.error});
     }
 
     else if (action.type === CHANGE_FORM_TYPE) {
@@ -127,12 +162,6 @@ export const appReducer = (state=dummyState, action) => {
             });
         });
 
-        return Object.assign({}, state, {itemListings});
-    }
-
-    else if (action.type === DELETE_LISTING){
-        const itemListings = state.itemListings.slice();
-        itemListings.splice(action.listingIndex, 1);
         return Object.assign({}, state, {itemListings});
     }
 
@@ -195,7 +224,7 @@ export const appReducer = (state=dummyState, action) => {
 
     else if (action.type === CHANGE_WISHLIST_STATUS){
         return Object.assign({}, state, {
-            addingWishlistItem: !state.addingWishlistItem
+            addingWishItem: !state.addingWishItem
         });
     }
 

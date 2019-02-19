@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field, change} from 'redux-form';
 
-import {updateWishlistItem, toggleEditWishlist, addWishlistItem} from '../actions';
+import {updateWishlistItem, toggleEditWishlist, postWishItem} from '../actions';
 import {required, nonEmpty} from '../validators';
 
 import './wishlist-form.css'
@@ -24,7 +24,7 @@ export class WishlistForm extends React.Component {
             const index = this.props.index;
             this.props.dispatch(updateWishlistItem(values[`wishlist-item-${index}`], index));
         } else {
-            this.props.dispatch(addWishlistItem(values.newItem))
+            this.props.dispatch(postWishItem({title: values.title, zipcode: values.zipcode}))
         }
     }
 
@@ -60,8 +60,14 @@ export class WishlistForm extends React.Component {
                 <form className="wishlist-form" onSubmit={this.props.handleSubmit(values => 
                     this.onSubmit(values))}>
                         <Field 
-                            name="newItem"
+                            name="title"
                             type="text"
+                            component="input"
+                            validate={[required, nonEmpty]}
+                        />
+                        <Field 
+                            name="zipcode"
+                            type="number"
                             component="input"
                             validate={[required, nonEmpty]}
                         />

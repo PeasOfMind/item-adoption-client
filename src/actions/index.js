@@ -10,7 +10,7 @@ export const fetchListingsSuccess = listings => ({
 export const FETCH_LISTINGS_ERROR = 'FETCH_LISTINGS_ERROR';
 export const fetchListingsError = error => ({
     type: FETCH_LISTINGS_ERROR,
-    listingsError: error
+    error
 });
 
 export const fetchListings = () => (dispatch, getState) => {
@@ -40,7 +40,7 @@ export const fetchWishlistSuccess = wishlist => ({
 export const FETCH_WISHLIST_ERROR = 'FETCH_WISHLIST_ERROR';
 export const fetchWishlistError = error => ({
     type: FETCH_WISHLIST_ERROR,
-    wishlistError: error
+    error
 });
 
 export const fetchWishlist = () => (dispatch, getState) => {
@@ -70,7 +70,7 @@ export const postListingSuccess = listing => ({
 export const POST_LISTING_ERROR = 'POST_LISTING_ERROR';
 export const postListingError = error => ({
     type: POST_LISTING_ERROR,
-    postListingError: error
+    error
 });
 
 export const postListing = newListing => (dispatch, getState) => {
@@ -86,43 +86,67 @@ export const postListing = newListing => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
     .then(resJson => {
-        dispatch(fetchListings(resJson));
+        dispatch(postListingSuccess(resJson));
     })
     .catch(err => {
         dispatch(postListingError(err));
     });
 }
 
-// export const POST_WISHITEM_SUCCESS = 'POST_WISHITEM_SUCCESS';
-// export const postWishItemSuccess = wishItem => ({
-//     type: POST_WISHITEM_SUCCESS,
-//     wishItem
-// });
+export const POST_WISHITEM_SUCCESS = 'POST_WISHITEM_SUCCESS';
+export const postWishItemSuccess = wishItem => ({
+    type: POST_WISHITEM_SUCCESS,
+    wishItem
+});
 
-// export const POST_WISHITEM_ERROR = 'POST_WISHITEM_ERROR';
-// export const postWishItemError = error => ({
-//     type: POST_WISHITEM_ERROR,
-//     postWishItemError: error
-// });
+export const POST_WISHITEM_ERROR = 'POST_WISHITEM_ERROR';
+export const postWishItemError = error => ({
+    type: POST_WISHITEM_ERROR,
+    postWishItemError: error
+});
 
-// export const postWishItem = newItem => (dispatch, getState) => {
-//     const authToken = getState().auth.authToken;
-//     fetch(`${API_BASE_URL}/lists/wishlist`, {
-//         method: 'POST',
-//         headers: {
-//             Authorization: `Bearer ${authToken}`
-//         },
-//         body: JSON.stringify(newItem)
-//     })
-//     .then(res => normalizeResponseErrors(res))
-//     .then(res => res.json())
-//     .then(resJson => {
-//         dispatch(postWishItemSuccess(resJson.wishItem));
-//     })
-//     .catch(err => {
-//         dispatch(postWishItemError(err));
-//     });
-// }
+export const postWishItem = newItem => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist`, {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Bearer ${authToken}`
+        },
+        body: JSON.stringify(newItem)
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(postWishItemSuccess(resJson));
+    })
+    .catch(err => {
+        dispatch(postWishItemError(err));
+    });
+}
+
+export const DELETE_LISTING_ERROR = 'DELETE_LISTING_ERROR';
+export const deleteListingError = error => ({
+    type: DELETE_LISTING_ERROR,
+    error
+});
+
+export const deleteListing = listingId => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
+        method: 'DELETE',
+        headers: {
+            Authorization: `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(fetchListings());
+    })
+    .catch(err => {
+        dispatch(deleteListingError(err));
+    })
+}
 
 export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
 export const changeFormType = formType => ({
@@ -148,13 +172,6 @@ export const updateListing = (title, description, price, listingIndex) => ({
     title,
     description,
     price,
-    listingIndex
-});
-
-
-export const DELETE_LISTING = 'DELETE_LISTING';
-export const deleteListing = listingIndex => ({
-    type: DELETE_LISTING,
     listingIndex
 });
 

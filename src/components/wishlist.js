@@ -53,7 +53,7 @@ export function WishList(props){
         });
     }
 
-    if (props.addingWishlistItem) {
+    if (props.addingWishItem) {
         addWishlistText = (
             <section>
                 <WishlistForm form="add-wishlist-item"/>
@@ -72,7 +72,7 @@ export function WishList(props){
 }
 
 const mapStateToProps = state => ({
-    addingWishlistItem: state.app.addingWishlistItem,
+    addingWishItem: state.app.addingWishItem,
     wishlist: state.app.wishlist,
     currentPage: state.app.currentPage
 })

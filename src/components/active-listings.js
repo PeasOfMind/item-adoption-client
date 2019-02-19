@@ -19,8 +19,8 @@ export function ActiveListings(props){
         props.dispatch(toggleEditListing(index));
     }
 
-    const handleDelete = index => {
-        props.dispatch(deleteListing(index));
+    const handleDelete = listingId => {
+        props.dispatch(deleteListing(listingId));
     }
 
     const handleAdd = () => {
@@ -54,8 +54,8 @@ export function ActiveListings(props){
                 <p>Description: {item.description}</p>
                 <p>Price: ${item.price}</p>
                 <p>Listing Expires In: {item.expiresIn} days</p>
-                <button onClick={() => handleEdit(index)}>Edit Listing</button>
-                <button onClick={() => handleDelete(index)}>Delete Listing</button>
+                <button onClick={() => handleEdit(item.id)}>Edit Listing</button>
+                <button onClick={() => handleDelete(item.id)}>Delete Listing</button>
                 {renewButton}
             </article>)
         });
