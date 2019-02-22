@@ -18,7 +18,7 @@ export const fetchListings = () => (dispatch, getState) => {
     fetch(`${API_BASE_URL}/lists/listings`, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${authToken}`
+            "Authorization": `Bearer ${authToken}`
         }
     })
     .then(res => normalizeResponseErrors(res))
@@ -48,7 +48,7 @@ export const fetchWishlist = () => (dispatch, getState) => {
     fetch(`${API_BASE_URL}/lists/wishlist`, {
         method: 'GET',
         headers: {
-            Authorization: `Bearer ${authToken}`
+            "Authorization": `Bearer ${authToken}`
         }
     })
     .then(res => normalizeResponseErrors(res))
@@ -125,6 +125,42 @@ export const postWishItem = newItem => (dispatch, getState) => {
     });
 }
 
+export const UPDATE_LISTING_SUCCESS = 'UPDATE_LISTING_SUCCESS';
+export const updateListingSuccess = () => ({
+    type: UPDATE_LISTING_SUCCESS
+});
+
+export const UPDATE_LISTING_ERROR = 'UPDATE_LISTING_ERROR';
+export const updateListingError = error => ({
+    type: UPDATE_LISTING_ERROR,
+    error
+});
+
+export const updateListing = (updateData, listingId) => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Bearer ${authToken}`
+        },
+        body: JSON.stringify(updateData)
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(updateListingSuccess());
+        dispatch(fetchListings());
+    })
+    .catch(err => {
+        dispatch(updateListingError(err));
+    });
+}
+
+export const DELETE_LISTING_SUCCESS = 'DELETE_LISTING_SUCCESS';
+export const deleteListingSuccess = () => ({
+    type: DELETE_LISTING_SUCCESS
+});
+
 export const DELETE_LISTING_ERROR = 'DELETE_LISTING_ERROR';
 export const deleteListingError = error => ({
     type: DELETE_LISTING_ERROR,
@@ -136,15 +172,44 @@ export const deleteListing = listingId => (dispatch, getState) => {
     fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer ${authToken}`
+            "Authorization": `Bearer ${authToken}`
         }
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
+        dispatch(deleteListingSuccess());
         dispatch(fetchListings());
     })
     .catch(err => {
         dispatch(deleteListingError(err));
+    })
+}
+
+export const DELETE_WISHITEM_SUCCESS = 'DELETE_WISHITEM_SUCCESS';
+export const deleteWishItemSuccess = () => ({
+    type: DELETE_WISHITEM_SUCCESS
+});
+
+export const DELETE_WISHITEM_ERROR = 'DELETE_WISHITEM_ERROR';
+export const deleteWishItemError = error => ({
+    type: DELETE_WISHITEM_ERROR,
+    error
+});
+
+export const deleteWishItem = wishItemId => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist/${wishItemId}`, {
+        method: 'DELETE',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(fetchWishlist());
+    })
+    .catch(err => {
+        dispatch(deleteWishItemError(err));
     })
 }
 
@@ -161,18 +226,9 @@ export const changePage = currentPage =>  ({
 });
 
 export const TOGGLE_EDIT_LISTING = 'TOGGLE_EDIT_LISTING';
-export const toggleEditListing = listingIndex => ({
+export const toggleEditListing = listingId => ({
     type: TOGGLE_EDIT_LISTING,
-    listingIndex
-});
-
-export const UPDATE_LISTING = 'UPDATE_LISTING';
-export const updateListing = (title, description, price, listingIndex) => ({
-    type: UPDATE_LISTING,
-    title,
-    description,
-    price,
-    listingIndex
+    listingId
 });
 
 export const RENEW_LISTING = 'RENEW_LISTING';

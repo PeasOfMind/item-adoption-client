@@ -1,8 +1,7 @@
 import {
     CHANGE_FORM_TYPE, 
     CHANGE_PAGE, 
-    TOGGLE_EDIT_LISTING, 
-    UPDATE_LISTING, 
+    TOGGLE_EDIT_LISTING,  
     RENEW_LISTING, 
     ADD_LISTING, 
     CHANGE_ADD_LISTING_STATUS, 
@@ -19,7 +18,12 @@ import {
     POST_LISTING_ERROR, 
     DELETE_LISTING_ERROR,
     POST_WISHITEM_ERROR,
-    POST_WISHITEM_SUCCESS} from '../actions';
+    POST_WISHITEM_SUCCESS,
+    DELETE_WISHITEM_ERROR,
+    DELETE_LISTING_SUCCESS,
+    DELETE_WISHITEM_SUCCESS,
+    UPDATE_LISTING_SUCCESS,
+    UPDATE_LISTING_ERROR} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -29,11 +33,14 @@ const dummyState = {
     itemListings: [],
     listingsError: null,
     postListingError: null,
+    updateListingError: null,
     deleteListingError: null,
     addingListing: false,
     addingWishItem: false,
     wishlist: [],
     wishlistError: null,
+    postWishItemError: null,
+    deleteWishItemError: null,
     otherListingsInArea: [
         {
             title: `Ikea Billy Bookcase`,
@@ -63,6 +70,10 @@ const dummyState = {
 
 export const appReducer = (state=dummyState, action) => {
     if (action.type === FETCH_LISTINGS_SUCCESS){
+        //add an editing property to each listing
+        action.listings.forEach(listing => {
+            listing.editing = false;
+        });
         return Object.assign({}, state, {
             itemListings: action.listings,
             listingsError: null
@@ -91,7 +102,8 @@ export const appReducer = (state=dummyState, action) => {
     else if (action.type === POST_LISTING_SUCCESS){
         return Object.assign({}, state, {
             addingListing: false,
-            itemListings: [...state.itemListings, action.listing]
+            itemListings: [...state.itemListings, action.listing],
+            postListingError: null
         })
     }
 
@@ -102,7 +114,8 @@ export const appReducer = (state=dummyState, action) => {
     else if (action.type === POST_WISHITEM_SUCCESS){
         return Object.assign({}, state, {
             addingWishItem: false,
-            wishlist: [...state.wishlist, action.wishItem]
+            wishlist: [...state.wishlist, action.wishItem],
+            postWishItemError: null
         })
     }
 
@@ -110,8 +123,28 @@ export const appReducer = (state=dummyState, action) => {
         return Object.assign({}, state, {postWishItemError: action.error});
     }
 
+    else if (action.type === UPDATE_LISTING_SUCCESS){
+        return Object.assign({}, state, {updateListingError: null});
+    }
+
+    else if (action.type === UPDATE_LISTING_ERROR){
+        return Object.assign({}, state, {updateListingError: action.error});
+    }
+
+    else if (action.type === DELETE_LISTING_SUCCESS){
+        return Object.assign({}, state, {deleteListingError: null});
+    }
+
     else if (action.type === DELETE_LISTING_ERROR){
         return Object.assign({}, state, {deleteListingError: action.error});
+    }
+
+    else if (action.type === DELETE_WISHITEM_SUCCESS){
+        return Object.assign({}, state, {deleteWishItemError: null});
+    }
+
+    else if (action.type === DELETE_WISHITEM_ERROR){
+        return Object.assign({}, state, {deleteWishItemError: action.error});
     }
 
     else if (action.type === CHANGE_FORM_TYPE) {
@@ -142,26 +175,12 @@ export const appReducer = (state=dummyState, action) => {
     }
 
     else if (action.type === TOGGLE_EDIT_LISTING) {
-        let itemListings = state.itemListings.map((listing, index) => {
-            if (index !== action.listingIndex) return listing;
+        let itemListings = state.itemListings.map((listing) => {
+            if (listing.id !== action.listingId) return listing;
             return Object.assign({}, listing, {
                 editing: !listing.editing
             });
         });
-        return Object.assign({}, state, {itemListings});
-    }
-
-    else if (action.type === UPDATE_LISTING) {
-        let itemListings = state.itemListings.map((listing, index) => {
-            if (index !== action.listingIndex) return listing;
-            return Object.assign({}, listing, {
-                title: action.title,
-                description: action.description,
-                price: action.price,
-                editing: false
-            });
-        });
-
         return Object.assign({}, state, {itemListings});
     }
 

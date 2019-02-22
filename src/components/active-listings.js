@@ -11,12 +11,12 @@ import './active-listings.css';
 export function ActiveListings(props){
     let listings, addListingText;
 
-    const handleRenew = index => {
-        props.dispatch(renewListing(index));
+    const handleRenew = listingId => {
+        props.dispatch(renewListing(listingId));
     }
 
-    const handleEdit = index => {
-        props.dispatch(toggleEditListing(index));
+    const handleEdit = listingId => {
+        props.dispatch(toggleEditListing(listingId));
     }
 
     const handleDelete = listingId => {
@@ -36,24 +36,29 @@ export function ActiveListings(props){
     }
 
     if (props.itemListings.length === 0){
-        listings = <p>You don't have any active listings. Do you want to put up any items for adoption?</p>
+        listings = <p>You don't have any active listings. </p>
     } else {
-        listings = props.itemListings.map((item, index) => {
+        listings = props.itemListings.map((item) => {
             let renewButton = '';
+            let altText = '';
             if (item.editing) {
-                const formId = `edit-listing-${index}`;
-                //When adding backend, change the formId to reference the listing id from the database
-                return(<ListingForm form={formId} key={index} index={index} />)
+                return(<ListingForm form={`edit-listing-${item.id}`} key={item.id} index={item.id} />)
             } 
+            //give user the option to renew the listing if the listing expires in 5 days or less
             if (item.expiresIn <= 5) {
-                renewButton = <button onClick={() => handleRenew(index)}>Renew Listing</button>
+                renewButton = <button onClick={() => handleRenew(item.id)}>Renew Listing</button>
+            }
+            //if the item zipcode is different than the user homebase zipcode, display it
+            if (item.zipcode && item.zipcode !== props.userZip) {
+                altText = <p>Listed at Alternative Location: {item.zipcode}</p>
             }
             return (
-            <article className="item-ad" key={index}>
+            <article className="item-ad" key={item.id}>
                 <h3>{item.title}</h3>
                 <p>Description: {item.description}</p>
                 <p>Price: ${item.price}</p>
                 <p>Listing Expires In: {item.expiresIn} days</p>
+                {altText}
                 <button onClick={() => handleEdit(item.id)}>Edit Listing</button>
                 <button onClick={() => handleDelete(item.id)}>Delete Listing</button>
                 {renewButton}
@@ -63,11 +68,16 @@ export function ActiveListings(props){
 
     if (props.addingListing){
         addListingText = <AddListingForm />
-    } else addListingText = <button onClick={handleAdd}>Add a Listing</button>
+    } else if (!props.userZip) {
+        //if the user doesn't have a zipcode set up, don't allow adding listings
+        addListingText = <p>Set up your homebase (zipcode) to add listings.</p>;
+    } else {
+        addListingText = <button onClick={handleAdd}>Add a Listing</button>;
+    }
 
     return(
         <section className="active-listings">
-            <h2>Active Listings for {props.username}</h2>
+            <h2>Active Listings</h2>
             {listings}
             {addListingText}
             <button onClick={viewOtherWishlists}>See What Others Are Looking For</button>
@@ -79,7 +89,8 @@ const mapStateToProps = state => ({
     username: state.auth.currentUser,
     itemListings: state.app.itemListings,
     addingListing: state.app.addingListing,
-    currentPage: state.app.currentPage
+    currentPage: state.app.currentPage,
+    userZip: state.auth.userZip
 })
 
 export default connect(mapStateToProps)(ActiveListings);

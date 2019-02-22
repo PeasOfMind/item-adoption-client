@@ -23,11 +23,20 @@ export function AddListingForm(props){
     const {handleSubmit, pristine, submitting} = props;
 
 
-    const allFields = ['Title', 'Description', 'Price', 'Zipcode'].map((field, key) => {
+    const allFields = ['Title', 'Description', 'Price'].map((field, key) => {
         let fieldType = "text";
         let validators = [required, nonEmpty];
-        if (field === 'Price' || field === 'Zipcode'){
-            fieldType = "number";
+        if (field === 'Price') {
+            //price optional, no validation necessary
+            return (
+                <Field
+                    name={field.toLowerCase()}
+                    type='number'
+                    component={Input}
+                    key={key}
+                    label={`${field} (Leave empty if item is free)`}
+                />
+            )
         }
         return(
             <Field
@@ -45,7 +54,6 @@ export function AddListingForm(props){
         <section className="form-container">
             <form className="new-listing" onSubmit={handleSubmit(values => onSubmit(values))}>
                 {allFields}
-                <p>If item is free, enter a price of 0 (zero)</p>
                 <button 
                     type="submit"
                     disabled={pristine || submitting}
