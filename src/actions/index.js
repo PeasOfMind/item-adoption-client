@@ -246,6 +246,36 @@ export const deleteWishItem = wishItemId => (dispatch, getState) => {
     })
 }
 
+export const FETCH_OTHER_LISTINGS_SUCCESS = 'FETCH_OTHER_LISTINGS_SUCCESS';
+export const fetchOtherListingsSuccess = otherListings => ({
+    type: FETCH_OTHER_LISTINGS_SUCCESS,
+    otherListings
+});
+
+export const FETCH_OTHER_LISTINGS_ERROR = 'FETCH_OTHER_LISTINGS_ERROR';
+export const fetchOtherListingsError = error => ({
+    type: FETCH_OTHER_LISTINGS_ERROR,
+    error
+});
+
+export const fetchOtherListings = zipcode => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/${zipcode}`, {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchOtherListingsSuccess(resJson.listings));
+    })
+    .catch(err => {
+        dispatch(fetchOtherListingsError(err));
+    });
+}
+
 export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
 export const changeFormType = formType => ({
     type: CHANGE_FORM_TYPE,

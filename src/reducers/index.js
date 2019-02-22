@@ -24,7 +24,9 @@ import {
     UPDATE_LISTING_SUCCESS,
     UPDATE_LISTING_ERROR,
     UPDATE_WISHITEM_SUCCESS,
-    UPDATE_WISHITEM_ERROR} from '../actions';
+    UPDATE_WISHITEM_ERROR,
+    FETCH_OTHER_LISTINGS_SUCCESS,
+    FETCH_OTHER_LISTINGS_ERROR} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -43,21 +45,8 @@ const dummyState = {
     postWishItemError: null,
     updateWishItemError: null,
     deleteWishItemError: null,
-    otherListingsInArea: [
-        {
-            title: `Ikea Billy Bookcase`,
-            description: `White bookcase, like new condition`,
-            price: 70,
-            owner: 'user1'
-
-        },
-        {
-            title: `Step-Ladder`,
-            description: `3 step stepladder`,
-            price: 0,
-            owner: 'someOtherUser'
-        }
-    ],
+    otherListingsInArea: [],
+    otherListingsError: null,
     otherWishLists: [
         {   
             username: 'user1',
@@ -159,6 +148,17 @@ export const appReducer = (state=dummyState, action) => {
 
     else if (action.type === DELETE_WISHITEM_ERROR){
         return Object.assign({}, state, {deleteWishItemError: action.error});
+    }
+
+    else if (action.type === FETCH_OTHER_LISTINGS_SUCCESS){
+        return Object.assign({}, state, {
+            otherListingsInArea: action.otherListings,
+            otherListingsError: null
+        });
+    }
+
+    else if (action.type === FETCH_OTHER_LISTINGS_ERROR){
+        return Object.assign({}, state, {otherListingsError: action.error});
     }
 
     else if (action.type === CHANGE_FORM_TYPE) {

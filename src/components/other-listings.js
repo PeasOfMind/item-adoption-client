@@ -15,21 +15,27 @@ export function OtherListings(props){
         return <Redirect to="/dashboard" />
     }
 
-    const listingsText = props.otherListingsInArea.map((item, index) => {
-        let price = `$${item.price}`;
-        if (item.price === 0){
-            price = <strong>FREE</strong>;
-        }
-        return (
-            <article className="other-listing" key={index}>
-                <h3>{item.title}</h3>
-                <p>Description: {item.description}</p>
-                <p>Price: {price}</p>
-                <p>Owned By: {item.owner}</p>
-                {/* <button>Contact Owner About This Item</button> */}
-            </article>
-        )
-    })
+    let listingsText;
+    if (props.otherListingsInArea.length === 0){
+        listingsText = <p>There are no listings in your area :(</p>
+    } else {
+        listingsText = props.otherListingsInArea.map((item, index) => {
+            let price = `$${item.price}`;
+            if (item.price === 0){
+                price = <strong>FREE</strong>;
+            }
+            return (
+                <article className="other-listing" key={index}>
+                    <h3>{item.title}</h3>
+                    <p>Description: {item.description}</p>
+                    <p>Price: {price}</p>
+                    <p>Owned By: {item.user.username}</p>
+                    {/* <button>Contact Owner About This Item</button> */}
+                </article>
+            )
+        })
+    }
+
     return (
         <section className="listings-in-area">
             <h2>Listings In Your Area</h2>

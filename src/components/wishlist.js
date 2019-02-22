@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import {deleteWishItem, toggleEditWishlist, changeWishlistStatus, changePage} from '../actions';
+import {deleteWishItem, toggleEditWishlist, changeWishlistStatus, changePage, fetchOtherListings} from '../actions';
 import WishlistForm from './wishlist-form';
 
 import './wishlist.css';
@@ -22,6 +22,7 @@ export function WishList(props){
     }
 
     const viewOtherListings = () => {
+        props.dispatch(fetchOtherListings(props.userZip));
         props.dispatch(changePage("otherlistings"));
     }
 
