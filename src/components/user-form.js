@@ -3,9 +3,10 @@ import {Redirect} from 'react-router-dom';
 import {reduxForm, Field, focus} from 'redux-form';
 import { connect } from 'react-redux';
 
-import {registerUser} from '../actions/users';
+import {registerUser} from '../actions/auth';
 import {login} from '../actions/auth';
 import {fetchListings, fetchWishlist} from '../actions';
+import {fetchZip} from '../actions/auth';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
@@ -53,6 +54,7 @@ export function UserForm(props){
     if(props.loggedIn){
         props.dispatch(fetchListings());
         props.dispatch(fetchWishlist());
+        props.dispatch(fetchZip());
         return <Redirect to="/dashboard" />
     }
 
