@@ -30,7 +30,7 @@ export class ListingForm extends React.Component {
             if (field === 'price') updatedValues[field] = parseInt(values[field], 10);
             updatedValues[field] = values[field];
         });
-        this.props.dispatch(updateListing(updatedValues, this.props.index));
+        this.props.dispatch(updateListing(updatedValues));
     }
 
     handleClick(){

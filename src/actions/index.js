@@ -136,9 +136,9 @@ export const updateListingError = error => ({
     error
 });
 
-export const updateListing = (updateData, listingId) => (dispatch, getState) => {
+export const updateListing = updateData => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
+    fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -149,10 +149,43 @@ export const updateListing = (updateData, listingId) => (dispatch, getState) => 
     .then(res => normalizeResponseErrors(res))
     .then(() => {
         dispatch(updateListingSuccess());
+        //TODO: change this to fetch the individual listing
         dispatch(fetchListings());
     })
     .catch(err => {
         dispatch(updateListingError(err));
+    });
+}
+
+export const UPDATE_WISHITEM_SUCCESS = 'UPDATE_WISHITEM_SUCCESS';
+export const updateWishItemSuccess = () => ({
+    type: UPDATE_WISHITEM_SUCCESS
+});
+
+export const UPDATE_WISHITEM_ERROR = 'UPDATE_WISHITEM_ERROR';
+export const updateWishItemError = error => ({
+    type: UPDATE_WISHITEM_ERROR,
+    error
+});
+
+export const updateWishItem = updateData => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Bearer ${authToken}`
+        },
+        body: JSON.stringify(updateData)
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(updateWishItemSuccess());
+        //TODO: change this to fetch the individual wish item
+        dispatch(fetchWishlist());
+    })
+    .catch(err => {
+        dispatch(updateWishItemError(err));
     });
 }
 
@@ -250,16 +283,10 @@ export const addListing = (title, description, price) => ({
     price
 });
 
-export const DELETE_FROM_WISHLIST = 'DELETE_FROM_WISHLIST';
-export const deleteFromWishlist = itemIndex => ({
-    type: DELETE_FROM_WISHLIST,
-    itemIndex
-});
-
 export const TOGGLE_EDIT_WISHLIST = 'TOGGLE_EDIT_WISHLIST';
-export const toggleEditWishlist = itemIndex => ({
+export const toggleEditWishlist = itemId => ({
     type: TOGGLE_EDIT_WISHLIST,
-    itemIndex
+    itemId
 });
 
 export const UPDATE_WISHLIST_ITEM = 'UPDATE_WISHLIST_ITEM';

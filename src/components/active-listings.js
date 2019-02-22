@@ -38,7 +38,7 @@ export function ActiveListings(props){
     if (props.itemListings.length === 0){
         listings = <p>You don't have any active listings. </p>
     } else {
-        listings = props.itemListings.map((item) => {
+        listings = props.itemListings.map(item => {
             let renewButton = '';
             let altText = '';
             if (item.editing) {

@@ -4,8 +4,7 @@ import {
     TOGGLE_EDIT_LISTING,  
     RENEW_LISTING, 
     ADD_LISTING, 
-    CHANGE_ADD_LISTING_STATUS, 
-    DELETE_FROM_WISHLIST, 
+    CHANGE_ADD_LISTING_STATUS,  
     TOGGLE_EDIT_WISHLIST, 
     UPDATE_WISHLIST_ITEM, 
     ADD_WISHLIST_ITEM, 
@@ -23,7 +22,9 @@ import {
     DELETE_LISTING_SUCCESS,
     DELETE_WISHITEM_SUCCESS,
     UPDATE_LISTING_SUCCESS,
-    UPDATE_LISTING_ERROR} from '../actions';
+    UPDATE_LISTING_ERROR,
+    UPDATE_WISHITEM_SUCCESS,
+    UPDATE_WISHITEM_ERROR} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -40,6 +41,7 @@ const dummyState = {
     wishlist: [],
     wishlistError: null,
     postWishItemError: null,
+    updateWishItemError: null,
     deleteWishItemError: null,
     otherListingsInArea: [
         {
@@ -87,6 +89,10 @@ export const appReducer = (state=dummyState, action) => {
     }
 
     else if (action.type === FETCH_WISHLIST_SUCCESS){
+        //add an editing property to each wish item
+        action.wishlist.forEach(item => {
+            item.editing = false;
+        });
         return Object.assign({}, state, {
             wishlist: action.wishlist,
             wishlistError: null
@@ -129,6 +135,14 @@ export const appReducer = (state=dummyState, action) => {
 
     else if (action.type === UPDATE_LISTING_ERROR){
         return Object.assign({}, state, {updateListingError: action.error});
+    }
+
+    else if (action.type === UPDATE_WISHITEM_SUCCESS){
+        return Object.assign({}, state, {updateWishItemError: null});
+    }
+
+    else if (action.type === UPDATE_WISHITEM_ERROR){
+        return Object.assign({}, state, {updateWishItemError: action.error});
     }
 
     else if (action.type === DELETE_LISTING_SUCCESS){
@@ -214,20 +228,14 @@ export const appReducer = (state=dummyState, action) => {
         });
     }
 
-    else if (action.type === DELETE_FROM_WISHLIST){
-        const wishListArray = state.wishListArray.slice();
-        wishListArray.splice(action.itemIndex, 1);
-        return Object.assign({}, state, {wishListArray});
-    }
-
     else if (action.type === TOGGLE_EDIT_WISHLIST){
-        let wishListArray = state.wishListArray.map((item, index) => {
-            if (index !== action.itemIndex) return item;
+        let wishlist = state.wishlist.map((item) => {
+            if (item.id !== action.itemId) return item;
             return Object.assign({}, item, {
                 editing: !item.editing
             });
         });
-        return Object.assign({}, state, {wishListArray});
+        return Object.assign({}, state, {wishlist});
     }
 
     else if (action.type === UPDATE_WISHLIST_ITEM){

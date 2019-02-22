@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field, change} from 'redux-form';
 
-import {updateWishlistItem, toggleEditWishlist, postWishItem} from '../actions';
+import {updateWishItem, toggleEditWishlist, postWishItem} from '../actions';
 import {required, nonEmpty} from '../validators';
 
 import './wishlist-form.css'
@@ -14,17 +14,21 @@ export class WishlistForm extends React.Component {
     }
 
     componentDidMount(){
-        if(typeof this.props.index === "number") {
-            this.props.dispatch(change(`edit-wishlist-${this.props.index}`, `wishlist-item-${this.props.index}`, this.props.wishListArray[this.props.index].name));
+        const currentWishItem = this.props.wishlist.find(item => {
+            return item.id === this.props.index;
+        });
+        if(this.props.index) {
+            //if there is an index associated with this form, then fill the form with pre-existing values
+            this.props.dispatch(change(`edit-wishlist-${this.props.index}`, "title", currentWishItem.title));
         }
     }
 
     onSubmit(values){
-        if(typeof this.props.index === "number"){
-            const index = this.props.index;
-            this.props.dispatch(updateWishlistItem(values[`wishlist-item-${index}`], index));
+        if(this.props.index){
+            const updatedValues = {id: this.props.index, title: values.title};
+            this.props.dispatch(updateWishItem(updatedValues));
         } else {
-            this.props.dispatch(postWishItem({title: values.title, zipcode: values.zipcode}))
+            this.props.dispatch(postWishItem({title: values.title}));
         }
     }
 
@@ -34,13 +38,12 @@ export class WishlistForm extends React.Component {
     
     render() {
         const {invalid, submitting} = this.props;
-        if(typeof this.props.index === "number"){
-            const fieldName = `wishlist-item-${this.props.index}`;
+        if(this.props.index){
             return (
                 <form className="wishlist-form" onSubmit={this.props.handleSubmit(values => 
                 this.onSubmit(values))}>
                     <Field 
-                        name={fieldName}
+                        name="title"
                         type="text"
                         component="input"
                         validate={[required, nonEmpty]}
@@ -65,12 +68,6 @@ export class WishlistForm extends React.Component {
                             component="input"
                             validate={[required, nonEmpty]}
                         />
-                        <Field 
-                            name="zipcode"
-                            type="number"
-                            component="input"
-                            validate={[required, nonEmpty]}
-                        />
                         <button 
                             type="submit"
                             disabled={invalid || submitting}
@@ -83,7 +80,7 @@ export class WishlistForm extends React.Component {
 WishlistForm = reduxForm()(WishlistForm);
 
 const mapStateToProps = state => ({
-    wishListArray: state.app.wishListArray
+    wishlist: state.app.wishlist
 })
 
 export default connect(mapStateToProps)(WishlistForm);
