@@ -41,6 +41,7 @@ export function ActiveListings(props){
         listings = props.itemListings.map(item => {
             let renewButton = '';
             let altText = '';
+            let price = item.price;
             if (item.editing) {
                 return(<ListingForm form={`edit-listing-${item.id}`} key={item.id} index={item.id} />)
             } 
@@ -52,11 +53,14 @@ export function ActiveListings(props){
             if (item.zipcode && item.zipcode !== props.userZip) {
                 altText = <p>Listed at Alternative Location: {item.zipcode}</p>
             }
+            if (item.price === 0){
+                price = <strong>FREE</strong>;
+            }
             return (
             <article className="item-ad" key={item.id}>
                 <h3>{item.title}</h3>
                 <p>Description: {item.description}</p>
-                <p>Price: ${item.price}</p>
+                <p>Price: ${price}</p>
                 <p>Listing Expires In: {item.expiresIn} days</p>
                 {altText}
                 <button onClick={() => handleEdit(item.id)}>Edit Listing</button>

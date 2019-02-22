@@ -54,7 +54,7 @@ export class ListingForm extends React.Component {
                         label={`${field} (Leave empty if item is free)`}
                     />
                 )
-            }
+            } else if (field === 'Description') validators = []; //description is optional
             return(
                 <Field
                     name={fieldName}

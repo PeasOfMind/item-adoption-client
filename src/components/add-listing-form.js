@@ -27,7 +27,7 @@ export function AddListingForm(props){
         let fieldType = "text";
         let validators = [required, nonEmpty];
         if (field === 'Price') {
-            //price optional, no validation necessary
+            //specifies special label for price
             return (
                 <Field
                     name={field.toLowerCase()}
@@ -37,7 +37,7 @@ export function AddListingForm(props){
                     label={`${field} (Leave empty if item is free)`}
                 />
             )
-        }
+        } else if (field === 'Description') validators = []; //description is optional
         return(
             <Field
             name={field.toLowerCase()}
