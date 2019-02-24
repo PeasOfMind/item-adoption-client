@@ -61,6 +61,66 @@ export const fetchWishlist = () => (dispatch, getState) => {
     });
 }
 
+export const FETCH_ONE_LISTING_SUCCESS = 'FETCH_ONE_LISTING_SUCCESS';
+export const fetchOneListingSuccess = listing => ({
+    type: FETCH_ONE_LISTING_SUCCESS,
+    listing
+});
+
+export const FETCH_ONE_LISTING_ERROR = 'FETCH_ONE_LISTING_ERROR';
+export const fetchOneListingError = error => ({
+    type: FETCH_ONE_LISTING_ERROR,
+    error
+});
+
+export const fetchOneListing = listingId => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchOneListingSuccess(resJson));
+    })
+    .catch(err => {
+        dispatch(fetchOneListingError(err));
+    });
+}
+
+export const FETCH_WISHITEM_SUCCESS = 'FETCH_WISHITEM_SUCCESS';
+export const fetchWishItemSuccess = wishItem => ({
+    type: FETCH_WISHITEM_SUCCESS,
+    wishItem
+});
+
+export const FETCH_WISHITEM_ERROR = 'FETCH_WISHITEM_ERROR';
+export const fetchWishItemError = error => ({
+    type: FETCH_WISHITEM_ERROR,
+    error
+});
+
+export const fetchWishItem = itemId => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist/${itemId}`, {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchWishItemSuccess(resJson));
+    })
+    .catch(err => {
+        dispatch(fetchWishItemError(err));
+    });
+}
+
 export const POST_LISTING_SUCCESS = 'POST_LISTING_SUCCESS';
 export const postListingSuccess = listing => ({
     type: POST_LISTING_SUCCESS,
@@ -149,8 +209,7 @@ export const updateListing = updateData => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(() => {
         dispatch(updateListingSuccess());
-        //TODO: change this to fetch the individual listing
-        dispatch(fetchListings());
+        dispatch(fetchOneListing(updateData.id));
     })
     .catch(err => {
         dispatch(updateListingError(err));
@@ -181,8 +240,7 @@ export const updateWishItem = updateData => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(() => {
         dispatch(updateWishItemSuccess());
-        //TODO: change this to fetch the individual wish item
-        dispatch(fetchWishlist());
+        dispatch(fetchWishItem(updateData.id));
     })
     .catch(err => {
         dispatch(updateWishItemError(err));
@@ -260,7 +318,7 @@ export const fetchOtherListingsError = error => ({
 
 export const fetchOtherListings = zipcode => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/${zipcode}`, {
+    fetch(`${API_BASE_URL}/lists/listings/search/${zipcode}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -290,7 +348,7 @@ export const fetchOtherWishlistsError = error => ({
 
 export const fetchOtherWishlists = zipcode => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist/${zipcode}`, {
+    fetch(`${API_BASE_URL}/lists/wishlist/search/${zipcode}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`

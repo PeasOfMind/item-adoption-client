@@ -27,7 +27,11 @@ import {
     UPDATE_WISHITEM_ERROR,
     FETCH_OTHER_LISTINGS_SUCCESS,
     FETCH_OTHER_LISTINGS_ERROR,
-    FETCH_OTHER_WISHLISTS_SUCCESS} from '../actions';
+    FETCH_OTHER_WISHLISTS_SUCCESS,
+    FETCH_ONE_LISTING_SUCCESS,
+    FETCH_ONE_LISTING_ERROR,
+    FETCH_WISHITEM_SUCCESS,
+    FETCH_WISHITEM_ERROR} from '../actions';
 
 const dummyState = {
     navLinks: ['Login', 'Signup'],
@@ -36,6 +40,7 @@ const dummyState = {
     currentPage: 'landing',
     itemListings: [],
     listingsError: null,
+    oneListingError: null,
     postListingError: null,
     updateListingError: null,
     deleteListingError: null,
@@ -43,6 +48,7 @@ const dummyState = {
     addingWishItem: false,
     wishlist: [],
     wishlistError: null,
+    wishItemError: null,
     postWishItemError: null,
     updateWishItemError: null,
     deleteWishItemError: null,
@@ -87,6 +93,52 @@ export const appReducer = (state=dummyState, action) => {
         })
     }
 
+    if (action.type === FETCH_ONE_LISTING_SUCCESS){
+        //find the index of the listing in state
+        const index = state.itemListings.findIndex(listing => {
+            return listing.id === action.listing.id;
+        });
+        //make copy of the state item listings
+        const newListings = state.itemListings.slice();
+        //replace the listing with the one retrieved from the API
+        newListings[index] = action.listing;
+        //set editing status to false
+        newListings[index].editing = false;
+        return Object.assign({}, state, {
+            itemListings: newListings,
+            oneListingError: null
+        })
+    }
+
+    else if (action.type === FETCH_ONE_LISTING_ERROR){
+        return Object.assign({}, state, {
+            oneListingError: action.error
+        })
+    }
+ 
+    if (action.type === FETCH_WISHITEM_SUCCESS){
+        //find the index of the wish item in state
+        const index = state.wishlist.findIndex(wishItem => {
+            return wishItem.id === action.wishItem.id;
+        });
+        //make copy of the state wishlist
+        const newWishItem = state.wishlist.slice();
+        //replace the wish item with the one retrieved from the API
+        newWishItem[index] = action.wishItem;
+        //set editing status to false
+        newWishItem[index].editing = false;
+        return Object.assign({}, state, {
+            wishlist: newWishItem,
+            wishItemError: null
+        })
+    }
+
+    else if (action.type === FETCH_WISHITEM_ERROR){
+        return Object.assign({}, state, {
+            wishItemError: action.error
+        })
+    }
+       
     else if (action.type === POST_LISTING_SUCCESS){
         return Object.assign({}, state, {
             addingListing: false,
