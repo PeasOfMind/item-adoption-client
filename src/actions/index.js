@@ -276,6 +276,36 @@ export const fetchOtherListings = zipcode => (dispatch, getState) => {
     });
 }
 
+export const FETCH_OTHER_WISHLISTS_SUCCESS = 'FETCH_OTHER_WISHLISTS_SUCCESS';
+export const fetchOtherWishlistsSuccess = otherWishlists => ({
+    type: FETCH_OTHER_WISHLISTS_SUCCESS,
+    otherWishlists
+});
+
+export const FETCH_OTHER_WISHLISTS_ERROR = 'FETCH_OTHER_WISHLISTS_ERROR';
+export const fetchOtherWishlistsError = error => ({
+    type: FETCH_OTHER_WISHLISTS_ERROR,
+    error
+});
+
+export const fetchOtherWishlists = zipcode => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist/${zipcode}`, {
+        method: 'GET',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => {
+        dispatch(fetchOtherWishlistsSuccess(resJson));
+    })
+    .catch(err => {
+        dispatch(fetchOtherWishlistsError(err));
+    });
+}
+
 export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
 export const changeFormType = formType => ({
     type: CHANGE_FORM_TYPE,

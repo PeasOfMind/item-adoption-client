@@ -16,16 +16,28 @@ export function OtherWishlists(props){
         return <Redirect to="/dashboard" />
     }
 
-    const wishlistsText = props.otherWishLists.map((userInfo, index) => {
-        const wishlist = userInfo.wishlist.map((item, nestedIndex) => <li key={nestedIndex}>{item}</li>);
+    const wishlistUsers = Object.keys(props.otherWishlists);
+    console.log(wishlistUsers);
+    const wishlistsText = wishlistUsers.map(user => {
+        const userInfo = props.otherWishlists[user];
+        const wishlist = userInfo.wishlist.map(item => <li key={item.id}>{item.title}</li>)
         return (
-            <article className="other-wishlist" key={index}>
-                <h3>{userInfo.username}</h3>
-                <ul>{wishlist}</ul>
-                {/* <button>Let this user know you have something they may be interested in</button> */}
+            <article className="other-wishlist" key={userInfo.userId}>
+                <h3>{user}</h3>
+                <ul>{wishlist}</ul>            
             </article>
         )
-    })
+    }) 
+    // const wishlistsText = props.otherWishlists.map((userInfo, index) => {
+    //     const wishlist = userInfo.wishlist.map((item, nestedIndex) => <li key={nestedIndex}>{item}</li>);
+    //     return (
+    //         <article className="other-wishlist" key={index}>
+    //             <h3>{userInfo.username}</h3>
+    //             <ul>{wishlist}</ul>
+    //             {/* <button>Let this user know you have something they may be interested in</button> */}
+    //         </article>
+    //     )
+    // })
 
     return (
         <section className="wishlists-in-area">
@@ -37,7 +49,7 @@ export function OtherWishlists(props){
 }
 
 const mapStateToProps = state => ({
-    otherWishLists: state.app.otherWishLists,
+    otherWishlists: state.app.otherWishlists,
     currentPage: state.app.currentPage
 })
 
