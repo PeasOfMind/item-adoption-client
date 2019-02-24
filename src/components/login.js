@@ -1,12 +1,19 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import {changeFormType} from '../actions';
+import {changePage} from '../actions';
 import UserForm from './user-form';
 import './login.css';
 
 export function Login(props){
-    console.log(props);
+    //if loggedIn successfully, redirect to user's dashboard
+    if(props.loggedIn){
+        props.dispatch(changePage("dashboard"));
+        return <Redirect to="/dashboard" />
+    }
+
     let switchFormText, switchFormValue;
     if (props.formType === "Signup"){
         switchFormText = "Already have an account?";
@@ -28,7 +35,8 @@ export function Login(props){
 }
 
 const mapStateToProps = state => ({
-    formType: state.app.formType
+    formType: state.app.formType,
+    loggedIn: state.auth.currentUser !== null
 })
 
 export default connect(mapStateToProps)(Login);
