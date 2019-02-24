@@ -15,7 +15,6 @@ export function LandingPage(props){
     }
 
     if(props.currentPage === "login"){
-        console.log('currentPage is login')
         return <Redirect to="/login" />
     }
 

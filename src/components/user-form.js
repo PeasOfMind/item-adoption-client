@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import {registerUser} from '../actions/auth';
 import {login} from '../actions/auth';
-import {fetchListings, fetchWishlist} from '../actions';
+import {fetchListings, fetchWishlist, changePage} from '../actions';
 import {fetchZip} from '../actions/auth';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
@@ -36,12 +36,10 @@ export function UserForm(props){
     }
 
     const onSubmit = values => {
-        console.log('submitting...')
         const {username, password} = values;
         const user = {username, password};
         if(props.formType === "Signup"){
-            props.dispatch(registerUser(user))
-            .then(() => console.log('user is registered!'));
+            props.dispatch(registerUser(user));
         }
         else if(props.formType === "Login"){
             props.dispatch(login(user));
@@ -49,9 +47,9 @@ export function UserForm(props){
     }
 
     const {pristine, submitting, handleSubmit} = props;
-    console.log(props)
 
     if(props.loggedIn){
+        props.dispatch(changePage("dashboard"));
         props.dispatch(fetchListings());
         props.dispatch(fetchWishlist());
         props.dispatch(fetchZip());
