@@ -2,19 +2,19 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import {deleteFromWishlist, toggleEditWishlist, changeWishlistStatus, changePage} from '../actions';
+import {deleteWishItem, toggleEditWishlist, changeWishlistStatus, changePage, fetchOtherListings} from '../actions';
 import WishlistForm from './wishlist-form';
 
 import './wishlist.css';
 
 export function WishList(props){
     
-    const handleEdit = index => {
-        props.dispatch(toggleEditWishlist(index));
+    const handleEdit = wishItemId => {
+        props.dispatch(toggleEditWishlist(wishItemId));
     }
 
-    const handleDelete = index => {
-        props.dispatch(deleteFromWishlist(index));
+    const handleDelete = wishItemId => {
+        props.dispatch(deleteWishItem(wishItemId));
     }
     
     const handleChange = () => {
@@ -22,6 +22,7 @@ export function WishList(props){
     }
 
     const viewOtherListings = () => {
+        props.dispatch(fetchOtherListings(props.userZip));
         props.dispatch(changePage("otherlistings"));
     }
 
@@ -30,35 +31,38 @@ export function WishList(props){
     }
 
     let wishListItems, addWishlistText;
-    if (props.wishListArray.length === 0){
-        wishListItems = <p>You don't have any items on your wishlist. Do you want to add something?</p>
+    if (props.wishlist.length === 0){
+        wishListItems = <p>You don't have any items on your wishlist.</p>
     } else {
-        wishListItems = props.wishListArray.map((item, index) => {
+        wishListItems = props.wishlist.map(item => {
             if (item.editing) {
-                const formId = `edit-wishlist-${index}`;
+                const formId = `edit-wishlist-${item.id}`;
                 //When adding backend, change the formId to reference the wishlist ID from the database
                 return (
-                    <li className="wish-item" key={index} >
-                        <WishlistForm index={index} form={formId} />
+                    <li className="wish-item" key={item.id} >
+                        <WishlistForm index={item.id} form={formId} />
                     </li>
                 )
             }
             return (
-                <li className="wish-item" key={index} index={index}>
-                <button className="edit-wish-item" onClick={() => handleEdit(index)}>Edit</button>
-                <button className="delete-wish-item" onClick={() => handleDelete(index)}>Delete</button>
-                {item.name}
+                <li className="wish-item" key={item.id} index={item.id}>
+                <button className="edit-wish-item" onClick={() => handleEdit(item.id)}>Edit</button>
+                <button className="delete-wish-item" onClick={() => handleDelete(item.id)}>Delete</button>
+                {item.title}
                 </li>
             )
         });
     }
 
-    if (props.addingWishlistItem) {
+    if (props.addingWishItem) {
         addWishlistText = (
             <section>
                 <WishlistForm form="add-wishlist-item"/>
                 <button type="button" className="cancel-add" onClick={handleChange}>Cancel</button>
             </section>);
+    } else if(!props.userZip) {
+        //if the user doesn't have a zipcode set up, don't allow adding to wishlist
+        addWishlistText = <p>Set up your homebase (zipcode) to add to your wishlist.</p>; 
     } else addWishlistText=<button type="button" onClick={handleChange}>Add to wishlist</button>;
 
     return (
@@ -72,9 +76,10 @@ export function WishList(props){
 }
 
 const mapStateToProps = state => ({
-    addingWishlistItem: state.app.addingWishlistItem,
-    wishListArray: state.app.wishListArray,
-    currentPage: state.app.currentPage
+    addingWishItem: state.app.addingWishItem,
+    wishlist: state.app.wishlist,
+    currentPage: state.app.currentPage,
+    userZip: state.auth.userZip
 })
 
 export default connect(mapStateToProps)(WishList);

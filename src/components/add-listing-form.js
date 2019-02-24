@@ -2,7 +2,7 @@ import React from 'react';
 import {reduxForm, Field} from 'redux-form';
 
 import Input from './input';
-import { addListing, changeAddListingStatus } from '../actions';
+import { postListing, changeAddListingStatus } from '../actions';
 import {required, nonEmpty} from '../validators';
 
 import './add-listing-form.css'
@@ -10,8 +10,10 @@ import './add-listing-form.css'
 export function AddListingForm(props){
 
     const onSubmit = values => {
-        values.price = parseInt(values.price, 10);
-        props.dispatch(addListing(values.title, values.description, values.price ));
+        let {title, description, price, zipcode} = values;
+        price = parseInt(price, 10);
+        zipcode = parseInt(zipcode, 10);
+        props.dispatch(postListing({title, description, price, zipcode}));
     }
 
     const handleClick = () => {
@@ -24,9 +26,18 @@ export function AddListingForm(props){
     const allFields = ['Title', 'Description', 'Price'].map((field, key) => {
         let fieldType = "text";
         let validators = [required, nonEmpty];
-        if (field === 'Price'){
-            fieldType = "number";
-        }
+        if (field === 'Price') {
+            //specifies special label for price
+            return (
+                <Field
+                    name={field.toLowerCase()}
+                    type='number'
+                    component={Input}
+                    key={key}
+                    label={`${field} (Leave empty if item is free)`}
+                />
+            )
+        } else if (field === 'Description') validators = []; //description is optional
         return(
             <Field
             name={field.toLowerCase()}
@@ -43,11 +54,10 @@ export function AddListingForm(props){
         <section className="form-container">
             <form className="new-listing" onSubmit={handleSubmit(values => onSubmit(values))}>
                 {allFields}
-                <p>If item is free, enter a price of 0 (zero)</p>
                 <button 
                     type="submit"
                     disabled={pristine || submitting}
-                    >Submit New Listing</button>
+                    >Submit A New Listing</button>
                 <button 
                     type="reset"
                     onClick={handleClick}

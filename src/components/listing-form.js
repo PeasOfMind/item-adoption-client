@@ -15,18 +15,22 @@ export class ListingForm extends React.Component {
     }
 
     componentDidMount(){
+        const currentListing = this.props.itemListings.find(listing => {
+            return listing.id === this.props.index;
+        });
         ['title', 'description', 'price'].forEach(field => {
-            this.props.dispatch(change(`edit-listing-${this.props.index}`, `${field}-${this.props.index}`, this.props.itemListings[this.props.index][field]));
-        })
+            this.props.dispatch(change(`edit-listing-${this.props.index}`, field, currentListing[field]));
+        });
     }
 
     onSubmit(values){
-        const index = this.props.index;
-        const updatedValues = ['title', 'description', 'price'].map(field => {
-            if (field === 'price') return parseInt(values[`${field}-${index}`], 10);
-            return values[`${field}-${index}`];
+        const updatedValues = {id: this.props.index};
+        ['title', 'description', 'price'].forEach(field => {
+            //convert price to a number to match data type in database
+            if (field === 'price') updatedValues[field] = parseInt(values[field], 10);
+            updatedValues[field] = values[field];
         });
-        this.props.dispatch(updateListing(...updatedValues, index));
+        this.props.dispatch(updateListing(updatedValues));
     }
 
     handleClick(){
@@ -34,24 +38,31 @@ export class ListingForm extends React.Component {
     }
 
     render() {
-        const {pristine, submitting, index} = this.props;
+        const {pristine, submitting} = this.props;
         const allFields = ['Title', 'Description', 'Price'].map((field, key) => {
-            let fieldType = "text";
+            let fieldType = 'text';
             let validators = [required, nonEmpty];
-            const fieldName = `${field.toLowerCase()}-${index}`;
+            const fieldName = `${field.toLowerCase()}`;
             if (field === 'Price'){
-                fieldType = "number";
-                //removes the nonEmpty validator
-                validators.pop()
-            }
+                //no validators (this field is optional)
+                return(
+                    <Field
+                        name={fieldName}
+                        type='number'
+                        component={Input}
+                        key={key}
+                        label={`${field} (Leave empty if item is free)`}
+                    />
+                )
+            } else if (field === 'Description') validators = []; //description is optional
             return(
                 <Field
-                name={fieldName}
-                type={fieldType}
-                component={Input}
-                key={key}
-                label={field}
-                validate={validators}
+                    name={fieldName}
+                    type={fieldType}
+                    component={Input}
+                    key={key}
+                    label={field}
+                    validate={validators}
                 />
             )
         })
@@ -62,7 +73,6 @@ export class ListingForm extends React.Component {
                 this.onSubmit(values)
                 )}>
                 {allFields}
-                <p>If item is free, enter a price of 0 (zero)</p>
                 <button 
                     type="submit"
                     disabled={pristine || submitting}

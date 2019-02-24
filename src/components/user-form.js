@@ -1,9 +1,12 @@
 import React from 'react';
 import {Redirect} from 'react-router-dom';
-import {reduxForm, Field} from 'redux-form';
+import {reduxForm, Field, focus} from 'redux-form';
 import { connect } from 'react-redux';
 
-import {changePage} from '../actions';
+import {registerUser} from '../actions/auth';
+import {login} from '../actions/auth';
+import {fetchListings, fetchWishlist, changePage} from '../actions';
+import {fetchZip} from '../actions/auth';
 import Input from './input';
 import {required, nonEmpty, matches} from '../validators';
 
@@ -32,15 +35,24 @@ export function UserForm(props){
         submitText = "Login to Account";
     }
 
-    const onSubmit = () => {
-        console.log('submitting...')
-        props.dispatch(changePage("dashboard"));
+    const onSubmit = values => {
+        const {username, password} = values;
+        const user = {username, password};
+        if(props.formType === "Signup"){
+            props.dispatch(registerUser(user));
+        }
+        else if(props.formType === "Login"){
+            props.dispatch(login(user));
+        }
     }
 
     const {pristine, submitting, handleSubmit} = props;
-    console.log(props)
 
-    if(props.currentPage === "dashboard"){
+    if(props.loggedIn){
+        props.dispatch(changePage("dashboard"));
+        props.dispatch(fetchListings());
+        props.dispatch(fetchWishlist());
+        props.dispatch(fetchZip());
         return <Redirect to="/dashboard" />
     }
 
@@ -74,9 +86,12 @@ export function UserForm(props){
 
 const mapStateToProps = state => ({
     formType: state.app.formType,
-    currentPage: state.app.currentPage
+    loggedIn: state.auth.currentUser !== null
 })
 
 const connectedUserForm = connect(mapStateToProps)(UserForm);
 
-export default reduxForm({form: 'user'})(connectedUserForm);
+export default reduxForm({
+    form: 'user',
+    onSubmitFail: (errors, dispatch) => dispatch(focus('user', Object.keys(errors)[0]))
+})(connectedUserForm);
