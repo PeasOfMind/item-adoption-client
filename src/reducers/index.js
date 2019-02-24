@@ -140,6 +140,7 @@ export const appReducer = (state=dummyState, action) => {
     }
        
     else if (action.type === POST_LISTING_SUCCESS){
+        action.listing.editing = false;
         return Object.assign({}, state, {
             addingListing: false,
             itemListings: [...state.itemListings, action.listing],
@@ -152,6 +153,7 @@ export const appReducer = (state=dummyState, action) => {
     }
 
     else if (action.type === POST_WISHITEM_SUCCESS){
+        action.wishItem.editing = false;
         return Object.assign({}, state, {
             addingWishItem: false,
             wishlist: [...state.wishlist, action.wishItem],

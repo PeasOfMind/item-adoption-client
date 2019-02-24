@@ -2,7 +2,7 @@ import React from 'react';
 import {Redirect} from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import {toggleEditListing, renewListing, changeAddListingStatus, deleteListing, changePage, fetchOtherWishlists} from '../actions';
+import {toggleEditListing, changeAddListingStatus, deleteListing, changePage, fetchOtherWishlists, updateListing} from '../actions';
 import ListingForm from './listing-form';
 import AddListingForm from './add-listing-form';
 
@@ -12,7 +12,10 @@ export function ActiveListings(props){
     let listings, addListingText;
 
     const handleRenew = listingId => {
-        props.dispatch(renewListing(listingId));
+        const updateData = {id: listingId}
+        //set new expiration date to 14 days after today
+        updateData.expirationDate = (new Date()).getTime() + 14*24*60*60*1000;
+        props.dispatch(updateListing(updateData));
     }
 
     const handleEdit = listingId => {
