@@ -1,6 +1,7 @@
 import {API_BASE_URL} from '../config';
 import {normalizeResponseErrors} from './utils';
 import {SubmissionError} from 'redux-form';
+import {saveAuthToken, clearAuthToken} from '../local-storage';
 
 export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
 export const setAuthToken = authToken => ({
@@ -34,7 +35,7 @@ export const authError = error => ({
 const storeAuthInfo = (username, authToken, id, dispatch) => {
     dispatch(setAuthToken(authToken));
     dispatch(authSuccess(username, id));
-    //TODO: save to local storage
+    saveAuthToken(authToken);
 };
 
 export const registerUser = user => dispatch => {
@@ -89,6 +90,27 @@ export const login = user => dispatch => {
             );
         })
     );
+}
+
+export const refreshAuthToken = () => (dispatch, getState) => {
+    dispatch(authRequest());
+    const authToken = getState().auth.authToken;
+    return fetch(`${API_BASE_URL}/auth/refresh`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${authToken}` 
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(res => res.json())
+    .then(resJson => storeAuthInfo(resJson.authToken, dispatch))
+    .catch(err => {
+        //current token is probably invalid or expired, clear authentication info and log out user
+        dispatch(authError(err));
+        dispatch(clearAuth());
+        //remove current token from local storage
+        clearAuthToken(authToken);
+    })
 }
 
 export const FETCH_ZIP_SUCCESS = 'FETCH_ZIP_SUCCESS';
