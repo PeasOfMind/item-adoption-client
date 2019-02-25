@@ -1,4 +1,5 @@
 import React from 'react';
+import requiresLogin from './requires-login';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
@@ -47,4 +48,4 @@ const mapStateToProps = state => ({
     currentPage: state.app.currentPage
 })
 
-export default connect(mapStateToProps)(OtherWishlists);
+export default requiresLogin()(connect(mapStateToProps)(OtherWishlists));

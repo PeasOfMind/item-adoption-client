@@ -5,6 +5,8 @@ import { toggleUserEdit, updateZip } from '../actions/auth';
 import Input from './input';
 import {required, nonEmpty} from '../validators';
 
+import './user-info.css';
+
 export function UserInfo(props){
 
     const handleEdit = () => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {Link} from 'react-router-dom';
 
+import { clearAuthToken } from '../local-storage';
 import {clearAuth} from '../actions/auth';
 import {changeFormType, changePage} from '../actions';
 
@@ -17,6 +18,7 @@ export function Nav(props){
     const handleOnClick = link => {
         if (link === "Logout") {
             props.dispatch(clearAuth());
+            props.dispatch(clearAuthToken());
             props.dispatch(changePage("landing"));
         } else {
             //will be either Signup or Login so switch forms

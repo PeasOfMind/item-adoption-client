@@ -1,4 +1,5 @@
 import React from 'react';
+import requiresLogin from './requires-login';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
@@ -48,6 +49,6 @@ export function OtherListings(props){
 const mapStateToProps = state => ({
     otherListingsInArea: state.app.otherListingsInArea,
     currentPage: state.app.currentPage
-})
+});
 
-export default connect(mapStateToProps)(OtherListings);
+export default requiresLogin()(connect(mapStateToProps)(OtherListings));
