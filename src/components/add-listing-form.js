@@ -10,9 +10,9 @@ import './add-listing-form.css'
 
 export function AddListingForm(props){
 
-    const handleZipForm = () => {
-        props.dispatch(toggleZipEntry());
-    }
+    // const handleZipForm = () => {
+    //     props.dispatch(toggleZipEntry());
+    // }
 
     const onSubmit = values => {
         let {title, description, price, zipcode} = values;
@@ -21,8 +21,12 @@ export function AddListingForm(props){
         props.dispatch(postListing({title, description, price, zipcode}));
     }
 
-    const handleClick = () => {
-        props.dispatch(changeAddListingStatus());
+    const handleOnClick = clickType => {
+        if (clickType === "reset"){
+            props.dispatch(changeAddListingStatus());
+        // } else if (clickType === "zip"){
+        //     props.dispatch(toggleZipEntry());
+        }
     }
 
     const {handleSubmit, pristine, submitting} = props;
@@ -55,34 +59,34 @@ export function AddListingForm(props){
         )
     })
 
-    // let listingZipText;
-    // if (props.addingListingZip) {
-    //     listingZipText = <Field 
-    //     name="zipcode"
-    //     type="text"
-    //     component={Input}
-    //     label="Alternate Location Zipcode"
-    //     validate={[validNum, validZip]}
-    //     />
-    // } else {
-    //     listingZipText = <button 
-    //     type="button"
-    //     onClick={() => handleZipForm()}
-    //     >List at an alternate location?</button>
-    // }
+    let listingZipText;
+    if (props.addingListingZip) {
+        listingZipText = <Field 
+        name="zipcode"
+        type="text"
+        component={Input}
+        label="Alternate Location Zipcode"
+        validate={[validNum, validZip]}
+        />
+    } else {
+        listingZipText = <button 
+        type="button"
+        onClick={() => handleOnClick("zip")}
+        >List at an alternate location?</button>
+    }
 
     return(
         <section className="form-container">
             <form className="new-listing" onSubmit={handleSubmit(values => onSubmit(values))}>
                 {allFields}
-                {/* {listingZipText} */}
+                {listingZipText}
                 <button 
                     type="submit"
                     disabled={pristine || submitting}
                     >Submit A New Listing</button>
                 <button 
                     type="reset"
-                    onClick={handleClick}
+                    onClick={() => handleOnClick("reset")}
                     >Cancel</button>
             </form>
         </section>
