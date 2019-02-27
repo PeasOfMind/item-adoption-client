@@ -18,7 +18,7 @@ export function Nav(props){
     const handleOnClick = link => {
         if (link === "Logout") {
             props.dispatch(clearAuth());
-            props.dispatch(clearAuthToken());
+            clearAuthToken();
             props.dispatch(changePage("landing"));
         } else {
             //will be either Signup or Login so switch forms

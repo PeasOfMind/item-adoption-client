@@ -31,9 +31,10 @@ import {
     FETCH_ONE_LISTING_SUCCESS,
     FETCH_ONE_LISTING_ERROR,
     FETCH_WISHITEM_SUCCESS,
-    FETCH_WISHITEM_ERROR} from '../actions';
+    FETCH_WISHITEM_ERROR,
+    TOGGLE_ZIP_ENTRY} from '../actions';
 
-const dummyState = {
+const initialState = {
     navLinks: ['Login', 'Signup'],
     formType: 'Signup',
     headingType: 'landing-header',
@@ -45,6 +46,7 @@ const dummyState = {
     updateListingError: null,
     deleteListingError: null,
     addingListing: false,
+    addingListingZip: false,
     addingWishItem: false,
     wishlist: [],
     wishlistError: null,
@@ -58,7 +60,7 @@ const dummyState = {
     otherWishlistsError: null
 }
 
-export const appReducer = (state=dummyState, action) => {
+export const appReducer = (state=initialState, action) => {
     if (action.type === FETCH_LISTINGS_SUCCESS){
         //add an editing property to each listing
         action.listings.forEach(listing => {
@@ -321,6 +323,12 @@ export const appReducer = (state=dummyState, action) => {
                 editing: false
             }]
         });
+    }
+
+    else if (action.type === TOGGLE_ZIP_ENTRY) {
+        return Object.assign({}, state, {
+            addingListingZip: !state.addingListingZip
+        })
     }
 
     return state;

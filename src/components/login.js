@@ -3,14 +3,12 @@ import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import {changeFormType} from '../actions';
-import {changePage} from '../actions';
 import UserForm from './user-form';
 import './login.css';
 
 export function Login(props){
     //if loggedIn successfully, redirect to user's dashboard
     if(props.loggedIn){
-        props.dispatch(changePage("dashboard"));
         return <Redirect to="/dashboard" />
     }
 

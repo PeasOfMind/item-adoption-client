@@ -2,6 +2,7 @@ import {API_BASE_URL} from '../config';
 import {normalizeResponseErrors} from './utils';
 import {SubmissionError} from 'redux-form';
 import {saveAuthToken, clearAuthToken} from '../local-storage';
+import { changePage } from '.';
 
 export const SET_AUTH_TOKEN = 'SET_AUTH_TOKEN';
 export const setAuthToken = authToken => ({
@@ -49,7 +50,10 @@ export const registerUser = user => dispatch => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
-    .then(({username, authToken, id}) => storeAuthInfo(username, authToken, id, dispatch))
+    .then(({username, authToken, id}) => {
+        storeAuthInfo(username, authToken, id, dispatch);
+        dispatch(changePage('dashboard'));
+    })
     .catch(err => {
         const {reason, message, location} = err;
         dispatch(authError(err));
@@ -75,7 +79,10 @@ export const login = user => dispatch => {
         })
         .then(res => normalizeResponseErrors(res))
         .then(res => res.json())
-        .then(({username, authToken, id}) => storeAuthInfo(username, authToken, id, dispatch))
+        .then(({username, authToken, id}) => {
+            storeAuthInfo(username, authToken, id, dispatch);
+            dispatch(changePage('dashboard'));
+        })
         .catch(err => {
             const {code} = err;
             const message = 

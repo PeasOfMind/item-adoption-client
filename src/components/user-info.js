@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
 import { toggleUserEdit, updateZip } from '../actions/auth';
 import Input from './input';
-import {required, nonEmpty} from '../validators';
+import {required, nonEmpty, validNum, validZip} from '../validators';
 
 import './user-info.css';
 
@@ -37,7 +37,7 @@ export function UserInfo(props){
                 type="text"
                 component={Input}
                 label="Zipcode"
-                validate={[required, nonEmpty]}
+                validate={[required, nonEmpty, validNum, validZip]}
             />
             <button
                 type="submit"

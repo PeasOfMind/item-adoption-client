@@ -1,10 +1,11 @@
+
 import React from 'react';
 import {reduxForm, Field, change} from 'redux-form'
 import { connect } from 'react-redux';
 
 import Input from './input';
 import { toggleEditListing, updateListing } from '../actions';
-import {required, nonEmpty} from '../validators';
+import {required, nonEmpty, validNum, validZip} from '../validators';
 
 import './listing-form.css';
 
@@ -18,7 +19,7 @@ export class ListingForm extends React.Component {
         const currentListing = this.props.itemListings.find(listing => {
             return listing.id === this.props.index;
         });
-        ['title', 'description', 'price'].forEach(field => {
+        ['title', 'description', 'price', 'zipcode'].forEach(field => {
             this.props.dispatch(change(`edit-listing-${this.props.index}`, field, currentListing[field]));
         });
     }
@@ -39,7 +40,7 @@ export class ListingForm extends React.Component {
 
     render() {
         const {pristine, submitting} = this.props;
-        const allFields = ['Title', 'Description', 'Price'].map((field, key) => {
+        const allFields = ['Title', 'Description', 'Price', 'Zipcode'].map((field, key) => {
             let fieldType = 'text';
             let validators = [required, nonEmpty];
             const fieldName = `${field.toLowerCase()}`;
@@ -55,6 +56,9 @@ export class ListingForm extends React.Component {
                     />
                 )
             } else if (field === 'Description') validators = []; //description is optional
+            else if (field === 'Zipcode') {
+                validators = [validNum, validZip]
+            }
             return(
                 <Field
                     name={fieldName}

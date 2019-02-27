@@ -1,13 +1,18 @@
 import React from 'react';
 import {reduxForm, Field} from 'redux-form';
+import { connect } from 'react-redux';
 
 import Input from './input';
-import { postListing, changeAddListingStatus } from '../actions';
-import {required, nonEmpty} from '../validators';
+import { postListing, changeAddListingStatus, toggleZipEntry } from '../actions';
+import {required, nonEmpty, validNum, validZip} from '../validators';
 
 import './add-listing-form.css'
 
 export function AddListingForm(props){
+
+    const handleZipForm = () => {
+        props.dispatch(toggleZipEntry());
+    }
 
     const onSubmit = values => {
         let {title, description, price, zipcode} = values;
@@ -50,10 +55,27 @@ export function AddListingForm(props){
         )
     })
 
+    // let listingZipText;
+    // if (props.addingListingZip) {
+    //     listingZipText = <Field 
+    //     name="zipcode"
+    //     type="text"
+    //     component={Input}
+    //     label="Alternate Location Zipcode"
+    //     validate={[validNum, validZip]}
+    //     />
+    // } else {
+    //     listingZipText = <button 
+    //     type="button"
+    //     onClick={() => handleZipForm()}
+    //     >List at an alternate location?</button>
+    // }
+
     return(
         <section className="form-container">
             <form className="new-listing" onSubmit={handleSubmit(values => onSubmit(values))}>
                 {allFields}
+                {/* {listingZipText} */}
                 <button 
                     type="submit"
                     disabled={pristine || submitting}
@@ -67,4 +89,10 @@ export function AddListingForm(props){
     )
 }
 
-export default reduxForm({form: 'add-listing'})(AddListingForm);
+const mapStateToProps = state => ({
+    addingListingZip: state.app.addingListingZip
+})
+
+const connectedAddListingForm = connect(mapStateToProps)(AddListingForm);
+
+export default reduxForm({form: 'add-listing'})(connectedAddListingForm);
