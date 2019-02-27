@@ -10,7 +10,10 @@ h1 {
     font-family: 'Major Mono Display', monospace;
     font-weight: bold;
     text-align: center;
-    color: black;
+}
+
+.landing-header > h1{
+    color: white;
 }
 
 .landing-header {
