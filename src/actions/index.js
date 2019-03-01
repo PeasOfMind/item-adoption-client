@@ -427,5 +427,5 @@ export const addWishlistItem = name => ({
 
 export const TOGGLE_ZIP_ENTRY = 'TOGGLE_ZIP_ENTRY';
 export const toggleZipEntry = () => ({
-    type: toggleZipEntry
-})
+    type: TOGGLE_ZIP_ENTRY
+});

@@ -8,14 +8,17 @@ import './landing-page.css';
 
 export function LandingPage(props){
     //TODO set the facts (multiple) to be swipeable
-
-    const handleClick = () => {
-        props.dispatch(changePage("login"));
-        props.dispatch(changeFormType("Signup"));
+    if(props.loggedIn){
+        return <Redirect to="/dashboard" />
     }
 
     if(props.currentPage === "login"){
         return <Redirect to="/login" />
+    }
+
+    const handleClick = () => {
+        props.dispatch(changePage("login"));
+        props.dispatch(changeFormType("Signup"));
     }
 
     return(
@@ -39,6 +42,7 @@ export function LandingPage(props){
 
 
 const mapStateToProps = state => ({
+    loggedIn: state.auth.currentUser !== null,
     currentPage: state.app.currentPage
 })
 

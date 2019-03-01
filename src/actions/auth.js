@@ -110,8 +110,9 @@ export const refreshAuthToken = () => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
-    .then(resJson => storeAuthInfo(resJson.authToken, dispatch))
+    .then(resJson => storeAuthInfo(resJson.username, resJson.authToken, resJson.id, dispatch))
     .catch(err => {
+        console.log(err)
         //current token is probably invalid or expired, clear authentication info and log out user
         dispatch(authError(err));
         dispatch(clearAuth());

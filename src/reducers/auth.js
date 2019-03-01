@@ -26,13 +26,15 @@ const initialState = {
 export default function authReducer(state = initialState, action){
     if (action.type === SET_AUTH_TOKEN) {
         return Object.assign({}, state, {
+            loading: false,
             authToken: action.authToken
         });
     }
     else if (action.type === CLEAR_AUTH) {
         return Object.assign({}, state, {
             authToken: null,
-            currentUser: null
+            currentUser: null,
+            userId: null
         })
     }
     else if (action.type === AUTH_REQUEST) {

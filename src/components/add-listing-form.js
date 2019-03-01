@@ -24,8 +24,9 @@ export function AddListingForm(props){
     const handleOnClick = clickType => {
         if (clickType === "reset"){
             props.dispatch(changeAddListingStatus());
-        // } else if (clickType === "zip"){
-        //     props.dispatch(toggleZipEntry());
+            if (props.addingListingZip) props.dispatch(toggleZipEntry());
+        } else if (clickType === "zip"){
+            props.dispatch(toggleZipEntry());
         }
     }
 
