@@ -33,6 +33,13 @@ export function UserForm(props){
         submitText = "Login to Account";
     }
 
+    let errorDiv = "";
+    if (props.loginError) {
+        return <div className="error login-error">
+            Error code {props.loginError.code}: {props.loginError.message}. Try logging in again.
+        </div>
+    }
+
     const onSubmit = values => {
         const {username, password} = values;
         const user = {username, password};
@@ -70,12 +77,14 @@ export function UserForm(props){
                     disabled={pristine || submitting}
                     >{submitText}</button>
             </form>
+            {errorDiv}
         </section>
     )
 }
 
 const mapStateToProps = state => ({
-    formType: state.app.formType
+    formType: state.app.formType,
+    loginError: state.auth.loginError
 })
 
 const connectedUserForm = connect(mapStateToProps)(UserForm);

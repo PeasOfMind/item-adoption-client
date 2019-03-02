@@ -32,7 +32,8 @@ import {
     FETCH_ONE_LISTING_ERROR,
     FETCH_WISHITEM_SUCCESS,
     FETCH_WISHITEM_ERROR,
-    TOGGLE_ZIP_ENTRY} from '../actions';
+    TOGGLE_ZIP_ENTRY,
+    CONTACT_LISTING_USER_SUCCESS} from '../actions';
 
 const initialState = {
     navLinks: ['Login', 'Signup'],
@@ -54,7 +55,7 @@ const initialState = {
     postWishItemError: null,
     updateWishItemError: null,
     deleteWishItemError: null,
-    otherListingsInArea: [],
+    otherListings: [],
     otherListingsError: null,
     otherWishlists: [],
     otherWishlistsError: null
@@ -201,7 +202,7 @@ export const appReducer = (state=initialState, action) => {
 
     else if (action.type === FETCH_OTHER_LISTINGS_SUCCESS){
         return Object.assign({}, state, {
-            otherListingsInArea: action.otherListings,
+            otherListings: action.otherListings,
             otherListingsError: null
         });
     }
@@ -219,6 +220,16 @@ export const appReducer = (state=initialState, action) => {
 
     else if (action.type === FETCH_OTHER_LISTINGS_ERROR){
         return Object.assign({}, state, {otherWishlistsError: action.error});
+    }
+
+    else if (action.type === CONTACT_LISTING_USER_SUCCESS){
+        let otherListings = state.otherListings.map(listing => {
+            if (listing.id !== action.itemId) return listing;
+            return Object.assign({}, listing, {
+                contactSuccess: true
+            });
+        });
+        return Object.assign({}, state, {otherListings})
     }
 
     else if (action.type === CHANGE_FORM_TYPE) {
@@ -249,7 +260,7 @@ export const appReducer = (state=initialState, action) => {
     }
 
     else if (action.type === TOGGLE_EDIT_LISTING) {
-        let itemListings = state.itemListings.map((listing) => {
+        let itemListings = state.itemListings.map(listing => {
             if (listing.id !== action.listingId) return listing;
             return Object.assign({}, listing, {
                 editing: !listing.editing

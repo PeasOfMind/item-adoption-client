@@ -7,8 +7,8 @@ import {changeFormType, changePage} from '../actions';
 import './landing-page.css';
 
 export function LandingPage(props){
-    //TODO set the facts (multiple) to be swipeable
     if(props.loggedIn){
+        props.dispatch(changePage('dashboard'));
         return <Redirect to="/dashboard" />
     }
 

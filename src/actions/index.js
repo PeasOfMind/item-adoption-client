@@ -197,6 +197,7 @@ export const updateListingError = error => ({
 });
 
 export const updateListing = updateData => (dispatch, getState) => {
+    //TODO: check that zipcode is updated properly or remove zipcode from form
     const authToken = getState().auth.authToken;
     fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
         method: 'PUT',
@@ -361,6 +362,35 @@ export const fetchOtherWishlists = zipcode => (dispatch, getState) => {
     })
     .catch(err => {
         dispatch(fetchOtherWishlistsError(err));
+    });
+}
+
+export const CONTACT_LISTING_USER_SUCCESS = 'CONTACT_LISTING_USER_SUCCESS';
+export const contactListingUserSuccess = itemId => ({
+    type: CONTACT_LISTING_USER_SUCCESS,
+    itemId
+});
+
+export const CONTACT_LISTING_USER_ERROR = 'CONTACT_LISTING_USER_ERROR';
+export const contactListingUserError = error => ({
+    type: CONTACT_LISTING_USER_ERROR,
+    error
+});
+
+export const contactListingUser = itemId => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/contact/${itemId}`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(contactListingUserSuccess(itemId));
+    })
+    .catch(err => {
+        dispatch(contactListingUserError(err));
     });
 }
 
