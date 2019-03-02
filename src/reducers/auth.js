@@ -4,11 +4,11 @@ import {
     AUTH_SUCCESS,
     AUTH_ERROR,
     CLEAR_AUTH,
-    FETCH_ZIP_SUCCESS,
-    FETCH_ZIP_ERROR,
-    UPDATE_ZIP_ERROR,
+    FETCH_USER_INFO_SUCCESS,
+    FETCH_USER_INFO_ERROR,
+    UPDATE_USER_INFO_ERROR,
     TOGGLE_USER_EDIT,
-    UPDATE_ZIP_SUCCESS
+    UPDATE_USER_INFO_SUCCESS
 } from '../actions/auth';
 
 const initialState = {
@@ -16,6 +16,7 @@ const initialState = {
     currentUser: null,
     userId: null,
     userZip: null,
+    userEmail: null,
     loading: false,
     loginError: null,
     fetchZipError: null,
@@ -56,23 +57,24 @@ export default function authReducer(state = initialState, action){
             loginError: action.error
         });
     }
-    else if (action.type === FETCH_ZIP_SUCCESS){
+    else if (action.type === FETCH_USER_INFO_SUCCESS){
         return Object.assign({}, state, {
             userZip: action.zipcode,
+            userEmail: action.email,
             fetchZipError: null
         });
     }
-    else if (action.type === FETCH_ZIP_ERROR){
+    else if (action.type === FETCH_USER_INFO_ERROR){
         return Object.assign({}, state, {
             fetchZipError: action.error
         });
     }
-    else if(action.type === UPDATE_ZIP_SUCCESS){
+    else if(action.type === UPDATE_USER_INFO_SUCCESS){
         return Object.assign({}, state, {
             updateZipError: null
         }); 
     }
-    else if (action.type === UPDATE_ZIP_ERROR){
+    else if (action.type === UPDATE_USER_INFO_ERROR){
         return Object.assign({}, state, {
             updateZipError: action.error
         }); 

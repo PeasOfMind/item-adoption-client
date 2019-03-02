@@ -1,9 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import {reduxForm, Field} from 'redux-form';
-import { toggleUserEdit, updateZip } from '../actions/auth';
+import { toggleUserEdit, updateUserInfo } from '../actions/auth';
 import Input from './input';
-import {required, nonEmpty, validNum, validZip} from '../validators';
+import {required, nonEmpty, validNum, validZip, email} from '../validators';
 
 import './user-info.css';
 
@@ -15,29 +15,49 @@ export function UserInfo(props){
 
     const onSubmit = values => {
         console.log(values);
-        const updateData = {
-            id: props.userId,
-            zipcode: values.zipcode
-        }
-        props.dispatch(updateZip(updateData));
+        const updateData = {id: props.userId}
+        if (values.zipcode) updateData.zipcode = values.zipcode;
+        if (values.email) updateData.email = values.email;
+        props.dispatch(updateUserInfo(updateData));
     }
 
-    let userText, changeText;
+    let userZipText;
+    const zipValidate = [validNum, validZip];
     if(!props.zipcode) {
-        userText = `You haven't set a homebase yet.`;
+        userZipText = `You haven't set a homebase yet.`;
+        //if a zipcode has not been set already, make it required to enter one
+        zipValidate.push(required, nonEmpty);
     } else {
-        userText = `Your homebase is zipcode: ${props.zipcode}`;
+        userZipText = `Your homebase is zipcode: ${props.zipcode}`;
+    }
+
+    let userEmailText;
+    const emailValidate = [email];
+    if(!props.email) {
+        userEmailText = `You haven't set an email yet.`;
+        //if an email has not been set already, make it required to enter one
+        emailValidate.push(required, nonEmpty);
+    } else {
+        userEmailText = `Your contact email is: ${props.email}`;
     }
 
     const {pristine, submitting, handleSubmit} = props;
+    let changeText;
     if(props.editing){
-        changeText = (<form className="zipcode-form" onSubmit={handleSubmit(onSubmit)}>
+        changeText = (<form className="user-info-form" onSubmit={handleSubmit(onSubmit)}>
             <Field 
                 name="zipcode"
                 type="text"
                 component={Input}
                 label="Zipcode"
-                validate={[required, nonEmpty, validNum, validZip]}
+                validate={zipValidate}
+            />
+            <Field 
+                name="email"
+                type="text"
+                component={Input}
+                label="Email"
+                validate={emailValidate}
             />
             <button
                 type="submit"
@@ -48,16 +68,17 @@ export function UserInfo(props){
                 onClick={() => handleEdit()}
                 >Cancel</button>
         </form>)
-    } else if (!props.zipcode) {
-        changeText = <button onClick={() => handleEdit()}>Set Zipcode Now?</button>
+    } else if (!props.zipcode && !props.email) {
+        changeText = <button onClick={() => handleEdit()}>Set User Info Now?</button>
     } else {
-        changeText = <button onClick={() => handleEdit()}>Update Location?</button>
+        changeText = <button onClick={() => handleEdit()}>Update User Info?</button>
     }
 
     return(
         <section className="user-info">
             <h2>Hi {props.username}</h2>
-            <p>{userText}</p>
+            <p>{userZipText}</p>
+            <p>{userEmailText}</p>
             {changeText}
         </section>
     )
@@ -66,6 +87,7 @@ export function UserInfo(props){
 const mapStateToProps = state => ({
     username: state.auth.currentUser,
     zipcode: state.auth.userZip,
+    email: state.auth.userEmail,
     editing: state.auth.editing,
     userId: state.auth.userId
 });
