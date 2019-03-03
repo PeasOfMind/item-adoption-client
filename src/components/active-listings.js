@@ -68,7 +68,7 @@ export function ActiveListings(props){
                 <p>Listing Expires In: {item.expiresIn} days</p>
                 {altText}
                 <button onClick={() => handleEdit(item.id)}>Edit Listing</button>
-                <button onClick={() => handleDelete(item.id)}>Delete Listing</button>
+                <button className="delete-listing" onClick={() => handleDelete(item.id)}>Delete Listing</button>
                 {renewButton}
             </article>)
         });

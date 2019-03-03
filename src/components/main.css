@@ -30,3 +30,8 @@ h1 {
     display: flex;
     justify-content: center;
 }
+
+button:hover, button:focus {
+    background-color: #738598;
+    color: white;
+}

@@ -3,7 +3,7 @@
     color: white;
 }
 
-.wishlists-in-area > button, .other-wishlist > button {
+.wishlists-in-area > button {
     border: none;
     font-size: 0.8em;
     padding: 0.3em 0.5em;
@@ -17,4 +17,29 @@
     border-radius: 3px;
     border: 2px solid #3c415e;
     line-height: 1.2em;
+}
+
+.contact-button {
+    border: none;
+    font-size: 0.9em;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    background: #738598;
+}
+
+.wishlists-in-area > button:hover, .wishlists-in-area > button:focus {
+    background-color: #738598;
+}
+
+.contact-button:hover, .contact-button:focus {
+    color: #1cb3c8;
+}
+
+.delete-wish-item:hover {
+    background-color: #B22222;
+}
+
+.wishlists-in-area > button:hover, .wishlists-in-area > button:focus {
+    background-color:#3c415e;
+    color: white;
 }

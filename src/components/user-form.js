@@ -91,5 +91,5 @@ const connectedUserForm = connect(mapStateToProps)(UserForm);
 
 export default reduxForm({
     form: 'user',
-    onSubmitFail: (errors, dispatch) => dispatch(focus('user', Object.keys(errors)[0]))
+    onSubmitFail: (errors, dispatch) => dispatch(focus('user', 'username'))
 })(connectedUserForm);

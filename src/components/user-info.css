@@ -3,7 +3,7 @@
 }
 
 
-.user-info > button {
+.user-info > button, .user-info-form > button {
     border: none;
     background-color: #3c415e;
     border-radius: 3px;
