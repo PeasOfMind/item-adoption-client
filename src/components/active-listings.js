@@ -76,9 +76,12 @@ export function ActiveListings(props){
 
     if (props.addingListing){
         addListingText = <AddListingForm />
-    } else if (!props.userZip) {
-        //if the user doesn't have a zipcode set up, don't allow adding listings
-        addListingText = <p>Set up your homebase (zipcode) to add listings.</p>;
+    } else if (!props.userZip && !props.userEmail) {
+        //if the user doesn't have a zipcode or email set up, don't allow adding listings
+        addListingText = <p>Add user info to be able to add listings and look at wishlists in your area.</p>;
+    } else if (!props.userZip || !props.userEmail) {
+                //if the user hasn't completed user info, don't allow adding listings
+                addListingText = <p>Complete your user info to add listings and look at wishlists in your area.</p>;
     } else {
         addListingText = <button onClick={handleAdd}>Add a Listing</button>;
     }
@@ -98,7 +101,9 @@ const mapStateToProps = state => ({
     itemListings: state.app.itemListings,
     addingListing: state.app.addingListing,
     currentPage: state.app.currentPage,
+    userEmail: state.auth.userEmail,
     userZip: state.auth.userZip
+    
 })
 
 export default connect(mapStateToProps)(ActiveListings);

@@ -372,9 +372,10 @@ export const contactListingUserSuccess = itemId => ({
 });
 
 export const CONTACT_LISTING_USER_ERROR = 'CONTACT_LISTING_USER_ERROR';
-export const contactListingUserError = error => ({
+export const contactListingUserError = (itemId, error) => ({
     type: CONTACT_LISTING_USER_ERROR,
-    error
+    error,
+    itemId
 });
 
 export const contactListingUser = itemId => (dispatch, getState) => {
@@ -390,7 +391,39 @@ export const contactListingUser = itemId => (dispatch, getState) => {
         dispatch(contactListingUserSuccess(itemId));
     })
     .catch(err => {
-        dispatch(contactListingUserError(err));
+        dispatch(contactListingUserError(itemId, err));
+    });
+}
+
+export const CONTACT_WISHLIST_USER_SUCCESS = 'CONTACT_WISHLIST_USER_SUCCESS';
+export const contactWishlistUserSuccess = (wishUser, itemId) => ({
+    type: CONTACT_WISHLIST_USER_SUCCESS,
+    wishUser,
+    itemId
+});
+
+export const CONTACT_WISHLIST_USER_ERROR = 'CONTACT_WISHLIST_USER_ERROR';
+export const contactWishlistUserError = (wishUser, itemId, error) => ({
+    type: CONTACT_WISHLIST_USER_ERROR,
+    wishUser,
+    itemId,
+    error
+});
+
+export const contactWishlistUser = (wishUser, itemId) => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist/contact/${itemId}`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(contactWishlistUserSuccess(wishUser, itemId));
+    })
+    .catch(err => {
+        dispatch(contactWishlistUserError(wishUser, itemId, err));
     });
 }
 

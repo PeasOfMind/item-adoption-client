@@ -33,7 +33,10 @@ import {
     FETCH_WISHITEM_SUCCESS,
     FETCH_WISHITEM_ERROR,
     TOGGLE_ZIP_ENTRY,
-    CONTACT_LISTING_USER_SUCCESS} from '../actions';
+    CONTACT_LISTING_USER_SUCCESS,
+    CONTACT_LISTING_USER_ERROR,
+    CONTACT_WISHLIST_USER_SUCCESS,
+    CONTACT_WISHLIST_USER_ERROR} from '../actions';
 
 const initialState = {
     navLinks: ['Login', 'Signup'],
@@ -226,10 +229,51 @@ export const appReducer = (state=initialState, action) => {
         let otherListings = state.otherListings.map(listing => {
             if (listing.id !== action.itemId) return listing;
             return Object.assign({}, listing, {
-                contactSuccess: true
+                contactSuccess: true,
+                contactError: null
             });
         });
         return Object.assign({}, state, {otherListings})
+    }
+
+    else if (action.type === CONTACT_LISTING_USER_ERROR){
+        let otherListings = state.otherListings.map(listing => {
+            if (listing.id !== action.itemId) return listing;
+            return Object.assign({}, listing, {
+                contactSuccess: null,
+                contactError: action.error
+            });
+        });
+        return Object.assign({}, state, {otherListings})
+    }
+
+    else if (action.type === CONTACT_WISHLIST_USER_SUCCESS){
+        let updatedWishlist = state.otherWishlists[action.wishUser].wishlist.map(wishItem => {
+            if (wishItem.id !== action.itemId) return wishItem;
+            return Object.assign({}, wishItem, {
+                contactSuccess: true,
+                contactError: null
+            });
+        });
+        const otherWishlists = {}
+        Object.keys(state.otherWishlists).forEach(username => {
+            otherWishlists[username] = state.otherWishlists[username];
+            if(username === action.wishUser) {
+                otherWishlists[username].wishlist = updatedWishlist;
+            }
+        })
+        return Object.assign({}, state, otherWishlists)
+    }
+
+    else if (action.type === CONTACT_WISHLIST_USER_ERROR){
+        let updatedWishlist = state.otherWishlists[action.wishUser].wishlist.map(wishItem => {
+            if (wishItem.id !== action.itemId) return wishItem;
+            return Object.assign({}, wishItem, {
+                contactSuccess: null,
+                contactError: action.error
+            });
+        });
+        return Object.assign({}, state[action.wishUser], {wishlist: updatedWishlist})
     }
 
     else if (action.type === CHANGE_FORM_TYPE) {

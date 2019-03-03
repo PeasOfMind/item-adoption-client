@@ -60,9 +60,12 @@ export function WishList(props){
                 <WishlistForm form="add-wishlist-item"/>
                 <button type="button" className="cancel-add" onClick={handleChange}>Cancel</button>
             </section>);
-    } else if(!props.userZip) {
+    } else if(!props.userZip && !props.userEmail) {
         //if the user doesn't have a zipcode set up, don't allow adding to wishlist
-        addWishlistText = <p>Set up your homebase (zipcode) to add to your wishlist.</p>; 
+        addWishlistText = <p>Add user info to be able to add a wishlist.</p>; 
+    } else if (!props.userZip || !props.userEmail) {
+        //if the user hasn't completed user info, don't allow adding listings
+        addWishlistText = <p>Complete your user info to add a wishlist.</p>;
     } else addWishlistText=<button type="button" onClick={handleChange}>Add to wishlist</button>;
 
     return (
@@ -79,6 +82,7 @@ const mapStateToProps = state => ({
     addingWishItem: state.app.addingWishItem,
     wishlist: state.app.wishlist,
     currentPage: state.app.currentPage,
+    userEmail: state.auth.userEmail,
     userZip: state.auth.userZip
 })
 

@@ -3,7 +3,7 @@ import requiresLogin from './requires-login';
 import {Redirect} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {changePage} from '../actions';
+import {changePage, contactWishlistUser} from '../actions';
 
 import './other-wishlists.css';
 
@@ -11,6 +11,10 @@ export function OtherWishlists(props){
 
     const handleChangePage = () => {
         props.dispatch(changePage("dashboard"));
+    }
+
+    const handleContact = (wishUser, itemId) => {
+        props.dispatch(contactWishlistUser(wishUser, itemId));
     }
 
     if (props.currentPage === "dashboard"){
@@ -24,7 +28,19 @@ export function OtherWishlists(props){
     } else {
         wishlistsText = wishlistUsers.map(user => {
             const userInfo = props.otherWishlists[user];
-            const wishlist = userInfo.wishlist.map(item => <li key={item.id}>{item.title}</li>)
+            const wishlist = userInfo.wishlist.map(item => {
+                let contactText = <button className="contact-button" onClick={() => handleContact(user, item.id)}><i class="far fa-envelope"></i></button>;
+                console.log('item.contactSuccess:', item.contactSuccess)
+                if(item.contactSuccess) {
+                    console.log('contact was successful!');
+                    contactText = <span className="contact-success">Email Sent!</span>;
+                } 
+                return (<li className="other-wish-item" key={item.id}>
+                    {item.title} 
+                    {contactText}
+                    </li>)
+                
+            })
             return (
                 <article className="other-wishlist" key={userInfo.userId}>
                     <h3>{user}</h3>
@@ -37,6 +53,7 @@ export function OtherWishlists(props){
     return (
         <section className="wishlists-in-area">
             <h2>What Other Users Are Looking For</h2>
+            <p>If you have something on another user's wishlist, click the mail icon to email them and let them know.</p>
             {wishlistsText}
             <button onClick={handleChangePage}>Back to Dashboard</button>
         </section>
