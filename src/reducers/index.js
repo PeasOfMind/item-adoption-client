@@ -2,12 +2,9 @@ import {
     CHANGE_FORM_TYPE, 
     CHANGE_PAGE, 
     TOGGLE_EDIT_LISTING,  
-    RENEW_LISTING, 
     ADD_LISTING, 
     CHANGE_ADD_LISTING_STATUS,  
     TOGGLE_EDIT_WISHLIST, 
-    UPDATE_WISHLIST_ITEM, 
-    ADD_WISHLIST_ITEM, 
     CHANGE_WISHLIST_STATUS, 
     FETCH_LISTINGS_SUCCESS, 
     FETCH_LISTINGS_ERROR, 
@@ -313,17 +310,6 @@ export const appReducer = (state=initialState, action) => {
         return Object.assign({}, state, {itemListings});
     }
 
-    else if (action.type === RENEW_LISTING) {
-        let itemListings = state.itemListings.map((listing, index) => {
-            if (index !== action.listingIndex) return listing;
-            return Object.assign({}, listing, {
-                expiresIn: 14
-            });
-        });
-
-        return Object.assign({}, state, {itemListings});
-    }
-
     else if (action.type === CHANGE_ADD_LISTING_STATUS){
         return Object.assign({}, state, {
             addingListing: !state.addingListing
@@ -353,30 +339,9 @@ export const appReducer = (state=initialState, action) => {
         return Object.assign({}, state, {wishlist});
     }
 
-    else if (action.type === UPDATE_WISHLIST_ITEM){
-        let wishListArray = state.wishListArray.map((item, index) => {
-            if (index !== action.itemIndex) return item;
-            return Object.assign({}, item, {
-                name: action.name,
-                editing: false
-            });
-        });
-        return Object.assign({}, state, {wishListArray});
-    }
-
     else if (action.type === CHANGE_WISHLIST_STATUS){
         return Object.assign({}, state, {
             addingWishItem: !state.addingWishItem
-        });
-    }
-
-    else if (action.type === ADD_WISHLIST_ITEM){
-        return Object.assign({}, state, {
-            addingWishlistItem: false,
-            wishListArray: [...state.wishListArray,{
-                name: action.name,
-                editing: false
-            }]
         });
     }
 

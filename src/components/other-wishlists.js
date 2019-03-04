@@ -29,7 +29,7 @@ export function OtherWishlists(props){
         wishlistsText = wishlistUsers.map(user => {
             const userInfo = props.otherWishlists[user];
             const wishlist = userInfo.wishlist.map(item => {
-                let contactText = <button className="contact-button" aria-label="email" onClick={() => handleContact(user, item.id)}><i class="far fa-envelope"></i></button>;
+                let contactText = <button className="contact-button" aria-label="email" onClick={() => handleContact(user, item.id)}><i className="far fa-envelope"></i></button>;
                 console.log('item.contactSuccess:', item.contactSuccess)
                 if(item.contactSuccess) {
                     console.log('contact was successful!');

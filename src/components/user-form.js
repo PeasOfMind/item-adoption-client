@@ -10,76 +10,77 @@ import {required, nonEmpty, matches} from '../validators';
 
 import './user-form.css';
 
-export function UserForm(props){
-    let formId, formTitle, submitText;
-    let confirmPassword = "";
-    const matchesPassword = matches('password');
-    if (props.formType === "Signup"){
-        formId = "signup-form";
-        formTitle = "Sign up to start";
-        submitText = "Sign Up for Account";
-        confirmPassword = (
-                <Field 
-                    name="confirm-password"
-                    type="password"
-                    component={Input}
-                    label="Confirm Password"
-                    validate={[required, nonEmpty, matchesPassword]}
-                />
-        );
-    } else if (props.formType === "Login"){
-        formId = "login-form";
-        formTitle = "Login to continue";
-        submitText = "Login to Account";
-    }
-
-    let errorDiv = "";
-    if (props.loginError) {
-        return <div className="error login-error">
-            Error code {props.loginError.code}: {props.loginError.message}. Try logging in again.
-        </div>
-    }
-
-    const onSubmit = values => {
+export class UserForm extends React.Component{
+    onSubmit(values) {
         const {username, password} = values;
         const user = {username, password};
-        if(props.formType === "Signup"){
-            props.dispatch(registerUser(user));
+        if(this.props.formType === "Signup"){
+            return this.props.dispatch(registerUser(user));
         }
-        else if(props.formType === "Login"){
-            props.dispatch(login(user));
+        else if(this.props.formType === "Login"){
+            return this.props.dispatch(login(user));
         }
     }
 
-    const {pristine, submitting, handleSubmit} = props;
+    render(){
+        let formId, formTitle, submitText;
+        let confirmPassword = "";
+        const matchesPassword = matches('password');
+        if (this.props.formType === "Signup"){
+            formId = "signup-form";
+            formTitle = "Sign up to start";
+            submitText = "Sign Up for Account";
+            confirmPassword = (
+                    <Field 
+                        name="confirm-password"
+                        type="password"
+                        component={Input}
+                        label="Confirm Password"
+                        validate={[required, nonEmpty, matchesPassword]}
+                    />
+            );
+        } else if (this.props.formType === "Login"){
+            formId = "login-form";
+            formTitle = "Login to continue";
+            submitText = "Login to Account";
+        }
+    
+        let errorDiv = "";
+        if (this.props.loginError) {
+            errorDiv = (<div className="error login-error">
+                Error code {this.props.loginError.code}: {this.props.loginError.message}. Try logging in again.
+            </div>)
+        }
+        const {pristine, submitting, handleSubmit} = this.props;
+        return(
+            <section className="form-container">
+                <form id={formId} onSubmit={handleSubmit(values => this.onSubmit(values))} className="user-form">
+                    <h3 className="user-form-title">{formTitle}</h3>
+                    <Field
+                        name="username"
+                        label="Username"
+                        type="text"
+                        component={Input}
+                        validate={[required, nonEmpty]}
+                    />
+                    <Field
+                        name="password"
+                        type="password"
+                        component={Input}
+                        label="Password"
+                        validate={[required, nonEmpty]}
+                    />
+                    {confirmPassword}
+                    <button
+                        type="submit"
+                        disabled={pristine || submitting}
+                        >{submitText}</button>
+                </form>
+                {errorDiv}
+            </section>
+        )
+    }
 
-    return(
-        <section className="form-container">
-            <form id={formId} onSubmit={handleSubmit(onSubmit)} className="user-form">
-                <h3 className="user-form-title">{formTitle}</h3>
-                <Field
-                    name="username"
-                    label="Username"
-                    type="text"
-                    component={Input}
-                    validate={[required, nonEmpty]}
-                />
-                <Field
-                    name="password"
-                    type="password"
-                    component={Input}
-                    label="Password"
-                    validate={[required, nonEmpty]}
-                />
-                {confirmPassword}
-                <button
-                    type="submit"
-                    disabled={pristine || submitting}
-                    >{submitText}</button>
-            </form>
-            {errorDiv}
-        </section>
-    )
 }
 
 const mapStateToProps = state => ({
@@ -90,6 +91,9 @@ const mapStateToProps = state => ({
 const connectedUserForm = connect(mapStateToProps)(UserForm);
 
 export default reduxForm({
-    form: 'user',
-    onSubmitFail: (errors, dispatch) => dispatch(focus('user', 'username'))
+    form: 'user-form',
+    onSubmitFail: (errors, dispatch) => {
+        console.log('the redux form errors are:', errors)
+        dispatch(focus('user-form', 'username'))
+    }
 })(connectedUserForm);

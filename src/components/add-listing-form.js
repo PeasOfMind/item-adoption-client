@@ -10,10 +10,6 @@ import './add-listing-form.css'
 
 export function AddListingForm(props){
 
-    // const handleZipForm = () => {
-    //     props.dispatch(toggleZipEntry());
-    // }
-
     const onSubmit = values => {
         let {title, description, price, zipcode} = values;
         price = parseInt(price, 10);
