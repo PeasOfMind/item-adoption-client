@@ -21,33 +21,39 @@ export function OtherWishlists(props){
         return <Redirect to="/dashboard" />
     }
 
-    const wishlistUsers = Object.keys(props.otherWishlists);
+
     let wishlistsText;
-    if (wishlistUsers.length === 0){
-        wishlistsText = <p>There are no wishlists in your area :(</p>;
+    if(props.otherWishlistsError){
+        wishlistsText = <p className="error other-listings-error">Problem retrieving wishlists in your area. Error code {props.otherWishlistsError.code}: {props.otherWishlistsError.message}. Try again later.</p> 
     } else {
-        wishlistsText = wishlistUsers.map(user => {
-            const userInfo = props.otherWishlists[user];
-            const wishlist = userInfo.wishlist.map(item => {
-                let contactText = <button className="contact-button" aria-label="email" onClick={() => handleContact(user, item.id)}><i className="far fa-envelope"></i></button>;
-                console.log('item.contactSuccess:', item.contactSuccess)
-                if(item.contactSuccess) {
-                    console.log('contact was successful!');
-                    contactText = <span className="contact-success">Email Sent!</span>;
-                } 
-                return (<li className="other-wish-item" key={item.id}>
-                    {item.title} 
-                    {contactText}
-                    </li>)
-                
-            })
-            return (
-                <article className="other-wishlist" key={userInfo.userId}>
-                    <h3>{user}</h3>
-                    <ul>{wishlist}</ul>            
-                </article>
-            )
-        });
+        const wishlistUsers = Object.keys(props.otherWishlists);
+        if (wishlistUsers.length === 0){
+            wishlistsText = <p>There are no wishlists in your area :(</p>;
+        } else {
+    
+            wishlistsText = wishlistUsers.map(user => {
+                const userInfo = props.otherWishlists[user];
+                const wishlist = userInfo.wishlist.map(item => {
+                    let contactText = <button className="contact-button" aria-label="email" onClick={() => handleContact(user, item.id)}><i className="far fa-envelope"></i></button>;
+                    console.log('item.contactSuccess:', item.contactSuccess)
+                    if(item.contactSuccess) {
+                        console.log('contact was successful!');
+                        contactText = <span className="contact-success">Email Sent!</span>;
+                    } 
+                    return (<li className="other-wish-item" key={item.id}>
+                        {item.title} 
+                        {contactText}
+                        </li>)
+                    
+                })
+                return (
+                    <article className="other-wishlist" key={userInfo.userId}>
+                        <h3>{user}</h3>
+                        <ul>{wishlist}</ul>            
+                    </article>
+                )
+            });
+        }
     }
 
     return (
@@ -62,6 +68,7 @@ export function OtherWishlists(props){
 
 const mapStateToProps = state => ({
     otherWishlists: state.app.otherWishlists,
+    otherWishlistsError: state.app.otherWishlistsError,
     currentPage: state.app.currentPage
 })
 

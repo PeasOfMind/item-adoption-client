@@ -13,4 +13,5 @@
 
 .switch-form-button:hover, .switch-form-button:focus  {
     color: #1AC8ED;
+    background-color: white;
 }

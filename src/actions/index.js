@@ -68,9 +68,10 @@ export const fetchOneListingSuccess = listing => ({
 });
 
 export const FETCH_ONE_LISTING_ERROR = 'FETCH_ONE_LISTING_ERROR';
-export const fetchOneListingError = error => ({
+export const fetchOneListingError = (listingId, error) => ({
     type: FETCH_ONE_LISTING_ERROR,
-    error
+    error,
+    listingId
 });
 
 export const fetchOneListing = listingId => (dispatch, getState) => {
@@ -87,7 +88,7 @@ export const fetchOneListing = listingId => (dispatch, getState) => {
         dispatch(fetchOneListingSuccess(resJson));
     })
     .catch(err => {
-        dispatch(fetchOneListingError(err));
+        dispatch(fetchOneListingError(listingId, err));
     });
 }
 
@@ -98,8 +99,9 @@ export const fetchWishItemSuccess = wishItem => ({
 });
 
 export const FETCH_WISHITEM_ERROR = 'FETCH_WISHITEM_ERROR';
-export const fetchWishItemError = error => ({
+export const fetchWishItemError = (itemId, error) => ({
     type: FETCH_WISHITEM_ERROR,
+    itemId,
     error
 });
 
@@ -186,18 +188,19 @@ export const postWishItem = newItem => (dispatch, getState) => {
 }
 
 export const UPDATE_LISTING_SUCCESS = 'UPDATE_LISTING_SUCCESS';
-export const updateListingSuccess = () => ({
-    type: UPDATE_LISTING_SUCCESS
+export const updateListingSuccess = listingId => ({
+    type: UPDATE_LISTING_SUCCESS,
+    listingId
 });
 
 export const UPDATE_LISTING_ERROR = 'UPDATE_LISTING_ERROR';
-export const updateListingError = error => ({
+export const updateListingError = (listingId, error) => ({
     type: UPDATE_LISTING_ERROR,
+    listingId,
     error
 });
 
 export const updateListing = updateData => (dispatch, getState) => {
-    //TODO: check that zipcode is updated properly or remove zipcode from form
     const authToken = getState().auth.authToken;
     fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
         method: 'PUT',
@@ -209,22 +212,26 @@ export const updateListing = updateData => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(updateListingSuccess());
+        dispatch(updateListingSuccess(updateData.id));
+    })
+    .then(() => {
         dispatch(fetchOneListing(updateData.id));
     })
     .catch(err => {
-        dispatch(updateListingError(err));
+        dispatch(updateListingError(updateData.id, err));
     });
 }
 
 export const UPDATE_WISHITEM_SUCCESS = 'UPDATE_WISHITEM_SUCCESS';
-export const updateWishItemSuccess = () => ({
-    type: UPDATE_WISHITEM_SUCCESS
+export const updateWishItemSuccess = itemId => ({
+    type: UPDATE_WISHITEM_SUCCESS,
+    itemId
 });
 
 export const UPDATE_WISHITEM_ERROR = 'UPDATE_WISHITEM_ERROR';
-export const updateWishItemError = error => ({
+export const updateWishItemError = (itemId, error) => ({
     type: UPDATE_WISHITEM_ERROR,
+    itemId,
     error
 });
 
@@ -240,22 +247,20 @@ export const updateWishItem = updateData => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(updateWishItemSuccess());
+        dispatch(updateWishItemSuccess(updateData.id));
+    })
+    .then(() => {
         dispatch(fetchWishItem(updateData.id));
     })
     .catch(err => {
-        dispatch(updateWishItemError(err));
+        dispatch(updateWishItemError(updateData.id, err));
     });
 }
 
-export const DELETE_LISTING_SUCCESS = 'DELETE_LISTING_SUCCESS';
-export const deleteListingSuccess = () => ({
-    type: DELETE_LISTING_SUCCESS
-});
-
 export const DELETE_LISTING_ERROR = 'DELETE_LISTING_ERROR';
-export const deleteListingError = error => ({
+export const deleteListingError = (listingId, error) => ({
     type: DELETE_LISTING_ERROR,
+    listingId,
     error
 });
 
@@ -269,22 +274,17 @@ export const deleteListing = listingId => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(deleteListingSuccess());
         dispatch(fetchListings());
     })
     .catch(err => {
-        dispatch(deleteListingError(err));
+        dispatch(deleteListingError(listingId, err));
     })
 }
 
-export const DELETE_WISHITEM_SUCCESS = 'DELETE_WISHITEM_SUCCESS';
-export const deleteWishItemSuccess = () => ({
-    type: DELETE_WISHITEM_SUCCESS
-});
-
 export const DELETE_WISHITEM_ERROR = 'DELETE_WISHITEM_ERROR';
-export const deleteWishItemError = error => ({
+export const deleteWishItemError = (itemId, error) => ({
     type: DELETE_WISHITEM_ERROR,
+    itemId,
     error
 });
 
@@ -301,7 +301,7 @@ export const deleteWishItem = wishItemId => (dispatch, getState) => {
         dispatch(fetchWishlist());
     })
     .catch(err => {
-        dispatch(deleteWishItemError(err));
+        dispatch(deleteWishItemError(wishItemId, err));
     })
 }
 

@@ -16,8 +16,6 @@ import {
     POST_WISHITEM_ERROR,
     POST_WISHITEM_SUCCESS,
     DELETE_WISHITEM_ERROR,
-    DELETE_LISTING_SUCCESS,
-    DELETE_WISHITEM_SUCCESS,
     UPDATE_LISTING_SUCCESS,
     UPDATE_LISTING_ERROR,
     UPDATE_WISHITEM_SUCCESS,
@@ -42,10 +40,7 @@ const initialState = {
     currentPage: 'landing',
     itemListings: [],
     listingsError: null,
-    oneListingError: null,
     postListingError: null,
-    updateListingError: null,
-    deleteListingError: null,
     addingListing: false,
     addingListingZip: false,
     addingWishItem: false,
@@ -70,13 +65,13 @@ export const appReducer = (state=initialState, action) => {
         return Object.assign({}, state, {
             itemListings: action.listings,
             listingsError: null
-        })
+        });
     }
 
     else if (action.type === FETCH_LISTINGS_ERROR){
         return Object.assign({}, state, {
             listingsError: action.error
-        })
+        });
     }
 
     else if (action.type === FETCH_WISHLIST_SUCCESS){
@@ -87,13 +82,13 @@ export const appReducer = (state=initialState, action) => {
         return Object.assign({}, state, {
             wishlist: action.wishlist,
             wishlistError: null
-        })
+        });
     }
 
     else if (action.type === FETCH_WISHLIST_ERROR){
         return Object.assign({}, state, {
             wishlistError: action.error
-        })
+        });
     }
 
     if (action.type === FETCH_ONE_LISTING_SUCCESS){
@@ -104,19 +99,28 @@ export const appReducer = (state=initialState, action) => {
         //make copy of the state item listings
         const newListings = state.itemListings.slice();
         //replace the listing with the one retrieved from the API
-        newListings[index] = action.listing;
+        newListings[index] =  action.listing;
         //set editing status to false
         newListings[index].editing = false;
+        //set the error status to null
+        newListings[index].fetchError = null;
         return Object.assign({}, state, {
-            itemListings: newListings,
-            oneListingError: null
-        })
+            itemListings: newListings
+        });
     }
 
     else if (action.type === FETCH_ONE_LISTING_ERROR){
+        //find the index of the listing in state
+        const index = state.itemListings.findIndex(listing => {
+            return listing.id === action.listingId;
+        });
+        //make copy of the state item listings
+        const newListings = state.itemListings.slice();
+        //set the error property for this listing
+        newListings[index].fetchError = action.error;
         return Object.assign({}, state, {
-            oneListingError: action.error
-        })
+            itemListings: newListings
+        });
     }
  
     if (action.type === FETCH_WISHITEM_SUCCESS){
@@ -125,21 +129,30 @@ export const appReducer = (state=initialState, action) => {
             return wishItem.id === action.wishItem.id;
         });
         //make copy of the state wishlist
-        const newWishItem = state.wishlist.slice();
+        const newWishList = state.wishlist.slice();
         //replace the wish item with the one retrieved from the API
-        newWishItem[index] = action.wishItem;
+        newWishList[index] = action.wishItem;
         //set editing status to false
-        newWishItem[index].editing = false;
+        newWishList[index].editing = false;
+        //set the error status to null
+        newWishList[index].fetchError = null;        
         return Object.assign({}, state, {
-            wishlist: newWishItem,
-            wishItemError: null
-        })
+            wishlist: newWishList
+        });
     }
 
     else if (action.type === FETCH_WISHITEM_ERROR){
+        //find the index of the wish item in state
+        const index = state.wishlist.findIndex(wishItem => {
+            return wishItem.id === action.wishItem.id;
+        });
+        //make copy of the state wishlist
+        const newWishList = state.wishlist.slice();
+        //set the error status
+        newWishList[index].fetchError = action.error;        
         return Object.assign({}, state, {
-            wishItemError: action.error
-        })
+            wishlist: newWishList
+        });
     }
        
     else if (action.type === POST_LISTING_SUCCESS){
@@ -148,7 +161,7 @@ export const appReducer = (state=initialState, action) => {
             addingListing: false,
             itemListings: [...state.itemListings, action.listing],
             postListingError: null
-        })
+        });
     }
 
     else if (action.type === POST_LISTING_ERROR){
@@ -169,35 +182,89 @@ export const appReducer = (state=initialState, action) => {
     }
 
     else if (action.type === UPDATE_LISTING_SUCCESS){
-        return Object.assign({}, state, {updateListingError: null});
+        //find the index of the listing in state
+        const index = state.itemListings.findIndex(listing => {
+            return listing.id === action.listingId;
+        });
+        //make copy of the state item listings
+        const newListings = state.itemListings.slice();
+        //set the error status of this one listing to null
+        newListings[index].updateError = null;
+        return Object.assign({}, state, {
+            itemListings: newListings
+        });
     }
 
     else if (action.type === UPDATE_LISTING_ERROR){
-        return Object.assign({}, state, {updateListingError: action.error});
+        //find the index of the listing in state
+        const index = state.itemListings.findIndex(listing => {
+            return listing.id === action.listingId;
+        });
+        //make copy of the state item listings
+        const newListings = state.itemListings.slice();
+        //set the error status of this one listing
+        newListings[index].updateError = action.error;
+        return Object.assign({}, state, {
+            itemListings: newListings
+        });
     }
 
     else if (action.type === UPDATE_WISHITEM_SUCCESS){
-        return Object.assign({}, state, {updateWishItemError: null});
+        //find the index of the wish item in state
+        const index = state.wishlist.findIndex(wishItem => {
+            return wishItem.id === action.itemId;
+        });
+        //make copy of the state wishlist
+        const newWishList = state.wishlist.slice();
+        //set editing status to false
+        newWishList[index].editing = false;
+        //set the error status to null
+        newWishList[index].updateError = null;        
+        return Object.assign({}, state, {
+            wishlist: newWishList
+        });
     }
 
     else if (action.type === UPDATE_WISHITEM_ERROR){
-        return Object.assign({}, state, {updateWishItemError: action.error});
+        //find the index of the wish item in state
+        const index = state.wishlist.findIndex(wishItem => {
+            return wishItem.id === action.itemId;
+        });
+        //make copy of the state wishlist
+        const newWishList = state.wishlist.slice();
+        //set the error status
+        newWishList[index].updateError = action.error;        
+        return Object.assign({}, state, {
+            wishlist: newWishList
+        });
     }
-
-    else if (action.type === DELETE_LISTING_SUCCESS){
-        return Object.assign({}, state, {deleteListingError: null});
-    }
-
+    
     else if (action.type === DELETE_LISTING_ERROR){
-        return Object.assign({}, state, {deleteListingError: action.error});
-    }
-
-    else if (action.type === DELETE_WISHITEM_SUCCESS){
-        return Object.assign({}, state, {deleteWishItemError: null});
+        //find the index of the listing in state
+        const index = state.itemListings.findIndex(listing => {
+            return listing.id === action.listingId;
+        });
+        //make copy of the state item listings
+        const newListings = state.itemListings.slice();
+        //set the error status of this one listing
+        newListings[index].deleteError = action.error;
+        return Object.assign({}, state, {
+            itemListings: newListings
+        });
     }
 
     else if (action.type === DELETE_WISHITEM_ERROR){
-        return Object.assign({}, state, {deleteWishItemError: action.error});
+        //find the index of the wish item in state
+        const index = state.wishlist.findIndex(wishItem => {
+            return wishItem.id === action.itemId;
+        });
+        //make copy of the state wishlist
+        const newWishList = state.wishlist.slice();
+        //set the error status
+        newWishList[index].deleteError = action.error;        
+        return Object.assign({}, state, {
+            wishlist: newWishList
+        });
     }
 
     else if (action.type === FETCH_OTHER_LISTINGS_SUCCESS){
