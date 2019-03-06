@@ -54,7 +54,8 @@ export default function authReducer(state = initialState, action){
     }
     else if (action.type === AUTH_ERROR) {
         return Object.assign({}, state, {
-            loginError: action.error
+            loginError: action.error,
+            loading: false
         });
     }
     else if (action.type === FETCH_USER_INFO_SUCCESS){

@@ -11,6 +11,11 @@ import {required, nonEmpty, matches} from '../validators';
 import './user-form.css';
 
 export class UserForm extends React.Component{
+    constructor (){
+        super()
+        this.onSubmit = this.onSubmit.bind(this);
+    }
+    
     onSubmit(values) {
         const {username, password} = values;
         const user = {username, password};

@@ -21,7 +21,9 @@ export function OtherListings(props){
     }
 
     let listingsText;
-    if (props.otherListings.length === 0){
+    if(props.otherListingsError){
+        listingsText = <p className="error other-listings-error">Problem retrieving listings in your area. Error code {props.otherListingsError.code}: {props.otherListingsError.message}. Try again later.</p> 
+    } else if (props.otherListings.length === 0){
         listingsText = <p>There are no listings in your area :(</p>
     } else {
         listingsText = props.otherListings.map((item, index) => {
@@ -56,6 +58,7 @@ export function OtherListings(props){
 
 const mapStateToProps = state => ({
     otherListings: state.app.otherListings,
+    otherListingsError: state.app.otherListingsError,
     currentPage: state.app.currentPage
 });
 
