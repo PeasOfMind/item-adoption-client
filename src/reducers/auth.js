@@ -35,6 +35,8 @@ export default function authReducer(state = initialState, action){
         return Object.assign({}, state, {
             authToken: null,
             currentUser: null,
+            userZip: null,
+            userEmail: null,
             userId: null
         })
     }

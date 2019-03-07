@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {reduxForm, Field, change} from 'redux-form';
+import {reduxForm, Field} from 'redux-form';
 import { toggleUserEdit, updateUserInfo } from '../actions/auth';
 import Input from './input';
 import {required, nonEmpty, validNum, validZip, email} from '../validators';
@@ -8,18 +8,7 @@ import {required, nonEmpty, validNum, validZip, email} from '../validators';
 import './user-info.css';
 
 export class UserInfo extends React.Component{
-    // componentDidMount(){
-    //     console.log('mounted...')
-    //     if(this.props.zipcode) {
-    //         console.log(this.props.zipcode);
-    //         this.props.dispatch(change('user-info', 'zipcode', this.props.zipcode));
-    //     }
-    //     if(this.props.email) {
-    //         console.log(this.props.email);
-    //         this.props.dispatch(change('user-info', 'email', this.props.email));
-    //     }
-    // }
-
+    
     handleEdit() {
         this.props.dispatch(toggleUserEdit());
     }

@@ -1,5 +1,6 @@
 .wishlists-in-area {
-    background: #738598;
+    /* replace 738598 with 627084 */
+    background: #627084;
     color: white;
 }
 
@@ -24,19 +25,17 @@
     font-size: 0.9em;
     padding: 0.2em 0.4em;
     border-radius: 3px;
-    background: #738598;
-}
-
-.wishlists-in-area > button:hover, .wishlists-in-area > button:focus {
-    background-color: #738598;
+    background: #627084;
 }
 
 .contact-button:hover, .contact-button:focus {
     color: #1cb3c8;
+    background: #627084;
 }
 
-.delete-wish-item:hover {
-    background-color: #B22222;
+.contact-success {
+    color: #22D39C;
+    margin-left: 0.3em;
 }
 
 .wishlists-in-area > button:hover, .wishlists-in-area > button:focus {

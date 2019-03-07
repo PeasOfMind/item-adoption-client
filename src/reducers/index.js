@@ -317,16 +317,23 @@ export const appReducer = (state=initialState, action) => {
             return Object.assign({}, wishItem, {
                 contactSuccess: true,
                 contactError: null
+
             });
         });
-        const otherWishlists = {}
-        Object.keys(state.otherWishlists).forEach(username => {
-            otherWishlists[username] = state.otherWishlists[username];
-            if(username === action.wishUser) {
-                otherWishlists[username].wishlist = updatedWishlist;
-            }
-        })
-        return Object.assign({}, state, otherWishlists)
+        const updatedWishlistObj = Object.assign({}, state.otherWishlists[action.wishUser], {wishlist: updatedWishlist})
+        console.log('the updatedWishlistObj is:', updatedWishlistObj);
+        const wishUserObj = {};
+        wishUserObj[action.wishUser] = updatedWishlistObj;
+        console.log('the wishUserObj obj is:', wishUserObj);
+        const otherWishlists = Object.assign({}, state.otherWishlists, wishUserObj);
+        console.log('the otherWishlist obj is:', otherWishlists);
+        // Object.keys(state.otherWishlists).forEach(username => {
+        //     otherWishlists[username] = state.otherWishlists[username];
+        //     if(username === action.wishUser) {
+        //         otherWishlists[username].wishlist = updatedWishlist;
+        //     }
+        // })
+        return Object.assign({}, state, {otherWishlists})
     }
 
     else if (action.type === CONTACT_WISHLIST_USER_ERROR){

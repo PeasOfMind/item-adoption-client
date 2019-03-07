@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 
 import { clearAuthToken } from '../local-storage';
 import {clearAuth, login} from '../actions/auth';
-import {changeFormType, changePage} from '../actions';
+import {changePage} from '../actions';
 
 import './nav.css'
 
@@ -26,15 +26,7 @@ export function Nav(props){
     }
 
     const navLinks = linkArray.map((link, index) => {
-        if (link === "Logout") {
-            return (
-            <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
-                <Link to="/">
-                    {link}
-                </Link>
-            </li>
-            )
-        } else if (link === "Login"){
+        if (link === "Login"){
             return (
             <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
                 <Link to="/login">
@@ -54,6 +46,15 @@ export function Nav(props){
             return (
                 <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
                     <Link to="/dashboard">
+                        {link}
+                    </Link>
+                </li>
+            )
+        } else {
+            //link will be logout:
+            return (
+                <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
+                    <Link to="/">
                         {link}
                     </Link>
                 </li>

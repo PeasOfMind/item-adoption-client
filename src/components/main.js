@@ -8,10 +8,10 @@ import Dashboard from './dashboard';
 import OtherListings from './other-listings';
 import OtherWishlists from './other-wishlists';
 import Login from './login';
+import RegistrationPage from './registration-page';
 
 import './main.css';
 import { refreshAuthToken } from '../actions/auth';
-import { RegistrationPage } from './registration-page';
 
 export class Main extends React.Component{
     componentDidUpdate(prevProps) {

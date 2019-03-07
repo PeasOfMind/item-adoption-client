@@ -38,7 +38,7 @@ export function OtherWishlists(props){
                     console.log('item.contactSuccess:', item.contactSuccess)
                     if(item.contactSuccess) {
                         console.log('contact was successful!');
-                        contactText = <span className="contact-success">Email Sent!</span>;
+                        contactText = <span className="contact-success"><i className="fas fa-check"></i> Sent!</span>;
                     } 
                     return (<li className="other-wish-item" key={item.id}>
                         {item.title} 
