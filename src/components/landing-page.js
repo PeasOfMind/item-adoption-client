@@ -1,17 +1,15 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {changeFormType, changePage} from '../actions';
+import {changePage} from '../actions';
 
 import './landing-page.css';
 
 export function LandingPage(props){
-    //TODO set the facts (multiple) to be swipeable
-
-    const handleClick = () => {
-        props.dispatch(changePage("login"));
-        props.dispatch(changeFormType("Signup"));
+    if(props.loggedIn){
+        props.dispatch(changePage('dashboard'));
+        return <Redirect to="/dashboard" />
     }
 
     if(props.currentPage === "login"){
@@ -31,7 +29,7 @@ export function LandingPage(props){
                 <p>With Item Adoption, take the things that you were about to throw away and find ways to repurpose them, find places to donate them, or give/sell to others in your area. You can also look for items that are used and give them a new home!</p>
             </section>
             <section className="direct-to-signup">
-                <button type="button" onClick={handleClick} id="button-to-signup">Sign up to get started</button>
+            <Link to="/register"><button type="button" id="button-to-signup">Sign up to get started</button></Link>
             </section>
         </main>
     )
@@ -39,6 +37,7 @@ export function LandingPage(props){
 
 
 const mapStateToProps = state => ({
+    loggedIn: state.auth.currentUser !== null,
     currentPage: state.app.currentPage
 })
 

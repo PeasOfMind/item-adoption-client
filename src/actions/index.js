@@ -68,9 +68,10 @@ export const fetchOneListingSuccess = listing => ({
 });
 
 export const FETCH_ONE_LISTING_ERROR = 'FETCH_ONE_LISTING_ERROR';
-export const fetchOneListingError = error => ({
+export const fetchOneListingError = (listingId, error) => ({
     type: FETCH_ONE_LISTING_ERROR,
-    error
+    error,
+    listingId
 });
 
 export const fetchOneListing = listingId => (dispatch, getState) => {
@@ -87,7 +88,7 @@ export const fetchOneListing = listingId => (dispatch, getState) => {
         dispatch(fetchOneListingSuccess(resJson));
     })
     .catch(err => {
-        dispatch(fetchOneListingError(err));
+        dispatch(fetchOneListingError(listingId, err));
     });
 }
 
@@ -98,8 +99,9 @@ export const fetchWishItemSuccess = wishItem => ({
 });
 
 export const FETCH_WISHITEM_ERROR = 'FETCH_WISHITEM_ERROR';
-export const fetchWishItemError = error => ({
+export const fetchWishItemError = (itemId, error) => ({
     type: FETCH_WISHITEM_ERROR,
+    itemId,
     error
 });
 
@@ -186,13 +188,15 @@ export const postWishItem = newItem => (dispatch, getState) => {
 }
 
 export const UPDATE_LISTING_SUCCESS = 'UPDATE_LISTING_SUCCESS';
-export const updateListingSuccess = () => ({
-    type: UPDATE_LISTING_SUCCESS
+export const updateListingSuccess = listingId => ({
+    type: UPDATE_LISTING_SUCCESS,
+    listingId
 });
 
 export const UPDATE_LISTING_ERROR = 'UPDATE_LISTING_ERROR';
-export const updateListingError = error => ({
+export const updateListingError = (listingId, error) => ({
     type: UPDATE_LISTING_ERROR,
+    listingId,
     error
 });
 
@@ -208,22 +212,26 @@ export const updateListing = updateData => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(updateListingSuccess());
+        dispatch(updateListingSuccess(updateData.id));
+    })
+    .then(() => {
         dispatch(fetchOneListing(updateData.id));
     })
     .catch(err => {
-        dispatch(updateListingError(err));
+        dispatch(updateListingError(updateData.id, err));
     });
 }
 
 export const UPDATE_WISHITEM_SUCCESS = 'UPDATE_WISHITEM_SUCCESS';
-export const updateWishItemSuccess = () => ({
-    type: UPDATE_WISHITEM_SUCCESS
+export const updateWishItemSuccess = itemId => ({
+    type: UPDATE_WISHITEM_SUCCESS,
+    itemId
 });
 
 export const UPDATE_WISHITEM_ERROR = 'UPDATE_WISHITEM_ERROR';
-export const updateWishItemError = error => ({
+export const updateWishItemError = (itemId, error) => ({
     type: UPDATE_WISHITEM_ERROR,
+    itemId,
     error
 });
 
@@ -239,22 +247,20 @@ export const updateWishItem = updateData => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(updateWishItemSuccess());
+        dispatch(updateWishItemSuccess(updateData.id));
+    })
+    .then(() => {
         dispatch(fetchWishItem(updateData.id));
     })
     .catch(err => {
-        dispatch(updateWishItemError(err));
+        dispatch(updateWishItemError(updateData.id, err));
     });
 }
 
-export const DELETE_LISTING_SUCCESS = 'DELETE_LISTING_SUCCESS';
-export const deleteListingSuccess = () => ({
-    type: DELETE_LISTING_SUCCESS
-});
-
 export const DELETE_LISTING_ERROR = 'DELETE_LISTING_ERROR';
-export const deleteListingError = error => ({
+export const deleteListingError = (listingId, error) => ({
     type: DELETE_LISTING_ERROR,
+    listingId,
     error
 });
 
@@ -268,22 +274,17 @@ export const deleteListing = listingId => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(deleteListingSuccess());
         dispatch(fetchListings());
     })
     .catch(err => {
-        dispatch(deleteListingError(err));
+        dispatch(deleteListingError(listingId, err));
     })
 }
 
-export const DELETE_WISHITEM_SUCCESS = 'DELETE_WISHITEM_SUCCESS';
-export const deleteWishItemSuccess = () => ({
-    type: DELETE_WISHITEM_SUCCESS
-});
-
 export const DELETE_WISHITEM_ERROR = 'DELETE_WISHITEM_ERROR';
-export const deleteWishItemError = error => ({
+export const deleteWishItemError = (itemId, error) => ({
     type: DELETE_WISHITEM_ERROR,
+    itemId,
     error
 });
 
@@ -300,7 +301,7 @@ export const deleteWishItem = wishItemId => (dispatch, getState) => {
         dispatch(fetchWishlist());
     })
     .catch(err => {
-        dispatch(deleteWishItemError(err));
+        dispatch(deleteWishItemError(wishItemId, err));
     })
 }
 
@@ -364,6 +365,68 @@ export const fetchOtherWishlists = zipcode => (dispatch, getState) => {
     });
 }
 
+export const CONTACT_LISTING_USER_SUCCESS = 'CONTACT_LISTING_USER_SUCCESS';
+export const contactListingUserSuccess = itemId => ({
+    type: CONTACT_LISTING_USER_SUCCESS,
+    itemId
+});
+
+export const CONTACT_LISTING_USER_ERROR = 'CONTACT_LISTING_USER_ERROR';
+export const contactListingUserError = (itemId, error) => ({
+    type: CONTACT_LISTING_USER_ERROR,
+    error,
+    itemId
+});
+
+export const contactListingUser = itemId => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/listings/contact/${itemId}`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(contactListingUserSuccess(itemId));
+    })
+    .catch(err => {
+        dispatch(contactListingUserError(itemId, err));
+    });
+}
+
+export const CONTACT_WISHLIST_USER_SUCCESS = 'CONTACT_WISHLIST_USER_SUCCESS';
+export const contactWishlistUserSuccess = (wishUser, itemId) => ({
+    type: CONTACT_WISHLIST_USER_SUCCESS,
+    wishUser,
+    itemId
+});
+
+export const CONTACT_WISHLIST_USER_ERROR = 'CONTACT_WISHLIST_USER_ERROR';
+export const contactWishlistUserError = (wishUser, itemId, error) => ({
+    type: CONTACT_WISHLIST_USER_ERROR,
+    wishUser,
+    itemId,
+    error
+});
+
+export const contactWishlistUser = (wishUser, itemId) => (dispatch, getState) => {
+    const authToken = getState().auth.authToken;
+    fetch(`${API_BASE_URL}/lists/wishlist/contact/${itemId}`, {
+        method: 'POST',
+        headers: {
+            "Authorization": `Bearer ${authToken}`
+        }
+    })
+    .then(res => normalizeResponseErrors(res))
+    .then(() => {
+        dispatch(contactWishlistUserSuccess(wishUser, itemId));
+    })
+    .catch(err => {
+        dispatch(contactWishlistUserError(wishUser, itemId, err));
+    });
+}
+
 export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
 export const changeFormType = formType => ({
     type: CHANGE_FORM_TYPE,
@@ -380,12 +443,6 @@ export const TOGGLE_EDIT_LISTING = 'TOGGLE_EDIT_LISTING';
 export const toggleEditListing = listingId => ({
     type: TOGGLE_EDIT_LISTING,
     listingId
-});
-
-export const RENEW_LISTING = 'RENEW_LISTING';
-export const renewListing = listingIndex => ({
-    type: RENEW_LISTING,
-    listingIndex
 });
 
 export const CHANGE_ADD_LISTING_STATUS = 'CHANGE_ADD_LISTING_STATUS';
@@ -407,25 +464,12 @@ export const toggleEditWishlist = itemId => ({
     itemId
 });
 
-export const UPDATE_WISHLIST_ITEM = 'UPDATE_WISHLIST_ITEM';
-export const updateWishlistItem = (name, itemIndex) => ({
-    type: UPDATE_WISHLIST_ITEM,
-    name,
-    itemIndex
-});
-
 export const CHANGE_WISHLIST_STATUS = 'CHANGE_WISHLIST_STATUS';
 export const changeWishlistStatus = () => ({
     type: CHANGE_WISHLIST_STATUS
 });
 
-export const ADD_WISHLIST_ITEM = 'ADD_WISHLIST_ITEM';
-export const addWishlistItem = name => ({
-    type: ADD_WISHLIST_ITEM,
-    name
-});
-
 export const TOGGLE_ZIP_ENTRY = 'TOGGLE_ZIP_ENTRY';
 export const toggleZipEntry = () => ({
-    type: toggleZipEntry
-})
+    type: TOGGLE_ZIP_ENTRY
+});

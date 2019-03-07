@@ -34,3 +34,12 @@ p {
     font-size: 0.8em;
     padding: 0.3em 0.5em;
 }
+
+.active-listings > button:hover, .active-listings > button:focus {
+    background-color: white;
+    color: #3c415e;
+}
+
+.delete-listing:hover {
+    background-color: #B22222;
+}

@@ -23,3 +23,8 @@
     font-size: 0.9em;
     margin-bottom: 0.3em;
 }
+
+.other-listing > button:hover, .other-listing > button:focus, .listings-in-area > button:hover, .listings-in-area > button:focus{
+    background-color:#3c415e;
+    color: white;
+}

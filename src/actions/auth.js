@@ -40,6 +40,7 @@ const storeAuthInfo = (username, authToken, id, dispatch) => {
 };
 
 export const registerUser = user => dispatch => {
+    dispatch(authRequest());
     return fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
         mode: "cors",
@@ -89,7 +90,7 @@ export const login = user => dispatch => {
                 code === 401 
                 ? 'Incorrect username or password' 
                 : 'Unable to login, please try again';
-            dispatch(authError(err));
+            dispatch(authError(message));
             return Promise.reject(
                 new SubmissionError({
                     _error: message
@@ -110,8 +111,9 @@ export const refreshAuthToken = () => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
-    .then(resJson => storeAuthInfo(resJson.authToken, dispatch))
+    .then(resJson => storeAuthInfo(resJson.username, resJson.authToken, resJson.id, dispatch))
     .catch(err => {
+        console.log(err)
         //current token is probably invalid or expired, clear authentication info and log out user
         dispatch(authError(err));
         dispatch(clearAuth());
@@ -120,19 +122,20 @@ export const refreshAuthToken = () => (dispatch, getState) => {
     })
 }
 
-export const FETCH_ZIP_SUCCESS = 'FETCH_ZIP_SUCCESS';
-export const fetchZipSuccess = zipcode => ({
-    type: FETCH_ZIP_SUCCESS,
-    zipcode
+export const FETCH_USER_INFO_SUCCESS = 'FETCH_USER_INFO_SUCCESS';
+export const fetchUserInfoSuccess = userInfo => ({
+    type: FETCH_USER_INFO_SUCCESS,
+    zipcode: userInfo.zipcode,
+    email: userInfo.email
 })
 
-export const FETCH_ZIP_ERROR = 'FETCH_ZIP_ERROR';
-export const fetchZipError = error => ({
-    type: FETCH_ZIP_ERROR,
+export const FETCH_USER_INFO_ERROR = 'FETCH_USER_INFO_ERROR';
+export const fetchUserInfoError = error => ({
+    type: FETCH_USER_INFO_ERROR,
     error
 });
 
-export const fetchZip = () => (dispatch, getState) => {
+export const fetchUserInfo = () => (dispatch, getState) => {
     const {authToken, userId} = getState().auth;
     fetch(`${API_BASE_URL}/users/${userId}`, {
         method: 'GET',
@@ -143,25 +146,25 @@ export const fetchZip = () => (dispatch, getState) => {
     .then(res => normalizeResponseErrors(res))
     .then(res => res.json())
     .then(resJson => {
-        dispatch(fetchZipSuccess(resJson.zipcode));
+        dispatch(fetchUserInfoSuccess(resJson));
     })
     .catch(err => {
-        dispatch(fetchZipError(err));
+        dispatch(fetchUserInfoError(err));
     })
 }
 
-export const UPDATE_ZIP_SUCCESS = 'UPDATE_ZIP_SUCCESS';
-export const updateZipSuccess = () => ({
-    type: UPDATE_ZIP_SUCCESS
+export const UPDATE_USER_INFO_SUCCESS = 'UPDATE_USER_INFO_SUCCESS';
+export const updateUserInfoSuccess = () => ({
+    type: UPDATE_USER_INFO_SUCCESS
 });
 
-export const UPDATE_ZIP_ERROR = 'UPDATE_ZIP_ERROR';
-export const updateZipError = error => ({
-    type: UPDATE_ZIP_ERROR,
+export const UPDATE_USER_INFO_ERROR = 'UPDATE_USER_INFO_ERROR';
+export const updateUserInfoError = error => ({
+    type: UPDATE_USER_INFO_ERROR,
     error
 });
 
-export const updateZip = updateData => (dispatch, getState) => {
+export const updateUserInfo = updateData => (dispatch, getState) => {
     const {authToken, userId} = getState().auth;
     fetch(`${API_BASE_URL}/users/${userId}`, {
         method: 'PUT',
@@ -173,11 +176,12 @@ export const updateZip = updateData => (dispatch, getState) => {
     })
     .then(res => normalizeResponseErrors(res))
     .then(() => {
-        dispatch(fetchZip());
+        dispatch(updateUserInfoSuccess());
+        dispatch(fetchUserInfo());
         dispatch(toggleUserEdit());
     })
     .catch(err => {
-        dispatch(updateZipError(err));
+        dispatch(updateUserInfoError(err));
     })
 } 
 

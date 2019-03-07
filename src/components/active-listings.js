@@ -39,6 +39,10 @@ export function ActiveListings(props){
         return <Redirect to="/otherwishlists"/>
     }
 
+    if(props.listingsError) {
+        return <p className="error listings-error">Problem retrieving your listings. Error code {props.listingsError.code}: {props.listingsError.message}</p>
+    }
+
     if (props.itemListings.length === 0){
         listings = <p>You don't have any active listings. </p>
     } else {
@@ -46,6 +50,7 @@ export function ActiveListings(props){
             let renewButton = '';
             let altText = '';
             let price = `$${item.price}`;
+            let errorText = '';
             if (item.editing) {
                 return(<ListingForm form={`edit-listing-${item.id}`} key={item.id} index={item.id} />)
             } 
@@ -60,6 +65,15 @@ export function ActiveListings(props){
             if (item.price === 0){
                 price = <strong>FREE</strong>;
             }
+            if (item.fetchError) {
+                errorText += <p className="error fetch-error">Problem fetching this listing. Error code {item.fetchError.code}: {item.fetchError.message}</p>
+            }
+            if (item.updateError) {
+                errorText += <p className="error update-error">Problem updating this listing. Error code {item.updateError.code}: {item.updateError.message}. Try again later.</p> 
+            }
+            if (item.deleteError) {
+                errorText += <p className="error delete-error">Problem deleting this listing. Error code {item.deleteError.code}: {item.deleteError.message}. Try again later.</p> 
+            }
             return (
             <article className="item-ad" key={item.id}>
                 <h3>{item.title}</h3>
@@ -68,17 +82,21 @@ export function ActiveListings(props){
                 <p>Listing Expires In: {item.expiresIn} days</p>
                 {altText}
                 <button onClick={() => handleEdit(item.id)}>Edit Listing</button>
-                <button onClick={() => handleDelete(item.id)}>Delete Listing</button>
+                <button className="delete-listing" onClick={() => handleDelete(item.id)}>Delete Listing</button>
                 {renewButton}
+                {errorText}
             </article>)
         });
     }
 
     if (props.addingListing){
         addListingText = <AddListingForm />
-    } else if (!props.userZip) {
-        //if the user doesn't have a zipcode set up, don't allow adding listings
-        addListingText = <p>Set up your homebase (zipcode) to add listings.</p>;
+    } else if (!props.userZip && !props.userEmail) {
+        //if the user doesn't have a zipcode or email set up, don't allow adding listings
+        addListingText = <p>Add user info to be able to add listings and look at wishlists in your area.</p>;
+    } else if (!props.userZip || !props.userEmail) {
+                //if the user hasn't completed user info, don't allow adding listings
+                addListingText = <p>Complete your user info to add listings and look at wishlists in your area.</p>;
     } else {
         addListingText = <button onClick={handleAdd}>Add a Listing</button>;
     }
@@ -96,9 +114,12 @@ export function ActiveListings(props){
 const mapStateToProps = state => ({
     username: state.auth.currentUser,
     itemListings: state.app.itemListings,
+    listingsError: state.app.listingsError,
     addingListing: state.app.addingListing,
     currentPage: state.app.currentPage,
+    userEmail: state.auth.userEmail,
     userZip: state.auth.userZip
+    
 })
 
 export default connect(mapStateToProps)(ActiveListings);

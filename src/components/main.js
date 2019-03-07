@@ -11,6 +11,7 @@ import Login from './login';
 
 import './main.css';
 import { refreshAuthToken } from '../actions/auth';
+import { RegistrationPage } from './registration-page';
 
 export class Main extends React.Component{
     componentDidUpdate(prevProps) {
@@ -53,6 +54,7 @@ export class Main extends React.Component{
                     <Route path="/otherlistings" component={OtherListings}/>
                     <Route path="/otherwishlists" component={OtherWishlists}/>
                     <Route path="/login" component={Login}/>
+                    <Route path="/register" component={RegistrationPage}/>
                 </Switch>
                 <footer>Created by PeasofMind</footer>
             </div>
