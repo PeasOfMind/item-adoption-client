@@ -4,14 +4,7 @@
     margin-right: auto;
 }
 
-.switch-form-button {
-    border: none;
-    font-size: 1em;
-    text-decoration: underline;
-    background-color: white;
-}
-
-.switch-form-button:hover, .switch-form-button:focus  {
-    color: #1AC8ED;
-    background-color: white;
+.switch-text {
+    display: inline;
+    margin-right: 0.3em;
 }

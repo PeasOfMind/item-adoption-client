@@ -1,0 +1,17 @@
+.signup-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.signup-form > button {
+    font-size: 1em;
+    padding: 1em;
+    background-color: #3c415e;
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+.signup-form > button:hover, .signup-form > button:focus {
+    background-color: #1cb3c8;
+}
