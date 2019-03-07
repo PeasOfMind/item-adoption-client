@@ -1,8 +1,8 @@
 import React from 'react';
-import {Redirect} from 'react-router-dom';
+import {Redirect, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {changeFormType, changePage} from '../actions';
+import {changePage} from '../actions';
 
 import './landing-page.css';
 
@@ -14,11 +14,6 @@ export function LandingPage(props){
 
     if(props.currentPage === "login"){
         return <Redirect to="/login" />
-    }
-
-    const handleClick = () => {
-        props.dispatch(changePage("login"));
-        props.dispatch(changeFormType("Signup"));
     }
 
     return(
@@ -34,7 +29,8 @@ export function LandingPage(props){
                 <p>With Item Adoption, take the things that you were about to throw away and find ways to repurpose them, find places to donate them, or give/sell to others in your area. You can also look for items that are used and give them a new home!</p>
             </section>
             <section className="direct-to-signup">
-                <button type="button" onClick={handleClick} id="button-to-signup">Sign up to get started</button>
+            <Link to="/register">Sign Up</Link>
+                {/* <button type="button" onClick={handleClick} id="button-to-signup">Sign up to get started</button> */}
             </section>
         </main>
     )

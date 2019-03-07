@@ -1,14 +1,15 @@
 import React from 'react';
 import {reduxForm, Field, focus} from 'redux-form';
 import { connect } from 'react-redux';
-import {login} from '../actions/auth';
+
+import {registerUser} from '../actions/auth';
 
 import Input from './input';
-import {required, nonEmpty} from '../validators';
+import {required, nonEmpty, matches} from '../validators';
 
-import './user-form.css';
+import './registration-form.css';
 
-export class UserForm extends React.Component{
+export class RegistrationForm extends React.Component{
     constructor(props){
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
@@ -17,21 +18,16 @@ export class UserForm extends React.Component{
     onSubmit(values) {
         const {username, password} = values;
         const user = {username, password};
-        return this.props.dispatch(login(user));
+        return this.props.dispatch(registerUser(user));
     }
 
     render(){
-        let errorDiv = "";
-        if (this.props.loginError) {
-            errorDiv = (<div className="error login-error">
-                {this.props.loginError}. Try logging in again.
-            </div>)
-        }
+        const matchesPassword = matches('password');
         const {pristine, submitting, handleSubmit} = this.props;
         return(
             <section className="form-container">
-                <form id="login-form" onSubmit={handleSubmit(values => this.onSubmit(values))} className="user-form">
-                    <h3 className="user-form-title">Login to continue</h3>
+                <form id="registration" onSubmit={handleSubmit(values => this.onSubmit(values))} className="signup-form">
+                    <h3 className="user-form-title">Sign up to start</h3>
                     <Field
                         name="username"
                         label="Username"
@@ -46,12 +42,18 @@ export class UserForm extends React.Component{
                         label="Password"
                         validate={[required, nonEmpty]}
                     />
+                    <Field 
+                        name="confirm-password"
+                        type="password"
+                        component={Input}
+                        label="Confirm Password"
+                        validate={[required, nonEmpty, matchesPassword]}
+                    />
                     <button
                         type="submit"
                         disabled={pristine || submitting}
-                        >Login to Account</button>
+                        >Sign Up for Account</button>
                 </form>
-                {errorDiv}
             </section>
         )
     }
@@ -63,12 +65,12 @@ const mapStateToProps = state => ({
     loginError: state.auth.loginError
 })
 
-const connectedUserForm = connect(mapStateToProps)(UserForm);
+const connectedRegistrationForm = connect(mapStateToProps)(RegistrationForm);
 
 export default reduxForm({
-    form: 'user-form',
+    form: 'registration',
     onSubmitFail: (errors, dispatch) => {
         console.log('the redux form errors are:', errors)
-        dispatch(focus('user-form', 'username'))
+        dispatch(focus('registration', Object.keys(errors)[0]))
     }
-})(connectedUserForm);
+})(connectedRegistrationForm);

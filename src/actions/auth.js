@@ -40,6 +40,7 @@ const storeAuthInfo = (username, authToken, id, dispatch) => {
 };
 
 export const registerUser = user => dispatch => {
+    dispatch(authRequest());
     return fetch(`${API_BASE_URL}/users`, {
         method: 'POST',
         mode: "cors",
@@ -89,7 +90,7 @@ export const login = user => dispatch => {
                 code === 401 
                 ? 'Incorrect username or password' 
                 : 'Unable to login, please try again';
-            dispatch(authError(err));
+            dispatch(authError(message));
             return Promise.reject(
                 new SubmissionError({
                     _error: message
