@@ -22,9 +22,6 @@ export function Nav(props){
             props.dispatch(changePage("landing"));
         } else if (link === "Demo"){
             props.dispatch(login({username: "newuser", password: "password123"}))
-        } else {
-            //will be either Signup or Login so switch forms
-            props.dispatch(changeFormType(link));
         }
     }
 
@@ -37,14 +34,33 @@ export function Nav(props){
                 </Link>
             </li>
             )
+        } else if (link === "Login"){
+            return (
+            <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
+                <Link to="/login">
+                    {link}
+                </Link>
+            </li>
+            )
+        } else if (link === "Signup"){
+            return (
+                <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
+                    <Link to="/register">
+                        {link}
+                    </Link>
+                </li>
+            )
+        } else if (link === "Demo"){
+            return (
+                <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
+                    <Link to="/dashboard">
+                        {link}
+                    </Link>
+                </li>
+            )
         }
-        return (
-        <li key={index} className="nav-link" aria-label={link} onClick={() => handleOnClick(link)}>
-            <Link to="/login">
-                {link}
-            </Link>
-        </li>
-    )});
+        
+    });
 
     return (
         <nav>
@@ -60,4 +76,4 @@ const mapStateToProps = state => ({
     loggedIn: state.auth.currentUser !== null
 })
 
-export default connect(mapStateToProps)(Nav);
+export default connect(mapStateToProps)(Nav)
