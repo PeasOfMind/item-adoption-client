@@ -109,7 +109,6 @@ const connectedAddListingForm = connect(mapStateToProps)(AddListingForm);
 export default reduxForm({
     form: 'add-listing',
     onSubmitFail: (errors, dispatch) => {
-        console.log('the add-listing form errors:', errors);
         dispatch(focus('add-listing', Object.keys(errors)[0]));
     }
 })(connectedAddListingForm);

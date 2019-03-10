@@ -70,7 +70,6 @@ const connectedRegistrationForm = connect(mapStateToProps)(RegistrationForm);
 export default reduxForm({
     form: 'registration',
     onSubmitFail: (errors, dispatch) => {
-        console.log('the redux form errors are:', errors)
         dispatch(focus('registration', Object.keys(errors)[0]))
     }
 })(connectedRegistrationForm);

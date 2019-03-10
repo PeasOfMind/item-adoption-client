@@ -14,7 +14,6 @@ export class UserInfo extends React.Component{
     }
 
     onSubmit (values) {
-        console.log(values);
         const updateData = {id: this.props.userId}
         if (values.zipcode) updateData.zipcode = values.zipcode;
         if (values.email) updateData.email = values.email;
