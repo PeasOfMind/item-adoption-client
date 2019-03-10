@@ -8,8 +8,14 @@ p {
 }
 
 .active-listings {
-    background: #738598;
+    background: #627084;
     color: white;
+}
+
+.active-listings-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .item-ad {
@@ -25,7 +31,7 @@ p {
     margin-bottom: 0.3em;
 }
 
-.item-ad > button, .active-listings > button {
+.item-ad > button, .active-listings-container > button {
     border: none;
     background-color: #3c415e;
     border-radius: 3px;
@@ -35,7 +41,7 @@ p {
     padding: 0.3em 0.5em;
 }
 
-.active-listings > button:hover, .active-listings > button:focus {
+.active-listings-container > button:hover, .active-listings-container > button:focus {
     background-color: white;
     color: #3c415e;
 }

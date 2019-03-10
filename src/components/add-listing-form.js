@@ -79,7 +79,8 @@ export function AddListingForm(props){
     }
 
     return(
-        <section className="form-container">
+        <article className="form-container add-listing">
+            <h3>New Listing</h3>
             <form className="new-listing" onSubmit={handleSubmit(values => onSubmit(values))}>
                 {allFields}
                 {listingZipField}
@@ -87,14 +88,14 @@ export function AddListingForm(props){
                 <button 
                     type="submit"
                     disabled={pristine || submitting}
-                    >Submit A New Listing</button>
+                    >Submit New Listing</button>
                 {listingZipButton}
                 <button 
                     type="reset"
                     onClick={() => handleOnClick("reset")}
                     >Cancel</button>
             </form>
-        </section>
+        </article>
     )
 }
 
@@ -108,7 +109,6 @@ const connectedAddListingForm = connect(mapStateToProps)(AddListingForm);
 export default reduxForm({
     form: 'add-listing',
     onSubmitFail: (errors, dispatch) => {
-        console.log('the add-listing form errors:', errors);
         dispatch(focus('add-listing', Object.keys(errors)[0]));
     }
 })(connectedAddListingForm);

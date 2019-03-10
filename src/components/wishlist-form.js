@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {reduxForm, Field, change} from 'redux-form';
 
-import {updateWishItem, toggleEditWishlist, postWishItem} from '../actions';
+import {updateWishItem, toggleEditWishlist, postWishItem, changeWishlistStatus} from '../actions';
 import {required, nonEmpty} from '../validators';
 
 import './wishlist-form.css'
@@ -29,6 +29,11 @@ export class WishlistForm extends React.Component {
         }
     }
 
+        
+    handleChange(){
+        this.props.dispatch(changeWishlistStatus());
+    }
+
     handleClick(){
         this.props.dispatch(toggleEditWishlist(this.props.id));
     }
@@ -51,20 +56,20 @@ export class WishlistForm extends React.Component {
             return (
                 <form className="wishlist-form" onSubmit={this.props.handleSubmit(values => 
                 this.onSubmit(values))}>
+                    <button 
+                    type="submit"
+                    disabled={invalid || submitting}
+                    >Submit Edits</button>
+                    <button 
+                    type="reset"
+                    onClick={this.handleClick}
+                    >Cancel</button>
                     <Field 
                         name="title"
                         type="text"
                         component="input"
                         validate={[required, nonEmpty]}
                     />
-                    <button 
-                        type="submit"
-                        disabled={invalid || submitting}
-                        >Submit Edits</button>
-                    <button 
-                        type="reset"
-                        onClick={this.handleClick}
-                        >Cancel</button>
                     {errorText}
                 </form>
             )
@@ -84,9 +89,15 @@ export class WishlistForm extends React.Component {
                         validate={[required, nonEmpty]}
                     />
                     <button 
+                        className="submit-item"
                         type="submit"
                         disabled={invalid || submitting}
                         >Submit New Item</button>
+                    <button 
+                        type="button" 
+                        className="cancel-add" 
+                        onClick={() => this.handleChange()}
+                        >Cancel</button>
                     {postErrorText}
                 </form>
             )}

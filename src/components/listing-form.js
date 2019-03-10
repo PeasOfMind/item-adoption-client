@@ -17,15 +17,15 @@ export class ListingForm extends React.Component {
 
     componentDidMount(){
         const currentListing = this.props.itemListings.find(listing => {
-            return listing.id === this.props.index;
+            return listing.id === this.props.id;
         });
         ['title', 'description', 'price', 'zipcode'].forEach(field => {
-            this.props.dispatch(change(`edit-listing-${this.props.index}`, field, currentListing[field]));
+            this.props.dispatch(change(`edit-listing-${this.props.id}`, `${field}-${this.props.index}`, currentListing[field]));
         });
     }
 
     onSubmit(values){
-        const updatedValues = {id: this.props.index};
+        const updatedValues = {id: this.props.id};
         ['title', 'description', 'price'].forEach(field => {
             //convert price to a number to match data type in database
             if (field === 'price') updatedValues[field] = parseInt(values[field], 10);
@@ -35,7 +35,7 @@ export class ListingForm extends React.Component {
     }
 
     handleClick(){
-        this.props.dispatch(toggleEditListing(this.props.index));
+        this.props.dispatch(toggleEditListing(this.props.id));
     }
 
     render() {
@@ -43,7 +43,7 @@ export class ListingForm extends React.Component {
         const allFields = ['Title', 'Description', 'Price', 'Zipcode'].map((field, key) => {
             let fieldType = 'text';
             let validators = [required, nonEmpty];
-            const fieldName = `${field.toLowerCase()}`;
+            const fieldName = `${field.toLowerCase()}-${this.props.index}`;
             if (field === 'Price'){
                 //no validators (this field is optional)
                 return(

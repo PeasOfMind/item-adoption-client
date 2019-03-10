@@ -35,10 +35,8 @@ export function OtherWishlists(props){
                 const userInfo = props.otherWishlists[user];
                 const wishlist = userInfo.wishlist.map(item => {
                     let contactText = <button className="contact-button" aria-label="email" onClick={() => handleContact(user, item.id)}><i className="far fa-envelope"></i></button>;
-                    console.log('item.contactSuccess:', item.contactSuccess)
                     if(item.contactSuccess) {
-                        console.log('contact was successful!');
-                        contactText = <span className="contact-success"><i className="fas fa-check"></i> Sent!</span>;
+                        contactText = <span className="contact-success"><i className="fas fa-check"></i> Contacted!</span>;
                     } 
                     return (<li className="other-wish-item" key={item.id}>
                         {item.title} 
@@ -57,12 +55,14 @@ export function OtherWishlists(props){
     }
 
     return (
-        <section className="wishlists-in-area">
-            <h2>What Other Users Are Looking For</h2>
-            <p>If you have something on another user's wishlist, click the mail icon to email them and let them know.</p>
-            {wishlistsText}
-            <button onClick={handleChangePage}>Back to Dashboard</button>
-        </section>
+        <main className="wishlists-in-area">
+            <div className="other-wishlists-container">
+                <h2>What Other Users Are Looking For</h2>
+                <p>If you have something on another user's wishlist, click the mail icon to email them and let them know.</p>
+                {wishlistsText}
+                <button onClick={handleChangePage}>Back to Dashboard</button>
+            </div>
+        </main>
     )
 }
 

@@ -1,9 +1,16 @@
 .listings-in-area {
-    background: #738598;
+    background: #627084;
     color: white;
+    padding: 0.2em 1em 0.5em;
 }
 
-.listings-in-area > button, .other-listing > button {
+.other-listings-container {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.listings-in-area button {
     border: none;
     font-size: 0.8em;
     padding: 0.3em 0.5em;
@@ -11,12 +18,11 @@
 }
 
 .other-listing {
-    /* background: darkgrey; */
     color: white;
     margin: 1em 0;
     padding: 0.5em;
     border-radius: 3px;
-    border: 2px solid #3c415e;
+    background-color: #3c415e;
 }
 
 .other-listing > p {
@@ -24,7 +30,7 @@
     margin-bottom: 0.3em;
 }
 
-.other-listing > button:hover, .other-listing > button:focus, .listings-in-area > button:hover, .listings-in-area > button:focus{
+.other-listings-container > button:hover, .other-listings-container > button:focus {
     background-color:#3c415e;
     color: white;
 }

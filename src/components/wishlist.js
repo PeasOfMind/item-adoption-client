@@ -59,10 +59,10 @@ export function WishList(props){
 
     if (props.addingWishItem) {
         addWishlistText = (
-            <section>
+            <article>
                 <WishlistForm form="add-wishlist-item"/>
-                <button type="button" className="cancel-add" onClick={handleChange}>Cancel</button>
-            </section>);
+
+            </article>);
     } else if(!props.userZip && !props.userEmail) {
         //if the user doesn't have a zipcode set up, don't allow adding to wishlist
         addWishlistText = <p>Add user info to be able to add a wishlist.</p>; 

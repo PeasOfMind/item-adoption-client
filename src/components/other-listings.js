@@ -33,7 +33,7 @@ export function OtherListings(props){
             }
             let contactText = <button onClick={() => handleContact(item.id)} >Contact Owner About This Item</button>;
             if (item.contactSuccess) {
-                contactText = <p>An email has been sent to {item.user.username} about this item! Look for their reply in your inbox.</p>
+                contactText = <p className="contact-success"><i className="fas fa-check"></i> Email has been sent to {item.user.username}! Look for their reply in your inbox.</p>
             }
             return (
                 <article className="other-listing" key={index}>
@@ -48,11 +48,13 @@ export function OtherListings(props){
     }
 
     return (
-        <section className="listings-in-area">
+        <main className="listings-in-area">
+        <div className="other-listings-container">
             <h2>Listings In Your Area</h2>
             {listingsText}
             <button onClick={handleChangePage}>Back to Dashboard</button>
-        </section>
+        </div>
+        </main>
     )
 }
 
