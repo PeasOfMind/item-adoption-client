@@ -7,7 +7,11 @@
     background-color: #3c415e;
     border-radius: 3px;
     color: #dfe2e2;
-    margin-left: 0.3em;
+    margin-right: 0.3em;
     font-size: 0.9em;
     padding: 0.3em 0.5em;
+}
+
+.submit-item {
+    margin-left: 0.3em;
 }

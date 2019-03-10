@@ -8,7 +8,7 @@ import {required, nonEmpty, validNum, validZip, email} from '../validators';
 import './user-info.css';
 
 export class UserInfo extends React.Component{
-    
+
     handleEdit() {
         this.props.dispatch(toggleUserEdit());
     }
@@ -47,7 +47,7 @@ export class UserInfo extends React.Component{
         if(this.props.editing){
             changeText = (<form className="user-info-form" onSubmit={handleSubmit(this.onSubmit)}>
                 <Field 
-                    name="zipcode"
+                    name="user-zipcode"
                     type="text"
                     component={Input}
                     label="Zipcode"

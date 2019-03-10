@@ -46,13 +46,13 @@ export function ActiveListings(props){
     if (props.itemListings.length === 0){
         listings = <p>You don't have any active listings. </p>
     } else {
-        listings = props.itemListings.map(item => {
+        listings = props.itemListings.map((item, index) => {
             let renewButton = '';
             let altText = '';
             let price = `$${item.price}`;
             let errorText = '';
             if (item.editing) {
-                return(<ListingForm form={`edit-listing-${item.id}`} key={item.id} index={item.id} />)
+                return(<ListingForm form={`edit-listing-${item.id}`} key={item.id} index={index} id={item.id} />)
             } 
             //give user the option to renew the listing if the listing expires in 5 days or less
             if (item.expiresIn <= 5) {
@@ -103,10 +103,12 @@ export function ActiveListings(props){
 
     return(
         <section className="active-listings">
+        <div className="active-listings-container">
             <h2>Active Listings</h2>
             {listings}
             {addListingText}
             <button onClick={viewOtherWishlists}>See What Others Are Looking For</button>
+        </div>
         </section>
     )
 }
