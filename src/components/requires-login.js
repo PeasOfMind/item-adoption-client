@@ -14,7 +14,6 @@ export default () => Component => {
             console.log('not logged in - redirecting to landing page')
             return <Redirect to="/" />;
         }
-
         return <Component {...passThroughProps} />;
     }
 

@@ -8,7 +8,7 @@ import './login.css';
 export function Login(props){
     //if loggedIn successfully, redirect to user's dashboard
     if(props.loggedIn){
-        return <Redirect to="/dashboard" />
+        return <Redirect to="/" />
     }
  
     return(
