@@ -5,9 +5,7 @@ import {connect} from 'react-redux';
 import './landing-page.css';
 
 export function LandingPage(props){
-    console.log(props)
     if(props.loggedIn){
-        // props.dispatch(changePage('dashboard'));
         return <Redirect to="/dashboard" />
     }
 
