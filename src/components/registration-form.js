@@ -22,12 +22,18 @@ export class RegistrationForm extends React.Component{
     }
 
     render(){
+        let errorDiv = "";
+        if (this.props.loginError) {
+            errorDiv = (<div className="error signup-error">
+            {this.props.loginError.message}. Try signing up again.
+            </div>)
+        }
         const matchesPassword = matches('password');
         const {pristine, submitting, handleSubmit} = this.props;
         return(
             <section className="form-container">
                 <form id="registration" onSubmit={handleSubmit(values => this.onSubmit(values))} className="signup-form">
-                    <h3 className="user-form-title">Sign up to start</h3>
+                    <h2 className="user-form-title">Sign up to start</h2>
                     <Field
                         name="username"
                         label="Username"
@@ -54,6 +60,7 @@ export class RegistrationForm extends React.Component{
                         disabled={pristine || submitting}
                         >Sign Up for Account</button>
                 </form>
+                {errorDiv}
             </section>
         )
     }

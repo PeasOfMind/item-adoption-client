@@ -31,7 +31,7 @@ export class UserForm extends React.Component{
         return(
             <section className="form-container">
                 <form id="login-form" onSubmit={handleSubmit(values => this.onSubmit(values))} className="user-form">
-                    <h3 className="user-form-title">Login to continue</h3>
+                    <h2 className="user-form-title">Login to continue</h2>
                     <Field
                         name="username"
                         label="Username"
