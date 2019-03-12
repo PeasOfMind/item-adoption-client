@@ -2,13 +2,12 @@ import React from 'react';
 import {Redirect, Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
-import {changePage} from '../actions';
-
 import './landing-page.css';
 
 export function LandingPage(props){
+    console.log(props)
     if(props.loggedIn){
-        props.dispatch(changePage('dashboard'));
+        // props.dispatch(changePage('dashboard'));
         return <Redirect to="/dashboard" />
     }
 

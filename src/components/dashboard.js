@@ -6,9 +6,12 @@ import UserInfo from './user-info';
 import ActiveListings from './active-listings';
 import WishList from './wishlist'
 
+import {changePage} from '../actions';
+
 export class Dashboard extends React.Component{
 
     componentDidMount() {
+        this.props.dispatch(changePage('dashboard'));
         this.props.dispatch(fetchListings());
         this.props.dispatch(fetchWishlist());
         this.props.dispatch(fetchUserInfo());
