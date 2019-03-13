@@ -46,7 +46,7 @@ export class Main extends React.Component{
             <div className="app">
                 <Nav />
                 <header className={this.props.headingType}>
-                    <h1>item adoption</h1>
+                    <h1>ITEM ADOPTION</h1>
                 </header>
                 <Switch>
                     <Route exact path="/" component={LandingPage}/>

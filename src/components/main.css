@@ -6,8 +6,9 @@ footer {
 
 h1 {
     padding: 2em 0 1em;
-    font-size: 2em;
-    font-family: 'Major Mono Display', monospace;
+    font-size: 3em;
+    word-spacing: 0.2em;
+    font-family: 'Lato', sans-serif;
     font-weight: bold;
     text-align: center;
 }
