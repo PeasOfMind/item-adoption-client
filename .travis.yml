@@ -8,6 +8,6 @@ deploy:
   provider: heroku
   api_key:
     secure: d/9hqZRKlL/nxyLLAh5inodptCKob3cN4srn/8xzfNj5kBz29aPkpBlCbF537b0xARl+Grhp/8FRBmBV8RsqPdj1F3tsco5XkteHLp3hteuBLeQl2iAYb5rY9JanPQdx8mCYGHeric8c6i0jbl9KCV7Da/OzW6Jb4RD76UyiDUOBYRDnTfCy0tFEpNJHRmzxPrdpzN3dCOSJ1NVMyh/wgJMAyQB/R7TlA0zXpUgF26L5RA3we5ogy005+J4I4dHNO8Tu0lbdde/bE7Ohi+Ul7moAmy4rYyyY0enEQ4eWaVyZjSs4HW3cjVFOcbpa6/hM45SEyM6EclkWPxQXBErFhQ0WhZ3B6EWWPiJIzfwyfWGvFJcvoObHMCX4qasD2bTOE/exiAGIZyTg85oKx84xEvIt9oXpxx4qas7Wkx4W7jV1SCLUOzG7UYa4xwm2xw2qV/CYWv0KfCK+e9P3gwyyVEJBrcxj28kmu/6sztpgbWCO2v2pBDV3rj5l3i1X7mfUmg7odnuyxhFOS29+khL8wJBgo52Fqx0+P1//+JpdHKCkYsy6/mGRztjDVSdZ2uc7fXEf5KCI6xBsepM82cgHZ3d0b9gblMJvnglP9oQzOa0BMwmZlTUNwNe0CByaw7t6l/JBdGTMG9UIjcBMfui5cyUyRhTqCR87bX4cJaImjWo=
-  app: item-adoption-client
+  app: pacific-savannah-70762
   on:
     repo: PeasOfMind/item-adoption-client
