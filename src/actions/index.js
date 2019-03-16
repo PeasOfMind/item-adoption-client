@@ -164,7 +164,7 @@ export const postWishItemSuccess = wishItem => ({
 export const POST_WISHITEM_ERROR = 'POST_WISHITEM_ERROR';
 export const postWishItemError = error => ({
     type: POST_WISHITEM_ERROR,
-    postWishItemError: error
+    error
 });
 
 export const postWishItem = newItem => (dispatch, getState) => {
@@ -427,12 +427,6 @@ export const contactWishlistUser = (wishUser, itemId) => (dispatch, getState) =>
     });
 }
 
-export const CHANGE_FORM_TYPE = 'CHANGE_FORM_TYPE';
-export const changeFormType = formType => ({
-    type: CHANGE_FORM_TYPE,
-    formType
-});
-
 export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const changePage = currentPage =>  ({
     type: CHANGE_PAGE,
@@ -448,14 +442,6 @@ export const toggleEditListing = listingId => ({
 export const CHANGE_ADD_LISTING_STATUS = 'CHANGE_ADD_LISTING_STATUS';
 export const changeAddListingStatus = () => ({
     type: CHANGE_ADD_LISTING_STATUS,
-});
-
-export const ADD_LISTING = 'ADD_LISTING';
-export const addListing = (title, description, price) => ({
-    type: ADD_LISTING,
-    title,
-    description,
-    price
 });
 
 export const TOGGLE_EDIT_WISHLIST = 'TOGGLE_EDIT_WISHLIST';
