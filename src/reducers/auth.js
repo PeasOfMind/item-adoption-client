@@ -11,7 +11,7 @@ import {
     UPDATE_USER_INFO_SUCCESS
 } from '../actions/auth';
 
-const initialState = {
+export const initialState = {
     authToken: null,
     currentUser: null,
     userId: null,
