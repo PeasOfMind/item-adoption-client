@@ -1,8 +1,6 @@
 import {
-    CHANGE_FORM_TYPE, 
     CHANGE_PAGE, 
     TOGGLE_EDIT_LISTING,  
-    ADD_LISTING, 
     CHANGE_ADD_LISTING_STATUS,  
     TOGGLE_EDIT_WISHLIST, 
     CHANGE_WISHLIST_STATUS, 
@@ -31,9 +29,10 @@ import {
     CONTACT_LISTING_USER_SUCCESS,
     CONTACT_LISTING_USER_ERROR,
     CONTACT_WISHLIST_USER_SUCCESS,
-    CONTACT_WISHLIST_USER_ERROR} from '../actions';
+    CONTACT_WISHLIST_USER_ERROR,
+    FETCH_OTHER_WISHLISTS_ERROR} from '../actions';
 
-const initialState = {
+export const initialState = {
     navLinks: ['Login', 'Signup'],
     formType: 'Signup',
     headingType: 'landing-header',
@@ -144,7 +143,7 @@ export const appReducer = (state=initialState, action) => {
     else if (action.type === FETCH_WISHITEM_ERROR){
         //find the index of the wish item in state
         const index = state.wishlist.findIndex(wishItem => {
-            return wishItem.id === action.wishItem.id;
+            return wishItem.id === action.itemId;
         });
         //make copy of the state wishlist
         const newWishList = state.wishlist.slice();
@@ -285,7 +284,7 @@ export const appReducer = (state=initialState, action) => {
         });
     }
 
-    else if (action.type === FETCH_OTHER_LISTINGS_ERROR){
+    else if (action.type === FETCH_OTHER_WISHLISTS_ERROR){
         return Object.assign({}, state, {otherWishlistsError: action.error});
     }
 
@@ -324,7 +323,7 @@ export const appReducer = (state=initialState, action) => {
         const wishUserObj = {};
         wishUserObj[action.wishUser] = updatedWishlistObj;
         const otherWishlists = Object.assign({}, state.otherWishlists, wishUserObj);
-        return Object.assign({}, state, {otherWishlists})
+        return Object.assign({}, state, {otherWishlists});
     }
 
     else if (action.type === CONTACT_WISHLIST_USER_ERROR){
@@ -335,21 +334,13 @@ export const appReducer = (state=initialState, action) => {
                 contactError: action.error
             });
         });
-        return Object.assign({}, state[action.wishUser], {wishlist: updatedWishlist})
+        const updatedWishlistObj = Object.assign({}, state.otherWishlists[action.wishUser], {wishlist: updatedWishlist})
+        const wishUserObj = {};
+        wishUserObj[action.wishUser] = updatedWishlistObj;
+        const otherWishlists = Object.assign({}, state.otherWishlists, wishUserObj);
+        return Object.assign({}, state, {otherWishlists});
     }
 
-    else if (action.type === CHANGE_FORM_TYPE) {
-        if (!action.formType){
-            if (state.formType === 'Login'){
-                action.formType = 'Signup';
-            } else if (state.formType === 'Signup'){
-                action.formType = 'Login';
-            }
-        }
-        return Object.assign({}, state, {
-            formType: action.formType
-        })
-    }
     else if (action.type === CHANGE_PAGE) {
         if (action.currentPage === 'landing' || action.currentPage === 'login'){
             action.navLinks = ['Login', 'Signup'];
@@ -362,7 +353,7 @@ export const appReducer = (state=initialState, action) => {
             currentPage: action.currentPage,
             navLinks: action.navLinks,
             headingType: action.headingType
-        })
+        });
     }
 
     else if (action.type === TOGGLE_EDIT_LISTING) {
@@ -378,19 +369,6 @@ export const appReducer = (state=initialState, action) => {
     else if (action.type === CHANGE_ADD_LISTING_STATUS){
         return Object.assign({}, state, {
             addingListing: !state.addingListing
-        });
-    }
-
-    else if (action.type === ADD_LISTING){
-        return Object.assign({}, state, {
-            addingListing: false,
-            itemListings: [...state.itemListings, {
-                title: action.title,
-                description: action.description,
-                price: action.price,
-                expiresIn: 14,
-                editing: false
-            }]
         });
     }
 
@@ -413,7 +391,7 @@ export const appReducer = (state=initialState, action) => {
     else if (action.type === TOGGLE_ZIP_ENTRY) {
         return Object.assign({}, state, {
             addingListingZip: !state.addingListingZip
-        })
+        });
     }
 
     return state;
