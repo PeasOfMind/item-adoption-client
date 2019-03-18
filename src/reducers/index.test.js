@@ -16,7 +16,7 @@ describe('appReducer', () => {
 
     const generateMockListings = num => {
         let mockListings = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < num; i++) {
             mockListings.push({
                 expiresIn: `${i+3}`,
                 zipcode: '10000',
@@ -42,18 +42,7 @@ describe('appReducer', () => {
 
     describe('fetchListingsSuccess', () => {
         it('Should update the state with listings', () => {
-            let mockListings = [];
-            for (let i = 0; i < 4; i++) {
-                mockListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            const mockListings = generateMockListings(4);
             const state = appReducer(initialState, actions.fetchListingsSuccess(mockListings));
             expect(state.itemListings.length).toEqual(mockListings.length);
             //now compare one listing
@@ -79,14 +68,7 @@ describe('appReducer', () => {
 
     describe('fetchWishlistSuccess', () => {
         it('Should update the state with the wishlist', () => {
-            let mockWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                mockWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            const mockWishlist = generateMockWishlist(4);
             const state = appReducer(initialState, actions.fetchWishlistSuccess(mockWishlist));
             expect(state.wishlist.length).toEqual(mockWishlist.length);
             //now compare one wish item
@@ -108,18 +90,7 @@ describe('appReducer', () => {
 
     describe('fetchOneListingSuccess', () => {
         it('Should update the one fetched listing in the itemListings array', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             //replace listing at index 2
             const index = 2;
             const fetchedListing = {
@@ -130,7 +101,6 @@ describe('appReducer', () => {
                 description: `Testing the one fetched test listing`,
                 id: `abcde${index}`
             }
-
             const oldState = {itemListings: oldListings}
             const state = appReducer(oldState, actions.fetchOneListingSuccess(fetchedListing));
             //length of itemListings should stay the same
@@ -150,22 +120,10 @@ describe('appReducer', () => {
 
     describe('fetchOneListingError', () => {
         it('Should assign a fetch error to the specific listing in itemListings array', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const index = 1;
             const fetchedListingId = `abcde${index}`;
             const error = 'some error';
-
             const oldState = {itemListings: oldListings}
             const state = appReducer(oldState, actions.fetchOneListingError(fetchedListingId, error));
             //length of itemListings should stay the same
@@ -177,21 +135,13 @@ describe('appReducer', () => {
 
     describe('fetchWishItemSuccess', () => {
         it('Should update the one fetched wish item in the wishlist array', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             //replace wish item at index 2
             const index = 2;
             const fetchedWishItem = {
                 title: `fetched test wish item`,
                 id: `abcde${index}`
             }
-
             const oldState = {wishlist: oldWishlist}
             const state = appReducer(oldState, actions.fetchWishItemSuccess(fetchedWishItem));
             //length of wish item should stay the same
@@ -207,18 +157,10 @@ describe('appReducer', () => {
 
     describe('fetchWishItemError', () => {
         it('Should assign a fetch error to the specific wish item in wishlist array', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             const index = 1;
             const fetchedItemId = `abcde${index}`;
             const error = 'some error';
-
             const oldState = {wishlist: oldWishlist}
             const state = appReducer(oldState, actions.fetchWishItemError(fetchedItemId, error));
             //length of itemListings should stay the same
@@ -230,18 +172,7 @@ describe('appReducer', () => {
 
     describe('postListingSuccess', () => {
         it('Should add the new listing in the itemListings array', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const newListing = {
                 expiresIn: 5,
                 zipcode: '10000',
@@ -250,7 +181,6 @@ describe('appReducer', () => {
                 description: `info about new test listing`,
                 id: `newTestId1`
             }
-
             const oldState = {itemListings: oldListings}
             const state = appReducer(oldState, actions.postListingSuccess(newListing));
             expect(state.addingListing).toBe(false);
@@ -269,18 +199,7 @@ describe('appReducer', () => {
 
     describe('postListingError', () => {
         it('Should update state with a postListingError', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const error = 'some error';
             const oldState = {itemListings: oldListings}
             const state = appReducer(oldState, actions.postListingError(error));
@@ -290,19 +209,11 @@ describe('appReducer', () => {
 
     describe('postWishItemSuccess', () => {
         it('Should add the new wish item in the wishlist array', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             const newWishItem = {
                 title: `fetched test wish item`,
                 id: `newTestId1`
             }
-
             const oldState = {wishlist: oldWishlist}
             const state = appReducer(oldState, actions.postWishItemSuccess(newWishItem));
             expect(state.addingWishItem).toBe(false);
@@ -317,14 +228,7 @@ describe('appReducer', () => {
 
     describe('postWishItemError', () => {
         it('Should update state with a postWishItemError', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             const error = 'some error';
             const oldState = {wishlist: oldWishlist};
             const state = appReducer(oldState, actions.postWishItemError(error));
@@ -334,18 +238,7 @@ describe('appReducer', () => {
 
     describe('updateListingSuccess', () => {
         it('Should update the specified listing in the itemListings array', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const updateIndex = 1;
             const listingId = `abcde${updateIndex}`;
             const oldState = {itemListings: oldListings};
@@ -359,18 +252,7 @@ describe('appReducer', () => {
 
     describe('updateListingError', () => {
         it('Should update state with a updateListingError', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const updateIndex = 1;
             const listingId = `abcde${updateIndex}`;
             const error = 'some error';
@@ -385,14 +267,7 @@ describe('appReducer', () => {
 
     describe('updateWishItemSuccess', () => {
         it('Should update the specified wish item in the wishlist array', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             const updateIndex = 1;
             const itemId = `abcde${updateIndex}`
             const oldState = {wishlist: oldWishlist};
@@ -406,14 +281,7 @@ describe('appReducer', () => {
 
     describe('updateWishItemError', () => {
         it('Should update state with a updateWishItemError', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             const updateIndex = 1;
             const itemId = `abcde${updateIndex}`
             const error = 'some error';
@@ -428,18 +296,7 @@ describe('appReducer', () => {
 
     describe('updateListingSuccess', () => {
         it('Should update the specified listing in the itemListings array', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const updateIndex = 1;
             const listingId = `abcde${updateIndex}`
             const oldState = {itemListings: oldListings};
@@ -453,18 +310,7 @@ describe('appReducer', () => {
 
     describe('deleteListingError', () => {
         it('Should update specified listing with a deleteError', () => {
-            let oldListings = [];
-            for (let i = 0; i < 4; i++) {
-                oldListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldListings = generateMockListings(4);
             const deleteIndex = 1;
             const listingId = `abcde${deleteIndex}`
             const error = 'some error';
@@ -479,14 +325,7 @@ describe('appReducer', () => {
 
     describe('deleteWishItemError', () => {
         it('Should update specified listing with a deleteError', () => {
-            let oldWishlist = [];
-            for (let i = 0; i < 4; i++) {
-                oldWishlist.push({
-                    title: `Test wish item ${i}`,
-                    id: `abcde${i}`
-                });
-            }
-
+            let oldWishlist = generateMockWishlist(4);
             const deleteIndex = 1;
             const itemId = `abcde${deleteIndex}`
             const error = 'some error';
@@ -509,10 +348,10 @@ describe('appReducer', () => {
                     price: `${i*2}`,
                     title: `Test listing ${i}`,
                     description: `Test test test`,
-                    id: `abcde${i}`
+                    id: `abcde${i}`,
+                    user: {username: `testUser${i}`}
                 });
             }
-
             const state = appReducer(initialState, actions.fetchOtherListingsSuccess(mockOtherListings));
             expect(state.otherListings.length).toEqual(mockOtherListings.length);
             //now compare one listing
@@ -525,6 +364,7 @@ describe('appReducer', () => {
             expect(listing.title).toEqual(mockListing.title);
             expect(listing.description).toEqual(mockListing.description);
             expect(listing.id).toEqual(mockListing.id);
+            expect(listing.user.username).toEqual(mockListing.user.username);
         });
     });
 
@@ -547,7 +387,6 @@ describe('appReducer', () => {
                     wishlist: generateMockWishlist(2)
                 }
             }
-
             const state = appReducer(initialState, actions.fetchOtherWishlistsSuccess(mockOtherWishlists));
             expect(state.otherWishlists).toMatchObject(mockOtherWishlists);
         });
@@ -563,22 +402,10 @@ describe('appReducer', () => {
 
     describe('contactListingUserSuccess', () => {
         it('Should update contactSuccess to specified listing', () => {
-            let mockOtherListings = [];
-            for (let i = 0; i < 4; i++) {
-                mockOtherListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            const mockOtherListings = generateMockListings(4);
             const updateIndex = 1;
             const listingId = `abcde${updateIndex}`;
             const oldState = {otherListings: mockOtherListings};
-
             const state = appReducer(oldState, actions.contactListingUserSuccess(listingId));
             expect(state.otherListings.length).toEqual(mockOtherListings.length);
             //now check the updated listing
@@ -591,22 +418,10 @@ describe('appReducer', () => {
 
     describe('contactListingUserError', () => {
         it('Should update contactError to specified listing', () => {
-            let mockOtherListings = [];
-            for (let i = 0; i < 4; i++) {
-                mockOtherListings.push({
-                    expiresIn: `${i+3}`,
-                    zipcode: '10000',
-                    price: `${i*2}`,
-                    title: `Test listing ${i}`,
-                    description: `Test test test`,
-                    id: `abcde${i}`
-                });
-            }
-
+            const mockOtherListings = generateMockListings(4);
             const updateIndex = 1;
             const listingId = `abcde${updateIndex}`;
             const oldState = {otherListings: mockOtherListings};
-
             const error = 'some error';
             const state = appReducer(oldState, actions.contactListingUserError(listingId, error));
             expect(state.otherListings.length).toEqual(mockOtherListings.length);
@@ -629,12 +444,10 @@ describe('appReducer', () => {
                     wishlist: generateMockWishlist(2)
                 }
             }
-
             const updateIndex = 1;
             const itemId = `abcde${updateIndex}`;
             const user = `TestUser${updateIndex}`;
             const oldState = {otherWishlists: mockOtherWishlists};
-
             const error = 'some error';
             const state = appReducer(oldState, actions.contactWishlistUserSuccess(user, itemId, error));
             const updatedItem = state.otherWishlists[user].wishlist[updateIndex];
@@ -661,7 +474,6 @@ describe('appReducer', () => {
             const itemId = `abcde${updateIndex}`;
             const user = `TestUser${updateIndex}`;
             const oldState = {otherWishlists: mockOtherWishlists};
-
             const error = 'some error';
             const state = appReducer(oldState, actions.contactWishlistUserError(user, itemId, error));
             const updatedItem = state.otherWishlists[user].wishlist[updateIndex];
