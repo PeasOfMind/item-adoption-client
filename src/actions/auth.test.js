@@ -1,6 +1,5 @@
 import * as actions from './auth';
 import {API_BASE_URL} from '../config';
-import {saveAuthToken, clearAuthToken} from '../local-storage';
 import { changePage } from '.';
 
 describe('setAuthToken', () => {
@@ -181,7 +180,7 @@ describe('fetchUserInfo', () => {
         });
 
         const dispatch = jest.fn();
-        return actions.fetchUserInfo()(dispatch, getState).then(() => {
+        actions.fetchUserInfo()(dispatch, getState).then(() => {
             expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/users/${userId}`, expectedHeaders);
         });
     });
@@ -209,6 +208,7 @@ describe('updateUserInfo', () => {
         const userId = 'testUser123';
         const mockUpdateData = {userId, zipcode: '12345', email: 'test@test.test'};
         const expectedHeaders = {
+            "body": "{\"userId\":\"testUser123\",\"zipcode\":\"12345\",\"email\":\"test@test.test\"}",
             "headers": {
                 "Content-Type": "application/json; charset=utf-8",
                 "Authorization": `Bearer ${authToken}`},

@@ -122,11 +122,12 @@ export const refreshAuthToken = () => (dispatch, getState) => {
 }
 
 export const FETCH_USER_INFO_SUCCESS = 'FETCH_USER_INFO_SUCCESS';
-export const fetchUserInfoSuccess = userInfo => ({
+export const fetchUserInfoSuccess = userInfo => {
+    return {
     type: FETCH_USER_INFO_SUCCESS,
     zipcode: userInfo.zipcode,
     email: userInfo.email
-})
+}}
 
 export const FETCH_USER_INFO_ERROR = 'FETCH_USER_INFO_ERROR';
 export const fetchUserInfoError = error => ({
@@ -136,14 +137,18 @@ export const fetchUserInfoError = error => ({
 
 export const fetchUserInfo = () => (dispatch, getState) => {
     const {authToken, userId} = getState().auth;
-    fetch(`${API_BASE_URL}/users/${userId}`, {
+    return fetch(`${API_BASE_URL}/users/${userId}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}` 
         }
     })
-    .then(res => normalizeResponseErrors(res))
-    .then(res => res.json())
+    .then(res => {
+        return normalizeResponseErrors(res)
+    })
+    .then(res => {
+        return res.json();
+    })
     .then(resJson => {
         dispatch(fetchUserInfoSuccess(resJson));
     })
@@ -165,7 +170,7 @@ export const updateUserInfoError = error => ({
 
 export const updateUserInfo = updateData => (dispatch, getState) => {
     const {authToken, userId} = getState().auth;
-    fetch(`${API_BASE_URL}/users/${userId}`, {
+    return fetch(`${API_BASE_URL}/users/${userId}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
