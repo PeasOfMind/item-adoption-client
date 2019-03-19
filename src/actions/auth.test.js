@@ -182,6 +182,7 @@ describe('fetchUserInfo', () => {
         const dispatch = jest.fn();
         actions.fetchUserInfo()(dispatch, getState).then(() => {
             expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/users/${userId}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchUserInfoSuccess(mockUserInfo));
         });
     });
 });
@@ -226,6 +227,7 @@ describe('updateUserInfo', () => {
         const dispatch = jest.fn();
         return actions.updateUserInfo(mockUpdateData)(dispatch, getState).then(() => {
             expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/users/${userId}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.updateUserInfoSuccess());
         });
     });
 });

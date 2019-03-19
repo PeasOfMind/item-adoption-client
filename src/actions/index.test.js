@@ -3,6 +3,8 @@ import * as actions from './index';
 import {API_BASE_URL} from '../config';
 
 // const mockStore = configureMockStore();
+const authToken = 'mockAuth123';
+const getState = () => ({auth: {authToken}});
 
 describe('fetchListingsSuccess', () => {
     it('Should return the action', () => {
@@ -23,7 +25,6 @@ describe('fetchListingsError', () => {
 });
 
 describe('fetchListings', () => {
-
     // let store;
     // beforeEach(() => {
     //     store = mockStore({
@@ -41,28 +42,25 @@ describe('fetchListings', () => {
     // });
 
     it('Sould dispatch fetchListingsSuccess', () => {
-        const resListings = {
-            listings: []
-        };
-        const getState = () => {
-            return {
-                auth: {authToken: 'auth123'}
-            }
+        const mockListings = {listings: ['listingOne', 'listingTwo']};
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "GET"
         }
 
         global.fetch = jest.fn().mockImplementation( () => {
             return Promise.resolve({
                 ok: true,
                 json() {
-                    return resListings;
+                    return mockListings;
                 }
             })
         });
 
         const dispatch = jest.fn();
         return actions.fetchListings()(dispatch, getState).then(() => {
-            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings`);
-            expect(dispatch).toHaveBeenCalledWith(actions.fetchListingsSuccess(resListings));
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchListingsSuccess(mockListings.listings));
         });
 
     });
@@ -86,7 +84,30 @@ describe('fetchWishlistError', () => {
     })
 })
 
-//TODO: write fetchWishlist test
+describe('fetchWishlist', () => {
+    it('Sould dispatch fetchWishlistSuccess', () => {
+        const mockWishlist = {wishlist: ['itemOne', 'itemTwo']};
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "GET"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({
+                ok: true,
+                json() {
+                    return mockWishlist;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.fetchWishlist()(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchWishlistSuccess(mockWishlist.wishlist));
+        });
+    });
+});
 
 describe('fetchOneListingSuccess', () => {
     it('Should return the action', () => {
@@ -108,7 +129,34 @@ describe('fetchOneListingError', () => {
     });
 });
 
-//TODO: write fetchOneListing test
+describe('fetchOneListing', () => {
+    it('Sould dispatch fetchOneListingSuccess', () => {
+        const mockListing = {
+            id: `mockId123`,
+            title:'listingOne'
+        };
+
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "GET"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({
+                ok: true,
+                json() {
+                    return mockListing;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.fetchOneListing(mockListing.id)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings/${mockListing.id}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchOneListingSuccess(mockListing));
+        });
+    });
+});
 
 describe('fetchWishItemSuccess', () => {
     it('Should return the action', () => {
@@ -130,7 +178,33 @@ describe('fetchWishItemError', () => {
     });
 });
 
-//TODO: write fetchWishItem test
+describe('fetchWishItem', () => {
+    it('Sould dispatch fetchWishItemSuccess', () => {
+        const mockWishItem = {
+            id: `mockItem123`,
+            title: 'itemOne'
+        };
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "GET"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({
+                ok: true,
+                json() {
+                    return mockWishItem;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.fetchWishItem(mockWishItem.id)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist/${mockWishItem.id}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchWishItemSuccess(mockWishItem));
+        });
+    });
+});
 
 describe('postListingSuccess', () => {
     it('Should return the action', () => {
@@ -150,7 +224,38 @@ describe('postListingError', () => {
     });
 });
 
-//TODO: write postListing test
+describe('postListing', () => {
+    it('Sould dispatch postListingSuccess', () => {
+        const mockListing = {
+            id: `mockId123`,
+            title:'listingOne'
+        };
+
+        const expectedHeaders = {
+            "body": "{\"id\":\"mockId123\",\"title\":\"listingOne\"}",
+            "headers": {
+                "Content-Type": "application/json; charset=utf-8", 
+                "Authorization": `Bearer ${authToken}`
+            },
+            "method": "POST"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({
+                ok: true,
+                json() {
+                    return mockListing;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.postListing(mockListing)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.postListingSuccess(mockListing));
+        });
+    });
+});
 
 describe('postWishItemSuccess', () => {
     it('Should return the action', () => {
@@ -170,7 +275,38 @@ describe('postWishItemError', () => {
     });
 });
 
-//TODO: write postWishItem test
+describe('postWishItem', () => {
+    it('Sould dispatch postWishItemSuccess', () => {
+        const mockWishItem = {
+            id: `mockItem123`,
+            title: 'itemOne'
+        };
+
+        const expectedHeaders = {
+            "body": "{\"id\":\"mockItem123\",\"title\":\"itemOne\"}",
+            "headers": {
+                "Content-Type": "application/json; charset=utf-8", 
+                "Authorization": `Bearer ${authToken}`
+            },
+            "method": "POST"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({
+                ok: true,
+                json() {
+                    return mockWishItem;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.postWishItem(mockWishItem)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.postWishItemSuccess(mockWishItem));
+        });
+    });
+});
 
 describe('updateListingSuccess', () => {
     it('Should return the action', () => {
@@ -192,7 +328,33 @@ describe('updateListingError', () => {
     });
 });
 
-//TODO: write updateListing test
+describe('updateListing', () => {
+    it('Sould dispatch updateListingSuccess', () => {
+        const mockListing = {
+            id: `mockId123`,
+            title:'listingOne'
+        };
+
+        const expectedHeaders = {
+            "body": "{\"id\":\"mockId123\",\"title\":\"listingOne\"}",
+            "headers": {
+                "Content-Type": "application/json; charset=utf-8", 
+                "Authorization": `Bearer ${authToken}`
+            },
+            "method": "PUT"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ ok: true })
+        });
+
+        const dispatch = jest.fn();
+        return actions.updateListing(mockListing)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings/${mockListing.id}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.updateListingSuccess(mockListing.id));
+        });
+    });
+});
 
 describe('updateWishItemSuccess', () => {
     it('Should return the action', () => {
@@ -214,7 +376,33 @@ describe('updateWishItemError', () => {
     });
 });
 
-//TODO: write updateWishItem test
+describe('updateWishItem', () => {
+    it('Sould dispatch updateWishItemSuccess', () => {
+        const mockWishItem = {
+            id: `mockItem123`,
+            title: 'itemOne'
+        };
+
+        const expectedHeaders = {
+            "body": "{\"id\":\"mockItem123\",\"title\":\"itemOne\"}",
+            "headers": {
+                "Content-Type": "application/json; charset=utf-8", 
+                "Authorization": `Bearer ${authToken}`
+            },
+            "method": "PUT"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ ok: true })
+        });
+
+        const dispatch = jest.fn();
+        return actions.updateWishItem(mockWishItem)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist/${mockWishItem.id}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.updateWishItemSuccess(mockWishItem.id));
+        });
+    });
+});
 
 describe('deleteListingError', () => {
     it('Should return the action', () => {
@@ -227,7 +415,24 @@ describe('deleteListingError', () => {
     });
 });
 
-//TODO: write deleteListing test
+describe('deleteListing', () => {
+    it('Sould fetch to correct endpoint', () => {
+        const mockListing = {id: `mockId123`};
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "DELETE"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ ok: true })
+        });
+
+        const dispatch = jest.fn();
+        return actions.deleteListing(mockListing.id)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings/${mockListing.id}`, expectedHeaders);
+        });
+    });
+});
 
 describe('deleteWishItemError', () => {
     it('Should return the action', () => {
@@ -240,7 +445,24 @@ describe('deleteWishItemError', () => {
     });
 });
 
-//TODO: write deleteWishItem test
+describe('deleteWishItem', () => {
+    it('Sould fetch to correct endpoint', () => {
+        const mockWishItem = {id: `mockId123`};
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "DELETE"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ ok: true })
+        });
+
+        const dispatch = jest.fn();
+        return actions.deleteWishItem(mockWishItem.id)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist/${mockWishItem.id}`, expectedHeaders);
+        });
+    });
+});
 
 describe('fetchOtherListingsSuccess', () => {
     it('Should return the action', () => {
@@ -260,7 +482,31 @@ describe('fetchOtherListingsError', () => {
     });
 });
 
-//TODO: write fetchOtherListings test
+describe('fetchOtherListings', () => {
+    it('Sould dispatch fetchOtherListingsSuccess', () => {
+        const mockListings = {listings: ['listingOne', 'listingTwo']};
+        const mockZip = '10000';
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "GET"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ 
+                ok: true,
+                json() {
+                    return mockListings;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.fetchOtherListings(mockZip)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings/search/${mockZip}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchOtherListingsSuccess(mockListings.listings));
+        });
+    });
+});
 
 describe('fetchOtherWishlistsSuccess', () => {
     it('Should return the action', () => {
@@ -280,7 +526,31 @@ describe('fetchOtherWishlistsError', () => {
     });
 });
 
-//TODO: write fetchOtherWishlists test
+describe('fetchOtherWishlists', () => {
+    it('Sould dispatch fetchOtherWishlistsSuccess', () => {
+        const mockWishlist = {wishlist: ['itemOne', 'itemTwo']};
+        const mockZip = '10000';
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "GET"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ 
+                ok: true,
+                json() {
+                    return mockWishlist;
+                }
+            })
+        });
+
+        const dispatch = jest.fn();
+        return actions.fetchOtherWishlists(mockZip)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist/search/${mockZip}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.fetchOtherWishlistsSuccess(mockWishlist));
+        });
+    });
+});
 
 describe('contactListingUserSuccess', () => {
     it('Should return the action', () => {
@@ -302,7 +572,25 @@ describe('contactListingUserError', () => {
     });
 });
 
-//TODO: write contactListingUser test
+describe('contactListingUser', () => {
+    it('Sould dispatch contactListingUserSuccess', () => {
+        const mockId = '10000';
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "POST"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ ok: true })
+        });
+
+        const dispatch = jest.fn();
+        return actions.contactListingUser(mockId)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/listings/contact/${mockId}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.contactListingUserSuccess(mockId));
+        });
+    });
+});
 
 describe('contactWishlistUserSuccess', () => {
     it('Should return the action', () => {
@@ -328,7 +616,26 @@ describe('contactWishlistUserError', () => {
     });
 });
 
-//TODO: write contactWishlistUser test
+describe('contactWishlistUser', () => {
+    it('Sould dispatch contactWishlistUserSuccess', () => {
+        const mockId = '10000';
+        const mockUser = 'TestUser123'
+        const expectedHeaders = {
+            "headers": {"Authorization": `Bearer ${authToken}`},
+            "method": "POST"
+        }
+
+        global.fetch = jest.fn().mockImplementation( () => {
+            return Promise.resolve({ ok: true })
+        });
+
+        const dispatch = jest.fn();
+        return actions.contactWishlistUser(mockUser,mockId)(dispatch, getState).then(() => {
+            expect(fetch).toHaveBeenCalledWith(`${API_BASE_URL}/lists/wishlist/contact/${mockId}`, expectedHeaders);
+            expect(dispatch).toHaveBeenCalledWith(actions.contactWishlistUserSuccess(mockUser, mockId));
+        });
+    });
+});
 
 describe('changePage', () => {
     it('Should return the action', () => {

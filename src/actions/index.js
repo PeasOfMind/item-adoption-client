@@ -15,7 +15,7 @@ export const fetchListingsError = error => ({
 
 export const fetchListings = () => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings`, {
+    return fetch(`${API_BASE_URL}/lists/listings`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -45,7 +45,7 @@ export const fetchWishlistError = error => ({
 
 export const fetchWishlist = () => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -76,7 +76,7 @@ export const fetchOneListingError = (listingId, error) => ({
 
 export const fetchOneListing = listingId => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
+    return fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -107,7 +107,7 @@ export const fetchWishItemError = (itemId, error) => ({
 
 export const fetchWishItem = itemId => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist/${itemId}`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist/${itemId}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -137,7 +137,7 @@ export const postListingError = error => ({
 
 export const postListing = newListing => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings`, {
+    return fetch(`${API_BASE_URL}/lists/listings`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -169,7 +169,7 @@ export const postWishItemError = error => ({
 
 export const postWishItem = newItem => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist`, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -202,7 +202,7 @@ export const updateListingError = (listingId, error) => ({
 
 export const updateListing = updateData => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
+    return fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -237,7 +237,7 @@ export const updateWishItemError = (itemId, error) => ({
 
 export const updateWishItem = updateData => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/${updateData.id}`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist/${updateData.id}`, {
         method: 'PUT',
         headers: {
             "Content-Type": "application/json; charset=utf-8",
@@ -266,7 +266,7 @@ export const deleteListingError = (listingId, error) => ({
 
 export const deleteListing = listingId => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
+    return fetch(`${API_BASE_URL}/lists/listings/${listingId}`, {
         method: 'DELETE',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -290,7 +290,7 @@ export const deleteWishItemError = (itemId, error) => ({
 
 export const deleteWishItem = wishItemId => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist/${wishItemId}`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist/${wishItemId}`, {
         method: 'DELETE',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -319,7 +319,7 @@ export const fetchOtherListingsError = error => ({
 
 export const fetchOtherListings = zipcode => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/search/${zipcode}`, {
+    return fetch(`${API_BASE_URL}/lists/listings/search/${zipcode}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -349,7 +349,7 @@ export const fetchOtherWishlistsError = error => ({
 
 export const fetchOtherWishlists = zipcode => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist/search/${zipcode}`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist/search/${zipcode}`, {
         method: 'GET',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -380,7 +380,7 @@ export const contactListingUserError = (itemId, error) => ({
 
 export const contactListingUser = itemId => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/listings/contact/${itemId}`, {
+    return fetch(`${API_BASE_URL}/lists/listings/contact/${itemId}`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${authToken}`
@@ -412,7 +412,7 @@ export const contactWishlistUserError = (wishUser, itemId, error) => ({
 
 export const contactWishlistUser = (wishUser, itemId) => (dispatch, getState) => {
     const authToken = getState().auth.authToken;
-    fetch(`${API_BASE_URL}/lists/wishlist/contact/${itemId}`, {
+    return fetch(`${API_BASE_URL}/lists/wishlist/contact/${itemId}`, {
         method: 'POST',
         headers: {
             "Authorization": `Bearer ${authToken}`
