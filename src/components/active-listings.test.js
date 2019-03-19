@@ -24,9 +24,17 @@ describe('<ActiveListings />', () => {
     });
 
     it('Renders the listings', () => {
-        const dispatch = jest.fn();
         const wrapper = mount(<ActiveListings itemListings={seedListings}/>);
         const listings = wrapper.find('.item-ad');
         expect(listings.length).toEqual(seedListings.length);
-    })
+    });
+
+    it('Dispatches handleEdit', () => {
+        const dispatch = jest.fn();
+        const wrapper = shallow(<ActiveListings itemListings={seedListings} dispatch={dispatch} />);
+        // dispatch.mockClear();
+        const listingId = seedListings[0].id;
+        wrapper.handleEdit(listingId);
+        expect(dispatch).toHaveBeenCalledWith(handleEdit(listingId));
+    });
 });
