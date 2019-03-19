@@ -11,6 +11,7 @@ export class UserInfo extends React.Component{
 
     handleEdit() {
         this.props.dispatch(toggleUserEdit());
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onSubmit (values) {
