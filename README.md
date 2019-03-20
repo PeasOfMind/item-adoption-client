@@ -1,68 +1,56 @@
+# Item Adoption
+
+Item Adoption is an app to help users connect with others in their area to sell/give away things that are no longer useful to them or to buy/get things from other users that they want.
+
+Each user is able to create a wishlist of things they want to have or create listings for the items they want to sell or give away. Users can view other listings or wishlists posted in their area and contact other users about those posts.
+
+A demo account is available to test the account in the navigation bar.
+
+The live app can be accessed at: https://pacific-savannah-70762.herokuapp.com/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Screenshots
 
-In the project directory, you can run:
+### Landing Page:
+Users can navigate to login, signup, or access the demo account on the navigation bar or to signup at the bottom of the page.
 
-### `npm start`
+![landing page](images/landing-page.png)
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Signup Page:
+Users can sign up to create a new account or switch over to the login page to access an existing account.
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+![signup page](images/sign-up.png)
 
-### `npm test`
+### Dashboard:
+The dashboard shows the user's active listings and when they expire. If a listing will expire within 5 days, a renew button will appear under the listing so the user can set the expiration back to 14 days.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Users can also create a listing at an location different from their homebase zipcode.
 
-### `npm run build`
+Listings or wishlists cannot be created without the user zipcode and email. New users will have to add this user info to continue.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![dashboard](images/dashboard.png)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Users can add to their wishlist. Wishlist items are automatically set to the user's homebase zipcode and their location cannot be changed.
+![wishlist](images/wishlist.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### View Other Wishlists
+Users can see other user wishlists in their same zipcode. An email icon next to each item will allow users to email the wishlist owner to initiate an exchange. The email is sent by the [SendGrid](https://sendgrid.com/) email service using an email template and if the email is successfully sent, a green check will appear next to the item in place of the email icon. 
 
-### `npm run eject`
+![other-wishlist](images/other-wishlists.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### View Other Listings
+Similarly, users can also other user listings in their same zipcode. A button under each item users to email the listing owner to initiate an exchange (using the SendGrid email service). If the email is sent successfully, a message will appear below the listing confirming the listing owner was contacted.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+![other-listings](images/other-listings.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+For both other wishlists and listings, the other users' emails are not directly available in the app and the exchange will only proceed if the contacted user responds to the email.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
+Built with: Javascript, React, Redux, HTML5, CSS
 
-## Learn More
+## Goals for Future Versions
+Support a more robust search in area feature. Current version only supports exact match of zipcode.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Add ability to search for thrift shops and/or donation centers in area
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
