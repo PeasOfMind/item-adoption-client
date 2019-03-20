@@ -26,10 +26,10 @@ export class ListingForm extends React.Component {
 
     onSubmit(values){
         const updatedValues = {id: this.props.id};
-        ['title', 'description', 'price'].forEach(field => {
+        ['title', 'description', 'price', 'zipcode'].forEach(field => {
             //convert price to a number to match data type in database
-            if (field === 'price') updatedValues[field] = parseInt(values[field], 10);
-            updatedValues[field] = values[field];
+            if (field === 'price') updatedValues[field] = parseInt(values[`${field.toLowerCase()}-${this.props.index}`], 10);
+            else updatedValues[field] = values[`${field.toLowerCase()}-${this.props.index}`];
         });
         this.props.dispatch(updateListing(updatedValues));
     }
