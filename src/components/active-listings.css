@@ -18,7 +18,7 @@ p {
     margin-right: auto;
 }
 
-.item-ad {
+.item-listing {
     background: white;
     color: black;
     margin: 1em 0;
@@ -26,12 +26,12 @@ p {
     border-radius: 3px;
 }
 
-.item-ad > p {
+.item-listing > p {
     font-size: 0.9em;
     margin-bottom: 0.3em;
 }
 
-.item-ad > button, .active-listings-container > button {
+.item-listing > button, .active-listings-container > button {
     border: none;
     background-color: #3c415e;
     border-radius: 3px;

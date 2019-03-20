@@ -72,7 +72,7 @@ export class ListingForm extends React.Component {
         })
 
         return (
-            <article className="form-container item-ad">
+            <article className="form-container item-listing">
                 <form className="item-form" onSubmit={this.props.handleSubmit(values => 
                 this.onSubmit(values)
                 )}>

@@ -75,7 +75,7 @@ export function ActiveListings(props){
                 errorText += <p className="error delete-error">Problem deleting this listing. Error code {item.deleteError.code}: {item.deleteError.message}. Try again later.</p> 
             }
             return (
-            <article className="item-ad" key={item.id}>
+            <section className="item-listing" key={item.id}>
                 <h3>{item.title}</h3>
                 <p>Description: {item.description}</p>
                 <p>Price: {price}</p>
@@ -85,7 +85,7 @@ export function ActiveListings(props){
                 <button className="delete-listing" onClick={() => handleDelete(item.id)}>Delete Listing</button>
                 {renewButton}
                 {errorText}
-            </article>)
+            </section>)
         });
     }
 

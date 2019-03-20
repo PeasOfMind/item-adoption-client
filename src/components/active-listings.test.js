@@ -25,7 +25,7 @@ describe('<ActiveListings />', () => {
 
     it('Renders the listings', () => {
         const wrapper = mount(<ActiveListings itemListings={seedListings}/>);
-        const listings = wrapper.find('.item-ad');
+        const listings = wrapper.find('.item-listing');
         expect(listings.length).toEqual(seedListings.length);
     });
 });
