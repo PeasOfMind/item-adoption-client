@@ -8,6 +8,8 @@ A demo account is available to test the account in the navigation bar.
 
 The live app can be accessed at: https://pacific-savannah-70762.herokuapp.com/
 
+API code: https://github.com/PeasOfMind/item-adoption-api
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Screenshots
